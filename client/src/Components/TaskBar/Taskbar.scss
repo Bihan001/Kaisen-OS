@@ -1,0 +1,108 @@
+.Taskbar 
+{
+    position:absolute;
+    width:100%;
+    height:4.8rem;
+   
+    bottom:0;
+    display:flex;
+    justify-content: space-between  ;
+    border-radius:2px;
+     box-shadow: 0 22px 70px 4px rgba(0, 0, 0, 0.56);  
+    .Apps_N_Info
+    {
+       // border:2px solid red;
+        align-items: center;
+        display:flex;
+        margin-left:.3rem;
+        .Kaisen_Button 
+        {
+           // border:2px solid green;
+           padding:0 1.5rem 0 1rem;
+            height:4.7rem;
+            cursor:pointer;
+            transition:all .3s ease;
+            border-radius:1px;
+            
+            img 
+            {
+                width:4rem;
+                height: 4rem;
+            }
+          
+        }
+        .Icons
+        {
+           // border:2px solid green;
+           padding:0 1.5rem 0 1rem;
+            height:4.7rem;
+            cursor:pointer;
+           
+            border-radius:1px;
+           
+            img 
+            {
+                //border:2px solid red;
+                width:4rem;
+                height: 4rem;
+                margin-left:1rem;
+                margin-right:1rem;
+                margin-top:.3rem;
+                padding:.4rem;
+                border-radius:3px;
+                transition:all .3s ease;
+                &:hover 
+                {
+                    background-color: #ECF0F1 ;
+                }
+            }
+          
+        }
+    }
+
+    .Time_N_Color 
+    {
+        align-items: center;
+        display:flex;
+        .Color_div 
+        {
+            position:relative;
+            .palatte_icon
+            {
+                width:1.5rem;
+                height:1.5rem;
+                border-radius:50%;
+            }
+        }
+    }
+}
+
+
+
+
+.Frosted_Glass
+    {
+       
+      
+        box-shadow: 0 0 1rem 0 rgba(0, 0, 0, .2); 
+        
+        z-index: 1;
+        background: inherit;
+        overflow: hidden;
+        
+        &::before
+        {
+            content: "";
+            position: absolute;
+            background: inherit;
+            z-index: -1;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            box-shadow: inset 0 0 2000px rgba(255, 255, 255, .5);
+            filter: blur(6px);
+            margin: -20px;
+            border:2px solid green;
+        }
+    }

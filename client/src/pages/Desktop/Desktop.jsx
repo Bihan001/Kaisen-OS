@@ -1,7 +1,7 @@
 import React,{useState,useEffect,useRef,useContext} from "react";
 import {clone} from "ramda";
 import "./Desktop.scss";
-import bgvideo from "../../assets/videos/bgvideo.mp4"
+//import bgvideo from "../../assets/videos/bgvideo.mp4"
 
 
 import {ThemeContext} from "../../Contexts/ThemeContext/ThemeContext";

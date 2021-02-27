@@ -11,7 +11,7 @@ import back from "../../assets/icons/back.png"
 import {motion} from "framer-motion";
 import {clone} from "ramda";
 
-const File_Explorer=({data,folderarray,updatefolderarray,filearray,updatefilearray})=>
+const File_Explorer=({data,initialfolderpath,folderarray,updatefolderarray,filearray,updatefilearray})=>
 {
     const {theme}=useContext(ThemeContext);
     const {dirPaths,UpdatedirPaths}=useContext(DirectoryContext);
@@ -19,7 +19,7 @@ const File_Explorer=({data,folderarray,updatefolderarray,filearray,updatefilearr
 
     //Utility Variables
     var obj;
-    var array=[];
+    var opened_dirPaths={};
     var newpath;
     var htmlelements;
     //===================
@@ -29,7 +29,7 @@ const File_Explorer=({data,folderarray,updatefolderarray,filearray,updatefilearr
     const [Folder,setFolder]=useState(null);
     const [FolderContents,setFolderContents]=useState([]);
 
-    const [initialfolderpath,setinitialfolderpath]=useState("");
+   // const [initialfolderpath,setinitialfolderpath]=useState("");
     //======================
 
 
@@ -37,7 +37,7 @@ const File_Explorer=({data,folderarray,updatefolderarray,filearray,updatefilearr
     useEffect(()=>
     {
         setFolder(data);
-        setinitialfolderpath(data.path);
+        //setinitialfolderpath(data.path);
     },[])
 
     useEffect(()=>  //For updatng minimized
@@ -98,17 +98,23 @@ const File_Explorer=({data,folderarray,updatefolderarray,filearray,updatefilearr
         }
         else 
         {
-            array=[];
-            array=clone(filearray);
-
-            obj=array.find((object)=>object.path===data.path); //Checks weather the appliation is already opened!!
-            console.log(obj);
-            if(!obj)
+            opened_dirPaths={};
+            opened_dirPaths=clone(filearray);
+            if(!opened_dirPaths[data.path])
             {
-                array.push(data);
-                updatefilearray(array);
+                opened_dirPaths[data.path]=data;
+                updatefilearray(opened_dirPaths);
+            }
+            else
+            {
+                if(opened_dirPaths[data.path].closed)
+                {
+                    opened_dirPaths[data.path].closed=false;
+                    updatefilearray(opened_dirPaths);
+                }
             }
 
+           
             
         }
     }
@@ -134,15 +140,15 @@ const File_Explorer=({data,folderarray,updatefolderarray,filearray,updatefilearr
     { 
         if(Folder)
         {
-            array=[];
-            array=clone(folderarray);
-            obj=array.find((object)=>object.path===initialfolderpath);
-            //console.log(Folder,obj);
-            if(obj)
+            opened_dirPaths={}
+            opened_dirPaths=clone(folderarray);
+            if(opened_dirPaths[initialfolderpath])
             {
-                obj.minimized=Folder.minimized;
-                updatefolderarray(array);
+                opened_dirPaths[initialfolderpath].minimized=Folder.minimized;
+                updatefolderarray(opened_dirPaths);
             }
+
+            
         }
       
     },[Folder])
@@ -155,11 +161,18 @@ const File_Explorer=({data,folderarray,updatefolderarray,filearray,updatefilearr
 
     const handlecloseapp=()=>
     {
-        array=[];
-        array=clone(folderarray);
-        console.log(initialfolderpath);
-       array= array.filter((object)=>object.path!==initialfolderpath);
-        updatefolderarray(array);
+        opened_dirPaths={};
+        opened_dirPaths=clone(folderarray);
+
+        if(opened_dirPaths[initialfolderpath])
+        {
+            console.log(opened_dirPaths[initialfolderpath]);
+
+           opened_dirPaths[initialfolderpath].closed=true;
+            updatefolderarray(opened_dirPaths);
+        }
+
+        
     }
 
     const loadfoldercontents=(data)=>
@@ -169,7 +182,7 @@ const File_Explorer=({data,folderarray,updatefolderarray,filearray,updatefilearr
             obj=dirPaths[data.children[0]]; // Just hecking the first obj in children array which will tell if the level is loaded or not
             if(obj)
             {
-                array=[]
+                var array=[]
                 data.children.map((path)=>
                 {
                     array.push(dirPaths[path]);

@@ -20,7 +20,7 @@ const Taskbar =({
 
     //Utility Variables
     var obj;
-    var array=[];
+    var opened_dirPaths;
     var newpath;
     //===================
 
@@ -31,27 +31,29 @@ const Taskbar =({
 
     const handlerestoresize=(data)=>
     {
-        array=[];
+        opened_dirPaths={};
         if(data.type=='folder')
         {
-            array=clone(folderarray);
-            obj=array.find((object)=>object.path===data.path)
-            if(obj)
+            opened_dirPaths=clone(folderarray);
+            if(opened_dirPaths[data.path])
             {
-                obj.minimized=false;
-                updatefolderarray(array);
+                opened_dirPaths[data.path].minimized=false;
+                updatefolderarray(opened_dirPaths);
             }
+
+         
         }
         else
         {
           
-            array=clone(filearray);
-            obj=array.find((object)=>object.path===data.path);
-            if(obj)
+            opened_dirPaths=clone(filearray);
+            if(opened_dirPaths[data.path])
             {
-                obj.minimized=false;
-                updatefilearray(array);
+                opened_dirPaths[data.path].minimized=false;
+                updatefilearray(opened_dirPaths);
             }
+
+           
 
         }
     }
@@ -69,16 +71,16 @@ const Taskbar =({
                 </div>
 
                 <div className="Icons">
-                    {filearray.map((file)=>
+                    {Object.keys(filearray).map((dir)=>
                     {
-                        if(file.minimized)
-                            return <img src={handleIcon(file)} key={file.path} onClick={()=>handlerestoresize(file)}/>
+                        if(filearray[dir].minimized)
+                            return <img src={handleIcon(filearray[dir])} key={filearray[dir].path} onClick={()=>handlerestoresize(filearray[dir])}/>
                     })}
                 
-                    {folderarray.map((folder)=>
+                    {Object.keys(folderarray).map((dir)=>
                     {
-                        if(folder.minimized)
-                            return <img src={handleIcon(folder)} key={folder.path} onClick={()=>handlerestoresize(folder)}/>
+                        if(folderarray[dir].minimized)
+                            return <img src={handleIcon(folderarray[dir])} key={folderarray[dir].path} onClick={()=>handlerestoresize(folderarray[dir])}/>
                     })}
                 </div>
             </div>

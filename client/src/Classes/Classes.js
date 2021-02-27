@@ -11,6 +11,7 @@ class MainFile
         this.type=type;
 
         this.minimized=false;
+        this.closed=false;
     }
 
    

@@ -22,7 +22,7 @@ const Particular_File = ({data,updatefilearray,filearray})=>
 
     //Utility Variables
     var tempfile;
-    var filearray_clone;
+    var opened_dirPaths;
     //var Component;
     //=================
     useEffect(()=>
@@ -47,10 +47,15 @@ const Particular_File = ({data,updatefilearray,filearray})=>
     {
         if(state)
         {
-            filearray_clone=clone(filearray);
-            tempfile=filearray_clone.find((obj)=>obj.path===state.path);
-            tempfile.minimized=state.minimized;
-            updatefilearray(filearray_clone);
+            opened_dirPaths=clone(filearray);
+
+            if(opened_dirPaths[state.path])
+            {
+                opened_dirPaths[state.path].minimized=state.minimized;
+                updatefilearray(opened_dirPaths);
+            }
+
+           
         }
       
 
@@ -63,6 +68,17 @@ const Particular_File = ({data,updatefilearray,filearray})=>
        
 
         setState(tempfile);
+    }
+    const handlecloseapp=()=>
+    {
+        opened_dirPaths={};
+        opened_dirPaths=clone(filearray);
+        if(opened_dirPaths[state.path])
+        {
+           // delete opened_dirPaths[state.path];
+           opened_dirPaths[state.path].closed=true;
+            updatefilearray(opened_dirPaths);
+        }
     }
     
     return(
@@ -82,7 +98,7 @@ const Particular_File = ({data,updatefilearray,filearray})=>
                             <div className="Window_Buttons"> 
                                 <div className="Green" onClick={handleminizestatus}></div>
                                 <div className="Yellow"> </div>
-                                <div className="Red"></div>
+                                <div className="Red" onClick={handlecloseapp}></div>
                             </div>
                         </div>
                         <div className="File_Config_Window">

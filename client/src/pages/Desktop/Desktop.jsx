@@ -22,13 +22,13 @@ const Desktop = (props)=>
     const {theme,ChangeTheme}=useContext(ThemeContext);
     const {dirPaths,UpdatedirPaths}=useContext(DirectoryContext);
 
-    const [openedfiles,setopenedfiles]=useState([]);
-    const [openedfolders,setopenedfolders]=useState([]);
+    const [openedfiles,setopenedfiles]=useState({});
+    const [openedfolders,setopenedfolders]=useState({});
 
     //Utility Variables 
     var newdir ; //type:String
     var obj;
-    var array=[];
+    var opened_dirPaths={}; //This is not an array but a dirPath!!!
     //=================
 
     //taskbar States============================================
@@ -46,25 +46,45 @@ const Desktop = (props)=>
     //Functions
     const handleOpen = (data)=>
     {
-        array=[];
+        opened_dirPaths={};
         if(data.type=='folder')  //this works
         {   
-            array=clone(openedfolders);
-            obj=array.find((object)=>object.path===data.path); 
-            if(!obj)
-            {
-                setopenedfolders([...openedfolders,data]);
+            opened_dirPaths=clone(openedfolders);
 
+            if(!opened_dirPaths[data.path])
+            {
+                opened_dirPaths[data.path]=data;
+                setopenedfolders(opened_dirPaths);
             }
+            else //it exists (lets check if it is closed or not)
+            {
+                if(opened_dirPaths[data.path].closed)
+                {
+                    opened_dirPaths[data.path].closed=false;
+                    setopenedfolders(opened_dirPaths);
+                }
+            }
+
+           
         }
         else if( (data.type=='.exe' || data.type=='.txt' ||  data.type=='.mp3' ||  data.type=='.mp4' ) )
         {
             
-            array=clone(openedfiles);
-            obj=array.find((object)=>object.path===data.path);  //tells that the application is already opened!
-            if(!obj)
+            opened_dirPaths=clone(openedfiles);
+
+            if(!opened_dirPaths[data.path])
             {
-                setopenedfiles([...openedfiles,data]);
+                opened_dirPaths[data.path]=data;
+                setopenedfiles(opened_dirPaths);
+            }
+            else 
+            {
+                if(opened_dirPaths[data.path].closed)
+                {
+                    //console.log(opened_dirPaths[data.path].closed);
+                    opened_dirPaths[data.path].closed=false;
+                    setopenedfiles(opened_dirPaths);
+                }
             }
 
             
@@ -72,13 +92,13 @@ const Desktop = (props)=>
 
     }
 
-    const updatefilearray = (array)=>
+    const updatefilearray = (dirObj)=>
     {
-        setopenedfiles(array);
+        setopenedfiles(dirObj);
     }
-    const updatefolderarray = (array) =>
+    const updatefolderarray = (dirObj) =>
     {
-        setopenedfolders(array);
+        setopenedfolders(dirObj);
     }
     //==========
    
@@ -113,9 +133,26 @@ const Desktop = (props)=>
                 </div>
             )}
 
-           {openedfolders.length!==0 && (
+           {openedfolders && (
                <div className="Folders_Window_div">
-                   {openedfolders.map((folder,index)=>(
+                   {Object.keys(openedfolders).map((dir,index)=>{
+                        if(!openedfolders[dir].closed)
+                            return (
+                                <File_Explorer
+                                data={openedfolders[dir]}
+                                initialfolderpath={dir}
+                                folderarray={openedfolders}
+                                updatefolderarray={updatefolderarray}
+                                filearray={openedfiles}
+                                updatefilearray={updatefilearray}
+                                key={index}
+    
+                           />
+                            )
+                      
+                        })}
+
+                   {/* {openedfolders.map((folder,index)=>(
                        <File_Explorer
                         data={folder}
                         folderarray={openedfolders}
@@ -124,11 +161,29 @@ const Desktop = (props)=>
                         updatefilearray={updatefilearray}
                         key={index}
                        />
-                   ))}
+                   ))} */}
                </div> 
            )}
 
-           {openedfiles.length!==0 && (
+           {openedfiles && (
+               <div className="Files_Window_div">
+               {Object.keys(openedfiles).map((dir,index)=>{
+                   if(!openedfiles[dir].closed)
+                        return (
+                            <Particular_File 
+                            data={openedfiles[dir]} 
+                            
+                            filearray={openedfiles}
+                            updatefilearray={updatefilearray}
+                            key={index}
+                            />
+                        )
+                   
+                })}
+              </div>
+                
+           )}
+           {/* {openedfiles && (
                <div className="Files_Window_div">
                 {openedfiles.map((file,index)=>(
                     <Particular_File 
@@ -139,7 +194,7 @@ const Desktop = (props)=>
                     />
                 ))}
                </div>
-           )}
+           )} */}
 
             {
                 showcolorpalatte && (

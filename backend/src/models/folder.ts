@@ -32,11 +32,11 @@ const folderSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
-    createdAt: {
+    dateCreated: {
       type: Date,
       default: Date.now,
     },
-    modifiedOn: {
+    dateModified: {
       type: Date,
       default: Date.now,
     },

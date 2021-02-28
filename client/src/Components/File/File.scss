@@ -1,0 +1,58 @@
+.File 
+{
+    position:absolute;
+   // border:2px solid black;
+    height: fit-content;
+   top:5%;
+   left:20%;
+   box-shadow: 0 17px 60px 4px rgba(0, 0, 0, 0.56);  
+   
+    .Topbar 
+    {
+        //border:2px solid green;
+       // padding:1rem;
+        cursor:grab;
+        height:5rem;
+        display:flex;
+        flex-direction:row;
+        justify-content: flex-end;
+        border-radius:4px 4px 0 0;
+        padding-right:1rem;
+        outline:none;
+        .Window_Buttons 
+        {
+            display:flex;
+            flex-direction:row;
+            //border:2px solid black;
+            cursor:pointer;
+            div 
+            {
+                margin:.5rem;
+                width:2rem;
+                height:2rem;
+                border-radius:50%;
+                margin-top:1.6rem;
+                 
+            }
+            .Red 
+            {
+                background-color: #EB5B26 ;
+            }
+            .Yellow 
+            {
+                background-color: #E5C62A ;
+            }
+            .Green 
+            {
+                background-color: #27AE60 ;
+            }
+        }
+      
+        
+    }
+    .File_Config_Window 
+    {
+      //  border:2px solid orange;
+        height:90%;
+    }
+}

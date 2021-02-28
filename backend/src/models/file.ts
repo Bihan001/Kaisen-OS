@@ -30,12 +30,12 @@ const fileSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
-    createdAt: {
+    dateCreated: {
       type: Date,
       required: true,
       default: Date.now,
     },
-    modifiedOn: {
+    dateModified: {
       type: Date,
       required: true,
       default: Date.now,

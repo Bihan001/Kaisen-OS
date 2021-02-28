@@ -14,7 +14,7 @@
 
 ##### 2. **run `npm install` to install all the necessary dependencies**
 
-##### 3. **Create a `config.env` file in the root of the project folder containing the env variables in the format below (one time operation)**
+##### 3. **Create a `dev.env` file in the root of the project folder containing the env variables in the format below (one time operation)**
 
         <ENVIRONMENT_VARIABLE>=<value>
 
@@ -32,7 +32,7 @@
 
 ##### 2. **run `npm install` to install all the necessary dependencies**
 
-##### 3. **Create a `config.env` file in the root of the project folder containing the env variables in the format below (one time operation)**
+##### 3. **Create a `prod.env` file in the root of the project folder containing the env variables in the format below (one time operation)**
 
         <ENVIRONMENT_VARIABLE>=<value>
 

@@ -1,0 +1,73 @@
+.Terminal {
+  font-family: 'Roboto', sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  position: relative;
+  // border:2px solid red;
+  width: 100%;
+}
+.Terminal_Bar {
+  // transform:translate(-50%,-50%);
+  //border:2px solid red;
+  width: inherit;
+  background-color: rgb(17, 17, 17);
+}
+.Directory {
+  /*position:absolute;
+    top:5%;
+    left:50%;
+    transform:translate(-50%,-50%);*/
+}
+.sc-EHOje {
+  /*border:2px solid green;*/
+  padding: 0;
+  overflow-x: auto;
+}
+.bYwkqd {
+  margin: 0;
+  padding: 0;
+}
+.gAcuTz {
+  margin: 0;
+  padding-left: 0.7rem;
+  padding-right: 0.7rem;
+  padding-top: 0.9rem;
+  padding-bottom: 0.9rem;
+}
+.sc-cSHVUG {
+  background-color: #5e5d5d;
+  padding-bottom: 0.4px;
+  color: white;
+}
+img {
+  width: 1.5rem;
+  height: 1.5rem;
+  fill: white;
+}
+.terminal-base {
+  overflow: hidden;
+  border-radius: 4px;
+  //border:2px solid green;
+}
+
+.sc-EHOje::-webkit-scrollbar {
+  width: 10px;
+  padding-right: 1px;
+}
+
+.sc-EHOje::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+.sc-EHOje::-webkit-scrollbar-thumb {
+  border-radius: 1px;
+  background-color: #5e5d5d;
+  cursor: pointer;
+  width: 2px;
+}
+
+.File {
+  width: 600px !important;
+}

@@ -9,8 +9,8 @@ export const rootUserCheck = catchAsync(async (req: Request, res: Response) => {
 
 export const sessionLogin = catchAsync(async (req: Request, res: Response) => {
   const idToken = req.body.idToken.toString();
-  // Set session expiration to 30 days.
-  const expiresIn = 60 * 60 * 24 * 30 * 1000;
+  // Set session expiration to 10 days.
+  const expiresIn = 60 * 60 * 24 * 10 * 1000;
   /* 
     Create the session cookie. This will also verify the ID token in the process. The session cookie will have 
     the same claims as the ID token. To only allow session cookie setting on recent sign-in, auth_time in ID token 
@@ -19,7 +19,9 @@ export const sessionLogin = catchAsync(async (req: Request, res: Response) => {
   const sessionCookie = await admin.auth().createSessionCookie(idToken, { expiresIn });
   const options = { maxAge: expiresIn, httpOnly: true };
   res.cookie('session', sessionCookie, options);
-  return res.status(200).json(SuccessResponse({}, 'User logged in'));
+  const idResults = await admin.auth().verifyIdToken(idToken, true);
+  const user = await admin.auth().getUser(idResults.uid);
+  return res.status(200).json(SuccessResponse(user, 'User logged in'));
 });
 
 export const getProfile = catchAsync(async (req: Request, res: Response) => {

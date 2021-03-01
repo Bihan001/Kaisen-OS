@@ -163,7 +163,7 @@ const Desktop = (props) => {
           {Object.keys(openedfolders).map((id) => {
             if (!openedfolders[id].closed)
               return (
-                <div  className='border'  style={{zIndex:openedfolders[id].zindex,"position":"relative"}}>
+                <div  className='border'  style={{zIndex:openedfolders[id].zindex,"position":"relative"}} key={id}>
                       <File_Explorer
                       data={openedfolders[id]}
                       initialfolderpath={openedfolders[id].path}
@@ -199,7 +199,7 @@ const Desktop = (props) => {
           {Object.keys(openedfiles).map((id) => {
             if (!openedfiles[id].closed)
               return (
-                <div  className='border'  style={{zIndex:openedfiles[id].zindex,"position":"relative"}}>
+                <div  className='border'  style={{zIndex:openedfiles[id].zindex,"position":"relative"}} key={id}>
                    <Particular_File
                     data={openedfiles[id]}
                     filearray={openedfiles}

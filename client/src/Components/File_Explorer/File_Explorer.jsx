@@ -1,4 +1,5 @@
 import React,{useState,useEffect,useContext} from "react";
+import  uuid from "react-uuid";
 import "./File_Explorer.scss";
 import {ThemeContext} from "../../Contexts/ThemeContext/ThemeContext";
 import {DirectoryContext} from "../../Contexts/DirectoryContext/DirectoryContext";
@@ -11,7 +12,7 @@ import back from "../../assets/icons/back.png"
 import {motion} from "framer-motion";
 import {clone} from "ramda";
 
-const File_Explorer=({data,initialfolderpath,folderarray,updatefolderarray,filearray,updatefilearray})=>
+const File_Explorer=({data,initialfolderpath,folderarray,updatefolderarray,filearray,updatefilearray,handleZindex,id})=>
 {
     const {theme}=useContext(ThemeContext);
     const {dirPaths,UpdatedirPaths}=useContext(DirectoryContext);
@@ -21,6 +22,7 @@ const File_Explorer=({data,initialfolderpath,folderarray,updatefolderarray,filea
     var obj;
     var opened_dirPaths={};
     var newpath;
+    var newId;
     var htmlelements;
     //===================
 
@@ -72,7 +74,7 @@ const File_Explorer=({data,initialfolderpath,folderarray,updatefolderarray,filea
               // htmlelements=[]
                FolderContents.map((content)=>
                {
-                   obj=document.getElementById(content.name);
+                   obj=document.getElementById(id+content.name);
                    if(obj)
                    {
                     if(e.target.checked)
@@ -80,7 +82,7 @@ const File_Explorer=({data,initialfolderpath,folderarray,updatefolderarray,filea
                     else
                         obj.checked=false;
 
-                    document.getElementById(content.name).innerHTML=obj;
+                    document.getElementById(id+content.name).innerHTML=obj;
                    }
                     
                })
@@ -100,19 +102,9 @@ const File_Explorer=({data,initialfolderpath,folderarray,updatefolderarray,filea
         {
             opened_dirPaths={};
             opened_dirPaths=clone(filearray);
-            if(!opened_dirPaths[data.path])
-            {
-                opened_dirPaths[data.path]=data;
-                updatefilearray(opened_dirPaths);
-            }
-            else
-            {
-                if(opened_dirPaths[data.path].closed)
-                {
-                    opened_dirPaths[data.path].closed=false;
-                    updatefilearray(opened_dirPaths);
-                }
-            }
+           newId=uuid();
+           opened_dirPaths[newId]=data;
+           updatefilearray(opened_dirPaths);
 
            
             
@@ -142,9 +134,9 @@ const File_Explorer=({data,initialfolderpath,folderarray,updatefolderarray,filea
         {
             opened_dirPaths={}
             opened_dirPaths=clone(folderarray);
-            if(opened_dirPaths[initialfolderpath])
+            if(opened_dirPaths[id])
             {
-                opened_dirPaths[initialfolderpath].minimized=Folder.minimized;
+                opened_dirPaths[id].minimized=Folder.minimized;
                 updatefolderarray(opened_dirPaths);
             }
 
@@ -164,11 +156,11 @@ const File_Explorer=({data,initialfolderpath,folderarray,updatefolderarray,filea
         opened_dirPaths={};
         opened_dirPaths=clone(folderarray);
 
-        if(opened_dirPaths[initialfolderpath])
+        if(opened_dirPaths[id])
         {
-            console.log(opened_dirPaths[initialfolderpath]);
+            
 
-           opened_dirPaths[initialfolderpath].closed=true;
+            delete opened_dirPaths[id];
             updatefolderarray(opened_dirPaths);
         }
 
@@ -197,6 +189,11 @@ const File_Explorer=({data,initialfolderpath,folderarray,updatefolderarray,filea
         else
             setFolderContents([]);
     }
+
+    const FolderhandleZindex=()=>
+    {
+        handleZindex(id,'folder_div')
+    }
     //=========
 
     return(
@@ -214,6 +211,7 @@ const File_Explorer=({data,initialfolderpath,folderarray,updatefolderarray,filea
                             style={{backgroundColor:theme}}
                             tabIndex="-1"
                             >
+                                <div className="Topbar__Zindex_handler" onClick={FolderhandleZindex}></div>
                                 <div className="Window_Buttons"> 
                                     <div className="Green" onClick={handleminizestatus}></div>
                                     <div className="Yellow"> </div>
@@ -222,7 +220,7 @@ const File_Explorer=({data,initialfolderpath,folderarray,updatefolderarray,filea
                         </div>
 
                         {Folder && (
-                            <div className="File_Explorer_Config_Window " >
+                            <div className="File_Explorer_Config_Window " onClick={FolderhandleZindex}>
                             <div className="Path">
                                 <div onClick={handleback}><img src={back}/></div>
                                 <div>{Folder.path.split('#').join('/')}</div>
@@ -231,8 +229,8 @@ const File_Explorer=({data,initialfolderpath,folderarray,updatefolderarray,filea
                                     <div className="Row headings">
                                         <div className="First">
                                             <div className="form-group">
-                                                <input type="checkbox" id="Select_All" onClick={(e)=>handleSelectAll(e)}/>
-                                                <label htmlFor="Select_All">
+                                                <input type="checkbox" id={`${id}Select_All`} onClick={(e)=>handleSelectAll(e)}/>
+                                                <label htmlFor={`${id}Select_All`}>
                                                     Select all
                                                 </label>
                                             </div>
@@ -243,10 +241,10 @@ const File_Explorer=({data,initialfolderpath,folderarray,updatefolderarray,filea
                                         </div>
                                     </div>
                                     {FolderContents.map((content,index)=>(
-                                        <div className={index%2==0?"Row Content grey":"Row Content white"} onDoubleClick={()=>handlecontentclicked(content)} key={content.name}>
+                                        <div className={index%2==0?"Row Content grey":"Row Content white"} onDoubleClick={()=>handlecontentclicked(content)} key={id+content.name}>
                                             <div className="form-group" >
-                                                <input type="checkbox" id={content.name} value={content.path}/>
-                                                <label htmlFor={content.name}>
+                                                <input type="checkbox" id={id+content.name} value={content.path}/>
+                                                <label htmlFor={id+content.name}>
                                                     <div>
                                                         <img src={handleIcon(content)}/>
                                                         <div>{content.name}</div>

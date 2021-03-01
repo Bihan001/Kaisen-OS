@@ -15,10 +15,15 @@
         height:5rem;
         display:flex;
         flex-direction:row;
-        justify-content: flex-end;
+        justify-content: space-between;
         border-radius:4px 4px 0 0;
         padding-right:1rem;
         outline:none;
+        &__Zindex_handler
+        {
+           // border:2px solid green;
+            width:100%;
+        }
         .Window_Buttons 
         {
             display:flex;

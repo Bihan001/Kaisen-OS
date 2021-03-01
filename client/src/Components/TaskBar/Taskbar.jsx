@@ -29,15 +29,15 @@ const Taskbar =({
         backgroundColor:'transparent'
     });
 
-    const handlerestoresize=(data)=>
+    const handlerestoresize=(data,id)=>
     {
         opened_dirPaths={};
         if(data.type=='folder')
         {
             opened_dirPaths=clone(folderarray);
-            if(opened_dirPaths[data.path])
+            if(opened_dirPaths[id])
             {
-                opened_dirPaths[data.path].minimized=false;
+                opened_dirPaths[id].minimized=false;
                 updatefolderarray(opened_dirPaths);
             }
 
@@ -47,9 +47,9 @@ const Taskbar =({
         {
           
             opened_dirPaths=clone(filearray);
-            if(opened_dirPaths[data.path])
+            if(opened_dirPaths[id])
             {
-                opened_dirPaths[data.path].minimized=false;
+                opened_dirPaths[id].minimized=false;
                 updatefilearray(opened_dirPaths);
             }
 
@@ -71,16 +71,16 @@ const Taskbar =({
                 </div>
 
                 <div className="Icons">
-                    {Object.keys(filearray).map((dir)=>
+                    {Object.keys(filearray).map((id)=>
                     {
-                        if(filearray[dir].minimized)
-                            return <img src={handleIcon(filearray[dir])} key={filearray[dir].path} onClick={()=>handlerestoresize(filearray[dir])}/>
+                        if(filearray[id].minimized)
+                            return <img src={handleIcon(filearray[id])} key={id} onClick={()=>handlerestoresize(filearray[id],id)}/>
                     })}
                 
-                    {Object.keys(folderarray).map((dir)=>
+                    {Object.keys(folderarray).map((id)=>
                     {
-                        if(folderarray[dir].minimized)
-                            return <img src={handleIcon(folderarray[dir])} key={folderarray[dir].path} onClick={()=>handlerestoresize(folderarray[dir])}/>
+                        if(folderarray[id].minimized)
+                            return <img src={handleIcon(folderarray[id])} key={id} onClick={()=>handlerestoresize(folderarray[id],id)}/>
                     })}
                 </div>
             </div>

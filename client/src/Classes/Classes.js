@@ -12,6 +12,7 @@ class MainFile
 
         this.minimized=false;
         this.closed=false;
+        this.zindex=0;
     }
 
    

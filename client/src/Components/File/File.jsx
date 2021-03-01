@@ -9,7 +9,7 @@ import ReactTerminal from "../Terminal/Terminal";
 
 
 
-const Particular_File = ({data,updatefilearray,filearray})=>
+const Particular_File = ({data,updatefilearray,filearray,handleZindex,id})=>
 {
     const {theme}=useContext(ThemeContext);
 
@@ -49,9 +49,9 @@ const Particular_File = ({data,updatefilearray,filearray})=>
         {
             opened_dirPaths=clone(filearray);
 
-            if(opened_dirPaths[state.path])
+            if(opened_dirPaths[id])
             {
-                opened_dirPaths[state.path].minimized=state.minimized;
+                opened_dirPaths[id].minimized=state.minimized;
                 updatefilearray(opened_dirPaths);
             }
 
@@ -73,12 +73,16 @@ const Particular_File = ({data,updatefilearray,filearray})=>
     {
         opened_dirPaths={};
         opened_dirPaths=clone(filearray);
-        if(opened_dirPaths[state.path])
+        if(opened_dirPaths[id])
         {
-           // delete opened_dirPaths[state.path];
-           opened_dirPaths[state.path].closed=true;
+            delete opened_dirPaths[id];
+           //opened_dirPaths[state.path].closed=true;
             updatefilearray(opened_dirPaths);
         }
+    }
+    const FilehandleZindex=()=>
+    {
+        handleZindex(id,'file_div');
     }
     
     return(
@@ -95,13 +99,14 @@ const Particular_File = ({data,updatefilearray,filearray})=>
                         style={{backgroundColor:theme}}
                         tabIndex="-1"
                         >
+                            <div className="Topbar__Zindex_handler" onClick={FilehandleZindex}></div>
                             <div className="Window_Buttons"> 
                                 <div className="Green" onClick={handleminizestatus}></div>
                                 <div className="Yellow"> </div>
                                 <div className="Red" onClick={handlecloseapp}></div>
                             </div>
                         </div>
-                        <div className="File_Config_Window">
+                        <div className="File_Config_Window" onClick={FilehandleZindex}>
                             {Component}
                         </div>
                 </motion.div>}

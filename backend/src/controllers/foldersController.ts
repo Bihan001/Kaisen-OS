@@ -23,22 +23,37 @@ export const getFolderAndParentsByPath = catchAsync(async (req: Request, res: Re
 export const createFolderAtPath = catchAsync(async (req: Request, res: Response) => {
   const parentPath: string = req.body.parentPath;
   const folderName: string = req.body.folderName;
-  const folderCreator: string = '';
-  if (!parentPath || !folderName) throw new CustomError('Valid Path and name required', 400);
-  let newPath = `${parentPath}#${folderName}`;
-  const existingFolder = await Folder.findById(newPath);
-  if (existingFolder) throw new CustomError('Folder already exists', 400);
-  const newFolder = new Folder({
-    _id: newPath,
-    name: folderName,
-    path: newPath,
-    editableBy: 'admins',
-  });
-  await newFolder.save();
-  let parentFolder: FolderInterface | null = await Folder.findById(parentPath);
-  if (!parentFolder) throw new CustomError('Parent path invalid', 400);
-  if (!parentFolder.children) throw new CustomError('Parent path children undefined', 500);
-  parentFolder.children.push(newPath);
-  await parentFolder.save();
-  return res.status(200).json(SuccessResponse({}, 'Insertion successful'));
+  if(parentPath!=='' && folderName!=='root')
+  {
+    const folderCreator: string = '';
+    if (!parentPath || !folderName) throw new CustomError('Valid Path and name required', 400);
+    let newPath = `${parentPath}#${folderName}`;
+    const existingFolder = await Folder.findById(newPath);
+    if (existingFolder) throw new CustomError('Folder already exists', 400);
+    const newFolder = new Folder({
+      _id: newPath,
+      name: folderName,
+      path: newPath,
+      editableBy: 'admins',
+    });
+    await newFolder.save();
+    let parentFolder: FolderInterface | null = await Folder.findById(parentPath);
+    if (!parentFolder) throw new CustomError('Parent path invalid', 400);
+    if (!parentFolder.children) throw new CustomError('Parent path children undefined', 500);
+    parentFolder.children.push(newPath);
+    await parentFolder.save();
+    return res.status(200).json(SuccessResponse({}, 'Insertion successful'));
+  }
+  else
+  {
+    const newFolder = new Folder({
+      _id: 'root',
+      name: folderName,
+      path: 'root',
+      editableBy: 'admins',
+    });
+    await newFolder.save();
+    return res.status(200).json(SuccessResponse({}, 'Insertion successful'));
+  }
+ 
 });

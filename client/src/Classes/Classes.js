@@ -4,8 +4,8 @@ class MainFile
     constructor( name , date_created , date_modified , creator , path , type )
     {
         this.name=name;
-        this.date_created=date_created;
-        this.date_modified=date_modified;
+        this.dateCreated=date_created;
+        this.dateModified=date_modified;
         this.creator=creator;
         this.path=path;
         this.type=type;
@@ -20,7 +20,7 @@ class MainFile
 
 }
 
-class Folder extends MainFile
+class ClassFolder extends MainFile
 {
     constructor(name , date_created , date_modified , creator , path , type , children)
     {
@@ -31,7 +31,7 @@ class Folder extends MainFile
   
 }
 
-class File extends MainFile
+class ClassFile extends MainFile
 {
   
     
@@ -43,4 +43,4 @@ class File extends MainFile
     }
 }
 
-export {Folder,File};
+export {ClassFolder,ClassFile};

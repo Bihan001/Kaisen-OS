@@ -1,5 +1,5 @@
 $default-font-size:2rem;
-
+$default-box-shadow: 0 17px 60px 4px rgba(0, 0, 0, 0.56);  
 
 .File_Explorer
 {
@@ -101,7 +101,7 @@ $default-font-size:2rem;
         .Lower_Segment 
         {
            // border:2px solid purple;
-            overflow-y:auto;
+           
             height:88%;
             background-color:white;
             border-radius:0 0 3px 3px;
@@ -142,6 +142,12 @@ $default-font-size:2rem;
                padding-left:1.2rem;
                    
             }
+            .Scrollable 
+            {
+              //border:2px solid red;
+              
+              overflow-y:auto;
+            }
             .Content 
             {
                 justify-content: space-between;
@@ -168,6 +174,107 @@ $default-font-size:2rem;
                 //     background-color: #909497;
                 // }
             }
+        }
+        .CreateWindow 
+        {
+         // background-color:red;
+          position:absolute;
+          top:50%;
+          right:35%;
+          width:30rem;
+          height:20rem;
+          border-radius:3px;
+          box-shadow: rgba(17, 17, 26, 0.1) 0px 1px 0px, rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 48px;
+          animation-name:fade-in-right;
+           animation-duration: .3s;
+           animation-fill-mode: forwards;
+        }
+
+        .type-1 
+        {
+          padding:1rem;
+         // border:2px solid red;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-around;
+          font-size:$default-font-size;
+          color:black;
+          input 
+          {
+            outline:none;
+            color:black;
+            background-color: transparent;
+            font-size:1.5rem;
+            padding-top:1rem;
+            border:0px solid transparent;
+            border-bottom:5px solid white;
+            border-radius:0px;
+
+
+          }
+          div 
+          {
+            //border:2px solid red;
+            display:flex;
+            justify-content: space-around;
+            margin:.3rem;
+            font-weight: bold;
+          }
+         .Type{
+          display: flex;
+          justify-content: flex-start;
+          margin-left:1.5rem;
+         }
+        
+        }
+
+        .TypeList
+        {
+         // border:2px solid red;
+         background-color:red;
+          position:absolute;
+          border-radius:3px;
+          box-shadow: rgba(17, 17, 26, 0.1) 0px 1px 0px, rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 48px;
+          top:50%;
+          right:13%;
+          width:20rem;
+          height:20rem;
+          display:flex;
+          flex-wrap: wrap;
+          overflow-y: auto;
+          padding:.2rem;
+           img 
+           {
+             width:3.5rem;
+             height:3.5rem;
+             margin:.3rem;
+             cursor:pointer;
+           }
+           animation-name:fade-in-right;
+           animation-duration: .3s;
+           animation-fill-mode: forwards;
+          
+        }
+        .Create_Config_Button
+        {
+         // border:2px solid red;
+          position:absolute;
+          top:82%;
+          right:5%;
+         border-radius:50%;
+          padding:1.2rem;
+          
+          box-shadow: rgba(17, 17, 26, 0.1) 0px 1px 0px, rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 48px;
+          //width:fit-content;
+          display:flex;
+          cursor:pointer;
+          img 
+          {
+            width:4rem;
+            height:4rem;
+           // border:2px solid red;
+          }
+          
         }
     }
 }
@@ -242,7 +349,27 @@ $default-font-size:2rem;
     border-width: 0 2px 2px 0;
     transform: rotate(45deg);
   }
-
+  .button
+  {
+   // border:2px solid red;
+   background-color: #D0D3D4;
+    padding:.4rem;
+    padding-left:.7rem;
+    padding-right:.7rem;
+    border-radius:5px;
+    cursor:pointer;
+    transition: all .3s ease;
+    &:hover 
+    {
+      background-color: white;
+      transform: scale(1.04);
+      filter: brightness(1.04);
+    }
+    &:active{
+      transform: scale(1);
+      filter:brightness(1);
+    }
+  }
   .white 
   {
       background-color: white;
@@ -251,3 +378,47 @@ $default-font-size:2rem;
   {
       background-color: #ECF0F1 ;
   }
+
+
+  //animation classes and keyframes===============
+
+  .rotate-forwards{
+   
+    animation-name:rotate-forwards;
+    animation-duration: .3s;
+    animation-fill-mode: forwards;
+  }
+  .rotate-backwards{
+    animation-name:rotate-backwards;
+    animation-duration: .3s;
+    animation-fill-mode: forwards;
+  }
+
+  @keyframes rotate-forwards{
+    0%{
+      transform: rotate(0);
+    }
+    100%{
+      transform:rotate(135deg);
+    }
+  }
+  @keyframes rotate-backwards{
+    0%{
+      transform: rotate(135deg);
+    }
+    100%{
+      transform:rotate(0);
+    }
+  }
+
+  @keyframes fade-in-right{
+    0%{
+      opacity:0;
+      transform: translateX(15%);
+    }
+    100%{
+      opacity:1;
+      transform: translate(0);
+    }
+  }
+  //=================================

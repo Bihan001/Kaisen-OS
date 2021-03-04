@@ -23,7 +23,7 @@ export const getFolderAndParentsByPath = catchAsync(async (req: Request, res: Re
 export const createFolderAtPath = catchAsync(async (req: Request, res: Response) => {
   const parentPath: string = req.body.parentPath;
   const folderName: string = req.body.folderName;
-  const folderCreator: string = '';
+  const folderCreator: string = req.body.folderCreator;
   if (!parentPath || !folderName) throw new CustomError('Valid Path and name required', 400);
   let newPath = `${parentPath}#${folderName}`;
   const existingFolder = await Folder.findById(newPath);
@@ -32,7 +32,7 @@ export const createFolderAtPath = catchAsync(async (req: Request, res: Response)
     _id: newPath,
     name: folderName,
     path: newPath,
-    editableBy: 'admins',
+    editableBy: folderCreator || 'admin',
   });
   await newFolder.save();
   let parentFolder: FolderInterface | null = await Folder.findById(parentPath);

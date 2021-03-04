@@ -46,11 +46,11 @@ const Desktop = (props) => {
   const [showmenu, setshowmenu] = useState(false);
   //taskbar states==============================
 
-  useEffect(() => {
+ /* useEffect(() => {
     // if (!user) props.history.push('/login');
     const file = new Folder('Demo', Date.now(), Date.now(), {}, 'root#a', 'folder');
     console.log(file);
-  }, []);
+  }, []);*/
 
   //Functions
   const handleOpen = (data) =>

@@ -23,12 +23,12 @@ const folderSchema = new mongoose.Schema(
     children: [
       {
         type: String,
-        ref: 'folders',
+        ref: 'Folder',
       },
     ],
     editableBy: {
       type: String,
-      ref: 'users',
+      ref: 'User',
       required: true,
       trim: true,
     },

@@ -1,11 +1,17 @@
 import express, { Request, Response } from 'express';
-import { rootFolderController, createFolderAtPath, getFolderAndParentsByPath } from '../controllers/foldersController';
+
+import * as foldersController from '../controllers/foldersController';
+import requireAuth from '../middlewares/require-auth';
+
 const router = express.Router();
 
-router.get('/', rootFolderController);
+router.get('/', foldersController.rootFolderController);
 
-router.post('/createFolder', createFolderAtPath);
+router.post('/createRoot', foldersController.createRootFolder);
 
-router.post('/getFolderAndParents', getFolderAndParentsByPath);
+// Add the requireAuth middleware here when required, currently removed for debugging from postman
+router.post('/createFolder', foldersController.createFolderAtPath);
+
+router.post('/getFolderAndParents', foldersController.getFolderAndParentsByPath);
 
 export default router;

@@ -26,7 +26,7 @@ const fileSchema = new mongoose.Schema(
     },
     editableBy: {
       type: String,
-      ref: 'users',
+      ref: 'User',
       required: true,
       trim: true,
     },

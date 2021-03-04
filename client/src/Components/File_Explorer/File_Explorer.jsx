@@ -1,12 +1,18 @@
 import React,{useState,useEffect,useContext} from "react";
 import  uuid from "react-uuid";
+import axios from "axios";
 import "./File_Explorer.scss";
 import {ThemeContext} from "../../Contexts/ThemeContext/ThemeContext";
 import {DirectoryContext} from "../../Contexts/DirectoryContext/DirectoryContext";
+import {AuthContext} from "../../Contexts/AuthContext";
 
-import {handleIcon} from "../../Utility/functions";
+import {ClassFile,ClassFolder} from "../../Classes/Classes";
 
-import back from "../../assets/icons/back.png"
+import {handleIcon,typeArray} from "../../Utility/functions";
+import {backendUrl} from "../../backendUrl";
+
+import back from "../../assets/icons/back.png";
+import plus from "../../assets/icons/plus.png";
 
 
 import {motion} from "framer-motion";
@@ -16,7 +22,7 @@ const File_Explorer=({data,initialfolderpath,folderarray,updatefolderarray,filea
 {
     const {theme}=useContext(ThemeContext);
     const {dirPaths,UpdatedirPaths}=useContext(DirectoryContext);
-
+    const {user} =useContext(AuthContext);
 
     //Utility Variables
     var obj;
@@ -31,6 +37,19 @@ const File_Explorer=({data,initialfolderpath,folderarray,updatefolderarray,filea
     const [Folder,setFolder]=useState(null);
     const [FolderContents,setFolderContents]=useState([]);
 
+
+    const [showTypeList,setshowTypeList] = useState(false);
+    const [CreateWindow,setCreateWindow]=useState({
+        shown:false,
+        data:{}
+    })
+
+        //New File and Folder States====
+        const [name,setname]=useState('');
+        const [content,setcontent]=useState('');
+        const [file,setfile]=useState(null);
+        //==============================
+
    // const [initialfolderpath,setinitialfolderpath]=useState("");
     //======================
 
@@ -42,6 +61,7 @@ const File_Explorer=({data,initialfolderpath,folderarray,updatefolderarray,filea
         //setinitialfolderpath(data.path);
     },[])
 
+    
     useEffect(()=>  //For updatng minimized
     {
         if(Folder && !data.minimized)
@@ -62,7 +82,7 @@ const File_Explorer=({data,initialfolderpath,folderarray,updatefolderarray,filea
 
         }
        
-    },[Folder])
+    },[Folder,dirPaths])
 
     //==================
 
@@ -184,6 +204,49 @@ const File_Explorer=({data,initialfolderpath,folderarray,updatefolderarray,filea
             else 
             {
                 //have to make axios request to get the folder contents!!
+                axios({
+                    method:'POST',
+                    data:{
+                        folderPaths:data.children
+                    },
+                    url:`${backendUrl}/api/folders/getFolderAndParents`
+                }).then((res)=>
+                {
+                   
+                    var dirObj=clone(dirPaths);
+                    var newObj;
+                    res.data.data.map((data)=>
+                    {
+                        //"root#terminal.exe":new ClassFile("terminal",new Date(),new Date(),{name:'Ankur'},"root#terminal.exe",".exe",""),
+                        if(data.type=='folder')
+                        {
+                            newObj=new ClassFolder(
+                                data.name,
+                                data.dateCreated,
+                                data.dateModified,
+                                data.editableBy,
+                                data.path,
+                                data.type,
+                                data.children
+                            )
+                        
+                        }
+                        else
+                        {
+                            newObj = new ClassFile(
+                                data.name,
+                                data.dateCreated,
+                                data.dateModified,
+                                data.editableBy,
+                                data.path,
+                                data.type,
+                                data.content
+                            )
+                        }
+                        dirObj[newObj.path]=newObj;
+                    })
+                UpdatedirPaths(dirObj);
+                }).catch(err=>console.log(err));
             }
         }
         else
@@ -193,6 +256,85 @@ const File_Explorer=({data,initialfolderpath,folderarray,updatefolderarray,filea
     const FolderhandleZindex=()=>
     {
         handleZindex(id,'folder_div')
+    }
+
+    const closeStates=()=>
+    {
+        
+    }
+
+    const handleRotate=(classname)=>{
+        const div=document.getElementsByClassName(classname)[0];
+        if(div.classList.contains('rotate-backwards') || !div.classList.contains('rotate-forwards'))
+        {
+            div.classList.remove('rotate-backwards');
+            div.classList.add('rotate-forwards');
+            //console.log(div);
+        }
+            
+        else
+        {
+            div.classList.remove('rotate-forwards');
+            div.classList.add('rotate-backwards');
+            //console.log(div);
+        }
+    }
+
+    const handleCreateWindow=(data)=>
+    {
+        setCreateWindow({
+            shown:true,
+            data:data
+        })
+    }
+
+    const handleCreateType1=()=> //Type 1 includes folders and text files
+    {
+       var reg =  /[$&+,:;=?@#|'<>.^*()%!-]/;
+       //console.log(reg.test(name),name)
+       var success=true;
+       if(name!=='' && !reg.test(name))
+       {
+           if(CreateWindow.data.type=='folder')
+           {    
+               for(var i=0;i<FolderContents.length;i++)
+                {
+                    
+                    obj=FolderContents[i];
+                    
+                    if(obj.name===name && obj.type=='folder')
+                    {
+                        console.log('FOlder with Same Name already exists!!');
+                        success=false;
+                        break;
+                        
+                    }
+                }
+                if(success)
+                {
+                   //making axios request!!
+                    axios({
+                        method:'POST',
+                        data:{
+                            folderName:name,
+                            parentPath:Folder.path
+                        },
+                        url:`${backendUrl}/api/folders/createFolder`
+                    }).then((res)=>{
+                        console.log(res);
+                    }).catch((err)=>console.log(err));
+
+                }
+           }
+           else
+           {
+               console.log('text file will be handled soon!!')
+           }
+       }
+       else{
+           console.log('Enter a valid name')
+       }
+            
     }
     //=========
 
@@ -221,10 +363,10 @@ const File_Explorer=({data,initialfolderpath,folderarray,updatefolderarray,filea
 
                         {Folder && (
                             <div className="File_Explorer_Config_Window " onClick={FolderhandleZindex}>
-                            <div className="Path">
-                                <div onClick={handleback}><img src={back}/></div>
-                                <div>{Folder.path.split('#').join('/')}</div>
-                            </div>
+                                <div className="Path">
+                                    <div onClick={handleback}><img src={back}/></div>
+                                    <div>{Folder.path.split('#').join('/')}</div>
+                                </div>
                                 <div className="Lower_Segment ">
                                     <div className="Row headings">
                                         <div className="First">
@@ -240,24 +382,72 @@ const File_Explorer=({data,initialfolderpath,folderarray,updatefolderarray,filea
                                             <div>Type</div>
                                         </div>
                                     </div>
-                                    {FolderContents.map((content,index)=>(
-                                        <div className={index%2==0?"Row Content grey":"Row Content white"} onDoubleClick={()=>handlecontentclicked(content)} key={id+content.name}>
-                                            <div className="form-group" >
-                                                <input type="checkbox" id={id+content.name} value={content.path}/>
-                                                <label htmlFor={id+content.name}>
-                                                    <div>
-                                                        <img src={handleIcon(content)}/>
-                                                        <div>{content.name}</div>
-                                                    </div>
-                                                
-                                                </label>
+                                    <div className="Scrollable">
+                                        {FolderContents.map((content,index)=>(
+                                            <div className={index%2==0?"Row Content grey":"Row Content white"} onDoubleClick={()=>handlecontentclicked(content)} key={id+content.name}>
+                                                <div className="form-group" >
+                                                    <input type="checkbox" id={id+content.name} value={content.path}/>
+                                                    <label htmlFor={id+content.name}>
+                                                        <div>
+                                                            <img src={handleIcon(content)}/>
+                                                            <div>{content.name}</div>
+                                                        </div>
+                                                    
+                                                    </label>
+                                                </div>
+                                                <div className="content-data">
+                                                        {/* <div>{content.dateModified.toISOString().substring(0, 10)}</div>    */}
+                                                        <div>{content.dateModified}</div>
+                                                        <div>{content.type}</div>
+                                                </div>
                                             </div>
-                                            <div className="content-data">
-                                                    <div>{content.date_modified.toISOString().substring(0, 10)}</div>   
-                                                    <div>{content.type}</div>
+                                        ))}
+                                    </div>
+                                    
+                                </div>
+                                
+                                {CreateWindow.shown && (
+                                    <>
+                                        {(CreateWindow.data.type=='folder' || CreateWindow.data.type=='.txt') && (
+                                            <div className="CreateWindow type-1" style={{backgroundColor:theme}}>
+                                                <div className="Name">
+                                                    <div>Name : </div>
+                                                    <input type="text" value={name} onChange={e=>setname(e.target.value)}/>
+                                                </div>
+                                                <div className="Type">
+                                                    Type : {CreateWindow.data.type}
+                                                </div>
+                                                <div className="Create">
+                                                    <div className="button" onClick={handleCreateType1}>Create</div>
+                                                </div>
                                             </div>
-                                        </div>
-                                    ))}
+                                        )}
+                                        
+                                    </>
+                                )}
+
+                                {showTypeList && (
+                                    <div className="TypeList" style={{backgroundColor:"rgba(41, 45, 48 ,.5)"}}> 
+                                        {typeArray.map((data)=>(
+                                           <img src={data.icon} onClick={()=>handleCreateWindow(data)}/>
+                                        ))}
+                                    </div>
+                                )}
+
+                                <div className={`Create_Config_Button ${id}config`}style={{backgroundColor:theme}} onClick={()=>{ 
+                                    setshowTypeList(!showTypeList); 
+                                    handleRotate(id+'config');
+                                    if(CreateWindow.shown)
+                                        setCreateWindow({
+                                            shown:false,
+                                            data:{}
+                                        })
+                                    
+                                    }}>
+                                    <img src={plus}/>
+                                </div>
+                                <div className="Settings_Config_Button">
+
                                 </div>
                             </div>
                         )}

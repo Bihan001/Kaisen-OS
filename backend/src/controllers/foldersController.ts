@@ -4,6 +4,7 @@ import CustomError from '../errors/custom-error';
 import catchAsync from '../utils/catch-async';
 import { SuccessResponse, ErrorResponse } from '../utils/response-handler';
 import Folder from '../models/folder';
+import mongoose from 'mongoose';
 
 interface FolderInterface extends Document {
   children?: Array<string>;
@@ -16,8 +17,23 @@ export const rootFolderController = catchAsync(async (req: Request, res: Respons
 export const getFolderAndParentsByPath = catchAsync(async (req: Request, res: Response) => {
   const folderPaths: string[] = req.body.folderPaths;
   if (!folderPaths) throw new CustomError('folder paths array required', 400);
-  const folderResultList = await Folder.find({ _id: { $in: folderPaths } });
+  const folderResultList = await Folder.find({ _id: { $in: folderPaths } }).populate('editableBy');
   return res.status(200).json(SuccessResponse(folderResultList));
+});
+
+export const createRootFolder = catchAsync(async (req: Request, res: Response) => {
+  const folderCreator: string = req.body.folderCreator;
+  const existingFolder = await Folder.findById('root');
+  if (existingFolder) throw new CustomError('Root folder already exists', 400);
+  const rootFolder = new Folder({
+    _id: 'root',
+    name: 'root',
+    path: 'root',
+    editableBy: folderCreator || 'admin',
+  });
+  await rootFolder.save();
+  await rootFolder.populate('editableBy').execPopulate();
+  return res.status(200).json(SuccessResponse({ rootFolder }, 'Root folder insertion successful'));
 });
 
 export const createFolderAtPath = catchAsync(async (req: Request, res: Response) => {
@@ -35,10 +51,12 @@ export const createFolderAtPath = catchAsync(async (req: Request, res: Response)
     editableBy: folderCreator || 'admin',
   });
   await newFolder.save();
+  await newFolder.populate('editableBy').execPopulate();
   let parentFolder: FolderInterface | null = await Folder.findById(parentPath);
   if (!parentFolder) throw new CustomError('Parent path invalid', 400);
   if (!parentFolder.children) throw new CustomError('Parent path children undefined', 500);
-  parentFolder.children.push(newPath);
+  parentFolder.children.push(folderName);
   await parentFolder.save();
-  return res.status(200).json(SuccessResponse({}, 'Insertion successful'));
+  await parentFolder.populate('editableBy').execPopulate();
+  return res.status(200).json(SuccessResponse({ parentFolder, newFolder }, 'Insertion successful'));
 });

@@ -1,5 +1,6 @@
 import express, { Request, Response } from 'express';
 import admin from '../firebase-admin';
+import User from '../models/user';
 import { SuccessResponse, ErrorResponse } from '../utils/response-handler';
 import catchAsync from '../utils/catch-async';
 
@@ -20,17 +21,17 @@ export const sessionLogin = catchAsync(async (req: Request, res: Response) => {
   const options = { maxAge: expiresIn, httpOnly: true };
   res.cookie('session', sessionCookie, options);
   const idResults = await admin.auth().verifyIdToken(idToken, true);
-  const user = await admin.auth().getUser(idResults.uid);
-  return res.status(200).json(SuccessResponse(user, 'User logged in'));
+  let user = await admin.auth().getUser(idResults.uid);
+  let chkUser = await User.findById(idResults.uid);
+  if (!chkUser) {
+    chkUser = new User({ _id: idResults.uid, name: user.displayName, email: user.email, displayImage: user.photoURL });
+    await chkUser.save();
+  }
+  return res.status(200).json(SuccessResponse(chkUser, 'User logged in'));
 });
 
 export const getProfile = catchAsync(async (req: Request, res: Response) => {
-  const sessionCookie = req.cookies.session || '';
-  // Verify the session cookie. In this case an additional check is added to detect
-  // if the user's Firebase session was revoked, user deleted/disabled, etc.
-  const decodedClaims = await admin.auth().verifySessionCookie(sessionCookie, true /** checkRevoked */);
-  const user = await admin.auth().getUser(decodedClaims.uid);
-  return res.status(200).json(SuccessResponse(user));
+  return res.status(200).json(SuccessResponse({ user: req.user }));
 });
 
 export const sessionLogout = catchAsync(async (req: Request, res: Response) => {

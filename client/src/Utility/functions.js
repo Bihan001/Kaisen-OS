@@ -1,6 +1,7 @@
 const handleIcon=(data)=>
 {
-    if(data.type=='folder')
+    //console.log(data);
+    if(data.type==='folder')
         return 'https://res.cloudinary.com/drolmjcot/image/upload/q_auto:good/v1614057434/folder-icon_uv8y4m.png';
     else 
     {
@@ -13,6 +14,22 @@ const handleIcon=(data)=>
 }
 
 
+
+const typeArray=[
+    {
+        type:'.txt',
+        icon:'https://res.cloudinary.com/drolmjcot/image/upload/q_auto:good/v1614060786/ba31ac1ab88b5c17cc84283621a6e702_m4cirp.png',
+        
+    },
+    {
+        type:'folder',
+        icon:'https://res.cloudinary.com/drolmjcot/image/upload/q_auto:good/v1614057434/folder-icon_uv8y4m.png'
+    }
+]
+
+
+
 export {
-    handleIcon
+    handleIcon,
+    typeArray
 }

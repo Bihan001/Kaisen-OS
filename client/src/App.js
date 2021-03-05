@@ -14,17 +14,19 @@ const App = () => {
   useEffect(() => {
     axios
       .get('http://localhost:5000/api/auth/profile')
-      .then((res) => setUser(res.data.data))
+      .then((res) => setUser(res.data.data.user))
       .catch((err) => setUser(null));
   }, []);
   return (
-    <div className='App no-select'>
+    <div className="App no-select">
       <Switch>
         {/* <Route exact path='/login' render={(routeProps) => <Login {...routeProps} />} /> */}
         <Route
           exact
-          path='/'
-          render={(routeProps) => (!user ? <Login {...routeProps} /> : <Desktop {...routeProps} />)}
+          path="/"
+          render={(routeProps) =>
+            !user ? <Login {...routeProps} /> : <Desktop {...routeProps} />
+          }
         />
       </Switch>
     </div>

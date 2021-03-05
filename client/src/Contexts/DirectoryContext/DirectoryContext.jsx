@@ -1,16 +1,14 @@
-import React,{useState,useEffect,createContext} from "react";
-import {ClassFolder,ClassFile} from "../../Classes/Classes";
-import axios from "axios";
-import {clone} from 'ramda';
-import {backendUrl} from "../../backendUrl";
+import React, { useState, useEffect, createContext } from 'react';
+import { ClassFolder, ClassFile } from '../../Classes/Classes';
+import axios from 'axios';
+import { clone } from 'ramda';
+import { backendUrl } from '../../backendUrl';
 
-export const DirectoryContext=createContext();
+export const DirectoryContext = createContext();
 
-export const DirectoryProvider=(props)=>
-{
-  
-    const [dirPaths,setdirPaths]=useState({
-        /*"root":new ClassFolder("root",new Date(),new Date(),{name:'Ankur'},"root","folder",["root#a","root#terminal.exe","root#x"]),
+export const DirectoryProvider = (props) => {
+  const [dirPaths, setdirPaths] = useState({
+    /*"root":new ClassFolder("root",new Date(),new Date(),{name:'Ankur'},"root","folder",["root#a","root#terminal.exe","root#x"]),
         "root#a":new ClassFolder("a",new Date(),new Date(),{name:'Ankur'},"root#a","folder",["root#a#b.txt","root#a#c"]),
         "root#x":new ClassFolder("x",new Date(),new Date(),{name:'Ankur'},"root#x","folder",[]),
         "root#terminal.exe":new ClassFile("terminal",new Date(),new Date(),{name:'Ankur'},"root#terminal.exe",".exe",""),
@@ -18,15 +16,13 @@ export const DirectoryProvider=(props)=>
         "root#a#c":new ClassFolder("c",new Date(),new Date(),{name:'Ankur'},"root#a#c","folder",["root#a#c#d.txt"]),
         "root#a#c#d.txt":new ClassFile("d",new Date(),new Date(),{name:'Ankur'},"root#a#c#d.txt",".txt","Hello World!"),
         "root#a#b.txt":new ClassFile("b",new Date(),new Date(),{name:'Ankur'},"root#a#b.txt",".txt","Hello World! f"),*/
+  });
 
-    });
+  const UpdatedirPaths = (array) => {
+    setdirPaths(array);
+  };
 
-    const UpdatedirPaths = (array)=>
-    {
-        setdirPaths(array);
-    }
-    
-    /*useEffect(()=>
+  /*useEffect(()=>
     {
         axios({
             method:'POST',
@@ -40,66 +36,57 @@ export const DirectoryProvider=(props)=>
         }).catch((err)=>console.log(err));
     },[])*/
 
-    useEffect(()=>
-    {
-        axios({
-            method:'Post',
-            data:{
-                folderPaths:['root','root#ankur','root#bihan']
-            },
-            url:`${backendUrl}/api/folders/getFolderAndParents`
-        }).then((res)=>
-        {
-            console.log(res.data.data);
-            var dirObj={};
-            var newObj;
-            res.data.data.map((data)=>
-            {
-                //"root#terminal.exe":new ClassFile("terminal",new Date(),new Date(),{name:'Ankur'},"root#terminal.exe",".exe",""),
-                if(data.type=='folder')
-                {
-                    newObj=new ClassFolder(
-                        data.name,
-                        data.dateCreated,
-                        data.dateModified,
-                        data.editableBy,
-                        data.path,
-                        data.type,
-                        data.children
-                    )
-                   
-                }
-                else
-                {
-                    newObj = new ClassFile(
-                        data.name,
-                        data.dateCreated,
-                        data.dateModified,
-                        data.editableBy,
-                        data.path,
-                        data.type,
-                        data.content
-                    )
-                }
-                dirObj[newObj.path]=newObj;
-            })
-            setdirPaths(dirObj);
-            //console.log(dirObj);
-            
+  useEffect(() => {
+    axios({
+      method: 'Post',
+      data: {
+        folderPaths: ['root', 'root#ankur', 'root#public'],
+      },
+      url: `${backendUrl}/api/folders/getFolderAndParents`,
+    })
+      .then((res) => {
+        console.log(res.data.data);
+        var dirObj = {};
+        var newObj;
+        res.data.data.map((data) => {
+          //"root#terminal.exe":new ClassFile("terminal",new Date(),new Date(),{name:'Ankur'},"root#terminal.exe",".exe",""),
+          if (data.type == 'folder') {
+            newObj = new ClassFolder(
+              data.name,
+              data.dateCreated,
+              data.dateModified,
+              data.editableBy,
+              data.path,
+              data.type,
+              data.children
+            );
+          } else {
+            newObj = new ClassFile(
+              data.name,
+              data.dateCreated,
+              data.dateModified,
+              data.editableBy,
+              data.path,
+              data.type,
+              data.content
+            );
+          }
+          dirObj[newObj.path] = newObj;
+        });
+        setdirPaths(dirObj);
+        //console.log(dirObj);
+      })
+      .catch((err) => console.log(err));
+  }, []);
 
-        }).catch((err)=>console.log(err));
-    },[])
-
-    return(
-        <DirectoryContext.Provider
-            value={
-                {
-                   dirPaths:dirPaths,
-                   UpdatedirPaths:UpdatedirPaths
-                }
-            }
-        >
-            {props.children}
-        </DirectoryContext.Provider>
-    )
-}
+  return (
+    <DirectoryContext.Provider
+      value={{
+        dirPaths: dirPaths,
+        UpdatedirPaths: UpdatedirPaths,
+      }}
+    >
+      {props.children}
+    </DirectoryContext.Provider>
+  );
+};

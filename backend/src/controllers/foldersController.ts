@@ -40,12 +40,13 @@ export const createFolderAtPath = catchAsync(async (req: Request, res: Response)
   const parentPath: string = req.body.parentPath;
   const folderName: string = req.body.folderName;
   const folderCreator: string = req.body.folderCreator;
+  console.log(folderCreator);
   if (!parentPath || !folderName) throw new CustomError('Valid Path and name required', 400);
   let newPath = `${parentPath}#${folderName}`;
   const existingFolder = await Folder.findById(newPath);
   if (existingFolder) throw new CustomError('Folder already exists', 400);
   const newFolder = new Folder({
-    _id: newPath,
+    _id: newPath, 
     name: folderName,
     path: newPath,
     editableBy: folderCreator || 'admin',

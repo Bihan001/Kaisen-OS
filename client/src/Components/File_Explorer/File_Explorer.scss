@@ -1,424 +1,386 @@
-$default-font-size:2rem;
-$default-box-shadow: 0 17px 60px 4px rgba(0, 0, 0, 0.56);  
+$default-font-size: 2rem;
+$default-box-shadow: 0 17px 60px 4px rgba(0, 0, 0, 0.56);
 
-.File_Explorer
-{
-    position:absolute;
+.File_Explorer {
+  position: absolute;
   // border:2px solid black;
-    height: fit-content;
-   top:7%;
-   left:19%;
-   box-shadow: 0 17px 60px 4px rgba(0, 0, 0, 0.56);  
-   width:75%;
-    .Topbar 
-    {
-        //border:2px solid green;
-       // padding:1rem;
-        cursor:grab;
-        height:5rem;
-        display:flex;
-        flex-direction:row;
+  height: fit-content;
+  top: 7%;
+  left: 19%;
+  box-shadow: 0 17px 60px 4px rgba(0, 0, 0, 0.56);
+  width: 75%;
+  .Topbar {
+    //border:2px solid green;
+    // padding:1rem;
+    cursor: grab;
+    height: 5rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    border-radius: 4px 4px 0 0;
+    padding-right: 1rem;
+
+    outline: none;
+    &__Zindex_handler {
+      // border:2px solid green;
+      width: 100%;
+    }
+
+    .Window_Buttons {
+      display: flex;
+      flex-direction: row;
+      //border:2px solid black;
+      cursor: pointer;
+      div {
+        margin: 0.5rem;
+        width: 2rem;
+        height: 2rem;
+        border-radius: 50%;
+        margin-top: 1.6rem;
+      }
+      .Red {
+        background-color: #eb5b26;
+      }
+      .Yellow {
+        background-color: #e5c62a;
+      }
+      .Green {
+        background-color: #27ae60;
+      }
+    }
+  }
+  &_Config_Window {
+    // border: 2px solid orange;
+    //padding:3rem;
+    height: 67vh;
+    width: 65vw;
+    .Path {
+      display: flex;
+      align-items: center;
+      background-color: #ecf0f1;
+      border-top: 2px solid #909497;
+      div :first-child {
+        //  border:2px solid green;
+
+        width: 4rem;
+        height: 4rem;
+        cursor: pointer;
+        margin-top: 1rem;
+        img {
+        }
+      }
+      div:last-child {
+        border: 2px solid #909497;
+        border-radius: 3px;
+        padding: 0.5rem;
+        font-size: 2rem;
+        width: 100%;
+        margin-left: 1rem;
+        margin-right: 1rem;
+      }
+    }
+    .Lower_Segment {
+      //border: 2px solid purple;
+      // overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      height: 88%;
+      background-color: white;
+      border-radius: 0 0 3px 3px;
+      .headings {
         justify-content: space-between;
-        border-radius:4px 4px 0 0;
-        padding-right:1rem;
-       
-          outline:none;
-          &__Zindex_handler
-          {
-             // border:2px solid green;
-              width:100%;
-          }
-        
-        .Window_Buttons 
-        {
-            display:flex;
-            flex-direction:row;
-            //border:2px solid black;
-            cursor:pointer;
-            div 
-            {
-                margin:.5rem;
-                width:2rem;
-                height:2rem;
-                border-radius:50%;
-                margin-top:1.6rem;
-               
-            }
-            .Red 
-            {
-                background-color: #EB5B26 ;
-                
-            }
-            .Yellow 
-            {
-                background-color: #E5C62A ;
-            }
-            .Green 
-            {
-                background-color: #27AE60 ;
-            }
+        font-size: $default-font-size;
+        font-weight: bold;
+        color: black;
+        div {
+          padding-top: 0.5rem;
+          padding-left: 0.5rem;
+          padding-right: 0.5rem;
         }
-      
-        
-    }
-    &_Config_Window
-    {
-       //border:2px solid orange;
-        //padding:3rem;
-        height:67vh;
-        width:65vw;
-        .Path 
-        {   
-            display:flex;
-           align-items: center;
-           background-color: #ECF0F1 ;
-           border-top:2px solid #909497;
-            div :first-child
-            {
-              //  border:2px solid green;
-              
-                width:4rem;
-                height:4rem;
-               cursor:pointer;
-                margin-top:1rem;
-                img 
-                {
-                   
-                }
-            }
-            div:last-child 
-            {
-                border:2px solid #909497;
-                border-radius:3px;
-                padding:.5rem;
-                font-size:2rem;
-                width:100%;
-                margin-left:1rem;
-                margin-right:1rem;
-            }
-          
+        .First {
+          //border:2px solid red;
         }
-        .Lower_Segment 
-        {
-           // border:2px solid purple;
-           
-            height:88%;
-            background-color:white;
-            border-radius:0 0 3px 3px;
-          .headings
-          {
-              justify-content: space-between;
-              font-size: $default-font-size;
-              font-weight: bold;
-              color:black;
-                div 
-                {
-                    padding-top:.5rem;
-                    padding-left:.5rem;
-                    padding-right:.5rem;
-                }
-              .First 
-              {
-                  //border:2px solid red;
-              }
-              .Second 
-              {
-                //border:2px solid red;
-                display:flex;
-                width:50%;
-                justify-content: space-around;
-             
-              
-              }
-          }
-            .Row 
-            {
-
-               // border:2px solid red;
-                padding:.5rem;
-                display: flex;
-                align-items: center;
-                
-               padding-left:1.2rem;
-                   
-            }
-            .Scrollable 
-            {
-              //border:2px solid red;
-              
-              overflow-y:auto;
-            }
-            .Content 
-            {
-                justify-content: space-between;
-                cursor:pointer;
-                transition:all .3s ease;
-                .content-data 
-                {
-                    
-                    width:50%;
-                    //border:2px solid red;
-                    display:flex;
-                    justify-content: space-around;
-                    
-                    
-                }
-                &:hover 
-                {
-                    
-                  filter:brightness(.9)
-                }
-                // &:active 
-                // {
-                //     filter:brightness(1.3);
-                //     background-color: #909497;
-                // }
-            }
-        }
-        .CreateWindow 
-        {
-         // background-color:red;
-          position:absolute;
-          top:50%;
-          right:35%;
-          width:30rem;
-          height:20rem;
-          border-radius:3px;
-          box-shadow: rgba(17, 17, 26, 0.1) 0px 1px 0px, rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 48px;
-          animation-name:fade-in-right;
-           animation-duration: .3s;
-           animation-fill-mode: forwards;
-        }
-
-        .type-1 
-        {
-          padding:1rem;
-         // border:2px solid red;
+        .Second {
+          //border:2px solid red;
           display: flex;
-          flex-direction: column;
+          width: 50%;
           justify-content: space-around;
-          font-size:$default-font-size;
-          color:black;
-          input 
-          {
-            outline:none;
-            color:black;
-            background-color: transparent;
-            font-size:1.5rem;
-            padding-top:1rem;
-            border:0px solid transparent;
-            border-bottom:5px solid white;
-            border-radius:0px;
+        }
+      }
+      .Row {
+        // border:2px solid red;
+        padding: 0.5rem;
+        display: flex;
+        align-items: center;
 
+        padding-left: 1.2rem;
+      }
+      .Scrollable {
+        // border: 2px solid red;
+        margin-left: 0.3rem;
+        margin-bottom: 0.5rem;
+        overflow-y: auto;
+        &::-webkit-scrollbar {
+          width: 13px;
+          padding-right: 1px;
+        }
 
-          }
-          div 
-          {
-            //border:2px solid red;
-            display:flex;
-            justify-content: space-around;
-            margin:.3rem;
-            font-weight: bold;
-          }
-         .Type{
+        &::-webkit-scrollbar-track {
+          background-color: transparent;
+        }
+
+        &::-webkit-scrollbar-thumb {
+          border-radius: 1px;
+          background-color: #9ba1a4;
+          cursor: pointer;
+          width: 100%;
+        }
+      }
+      .Content {
+        justify-content: space-between;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        .content-data {
+          width: 50%;
+          //border:2px solid red;
           display: flex;
-          justify-content: flex-start;
-          margin-left:1.5rem;
-         }
-        
+          justify-content: space-around;
         }
-
-        .TypeList
-        {
-         // border:2px solid red;
-         background-color:red;
-          position:absolute;
-          border-radius:3px;
-          box-shadow: rgba(17, 17, 26, 0.1) 0px 1px 0px, rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 48px;
-          top:50%;
-          right:13%;
-          width:20rem;
-          height:20rem;
-          display:flex;
-          flex-wrap: wrap;
-          overflow-y: auto;
-          padding:.2rem;
-           img 
-           {
-             width:3.5rem;
-             height:3.5rem;
-             margin:.3rem;
-             cursor:pointer;
-           }
-           animation-name:fade-in-right;
-           animation-duration: .3s;
-           animation-fill-mode: forwards;
-          
+        &:hover {
+          filter: brightness(0.9);
         }
-        .Create_Config_Button
-        {
-         // border:2px solid red;
-          position:absolute;
-          top:82%;
-          right:5%;
-         border-radius:50%;
-          padding:1.2rem;
-          
-          box-shadow: rgba(17, 17, 26, 0.1) 0px 1px 0px, rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 48px;
-          //width:fit-content;
-          display:flex;
-          cursor:pointer;
-          img 
-          {
-            width:4rem;
-            height:4rem;
-           // border:2px solid red;
-          }
-          
-        }
+        // &:active
+        // {
+        //     filter:brightness(1.3);
+        //     background-color: #909497;
+        // }
+      }
     }
+    .CreateWindow {
+      // background-color:red;
+      position: absolute;
+      top: 50%;
+      right: 35%;
+      width: 30rem;
+      height: 20rem;
+      border-radius: 3px;
+      box-shadow: rgba(17, 17, 26, 0.1) 0px 1px 0px,
+        rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 48px;
+      animation-name: fade-in-right;
+      animation-duration: 0.3s;
+      animation-fill-mode: forwards;
+    }
+
+    .type-1 {
+      padding: 1rem;
+      // border:2px solid red;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      font-size: $default-font-size;
+      color: black;
+      input {
+        outline: none;
+        color: black;
+        background-color: transparent;
+        font-size: 1.5rem;
+        padding-top: 1rem;
+        border: 0px solid transparent;
+        border-bottom: 5px solid white;
+        border-radius: 0px;
+      }
+      div {
+        //border:2px solid red;
+        display: flex;
+        justify-content: space-around;
+        margin: 0.3rem;
+        font-weight: bold;
+      }
+      .Type {
+        display: flex;
+        justify-content: flex-start;
+        margin-left: 1.5rem;
+      }
+    }
+
+    .TypeList {
+      // border:2px solid red;
+      background-color: red;
+      position: absolute;
+      border-radius: 3px;
+      box-shadow: rgba(17, 17, 26, 0.1) 0px 1px 0px,
+        rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 48px;
+      top: 50%;
+      right: 13%;
+      width: 20rem;
+      height: 20rem;
+      display: flex;
+      flex-wrap: wrap;
+      overflow-y: auto;
+      padding: 0.2rem;
+      img {
+        width: 3.5rem;
+        height: 3.5rem;
+        margin: 0.3rem;
+        cursor: pointer;
+      }
+      animation-name: fade-in-right;
+      animation-duration: 0.3s;
+      animation-fill-mode: forwards;
+    }
+    .Create_Config_Button {
+      // border:2px solid red;
+      position: absolute;
+      top: 82%;
+      right: 5%;
+      border-radius: 50%;
+      padding: 1.2rem;
+
+      box-shadow: rgba(17, 17, 26, 0.1) 0px 1px 0px,
+        rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 48px;
+      //width:fit-content;
+      display: flex;
+      cursor: pointer;
+      img {
+        width: 4rem;
+        height: 4rem;
+        // border:2px solid red;
+      }
+    }
+  }
 }
 
 .form-group {
-    display: block;
-    margin-bottom: 15px;
-  }
-  
-  .form-group input {
-    padding: 0;
-    height: initial;
-    width: initial;
-    margin-bottom: 0;
-    display: none;
-    cursor: pointer;
-  }
-  
-  .form-group label {
-    position: relative;
-    cursor: pointer;
-    div 
-    {
-        display:inline-block;
-       // border:2px solid red;
-        position:relative;
-        img 
-        {
-            width:3.5rem;
-            height:3.5rem;
-            //border:2px solid red;
-            position: absolute;
-          top:-2.1rem;
-          left:1rem
-        }
-        div 
-        {
-            position: absolute;
-            top:-2.1rem;
-            left:5rem;
-            font-size: $default-font-size;
-            color:black;
-            font-weight:bold;
-        }
-    }
-    
-  }
-  
-  .form-group label:before {
-    content:'';
-    -webkit-appearance: none;
-    background-color: transparent;
-    border: 2px solid #0079bf;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), inset 0px -15px 10px -12px rgba(0, 0, 0, 0.05);
-    padding: 10px;
+  display: block;
+  margin-bottom: 15px;
+}
+
+.form-group input {
+  padding: 0;
+  height: initial;
+  width: initial;
+  margin-bottom: 0;
+  display: none;
+  cursor: pointer;
+}
+
+.form-group label {
+  position: relative;
+  cursor: pointer;
+  div {
     display: inline-block;
+    // border:2px solid red;
     position: relative;
-    vertical-align: middle;
-    cursor: pointer;
-    margin-right: 5px;
-  }
-  
-  .form-group input:checked + label:after {
-    content: '';
-    display: block;
-    position: absolute;
-    top: 2px;
-    left: 9px;
-    width: 6px;
-    height: 14px;
-    border: solid #0079bf;
-    border-width: 0 2px 2px 0;
-    transform: rotate(45deg);
-  }
-  .button
-  {
-   // border:2px solid red;
-   background-color: #D0D3D4;
-    padding:.4rem;
-    padding-left:.7rem;
-    padding-right:.7rem;
-    border-radius:5px;
-    cursor:pointer;
-    transition: all .3s ease;
-    &:hover 
-    {
-      background-color: white;
-      transform: scale(1.04);
-      filter: brightness(1.04);
+    img {
+      width: 3.5rem;
+      height: 3.5rem;
+      //border:2px solid red;
+      position: absolute;
+      top: -2.1rem;
+      left: 1rem;
     }
-    &:active{
-      transform: scale(1);
-      filter:brightness(1);
+    div {
+      position: absolute;
+      top: -2.1rem;
+      left: 5rem;
+      font-size: $default-font-size;
+      color: black;
+      font-weight: bold;
     }
   }
-  .white 
-  {
-      background-color: white;
-  }
-  .grey 
-  {
-      background-color: #ECF0F1 ;
-  }
+}
 
+.form-group label:before {
+  content: '';
+  -webkit-appearance: none;
+  background-color: transparent;
+  border: 2px solid #0079bf;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05),
+    inset 0px -15px 10px -12px rgba(0, 0, 0, 0.05);
+  padding: 10px;
+  display: inline-block;
+  position: relative;
+  vertical-align: middle;
+  cursor: pointer;
+  margin-right: 5px;
+}
 
-  //animation classes and keyframes===============
+.form-group input:checked + label:after {
+  content: '';
+  display: block;
+  position: absolute;
+  top: 2px;
+  left: 9px;
+  width: 6px;
+  height: 14px;
+  border: solid #0079bf;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+.button {
+  // border:2px solid red;
+  background-color: #d0d3d4;
+  padding: 0.4rem;
+  padding-left: 0.7rem;
+  padding-right: 0.7rem;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  &:hover {
+    background-color: white;
+    transform: scale(1.04);
+    filter: brightness(1.04);
+  }
+  &:active {
+    transform: scale(1);
+    filter: brightness(1);
+  }
+}
+.white {
+  background-color: white;
+}
+.grey {
+  background-color: #ecf0f1;
+}
 
-  .rotate-forwards{
-   
-    animation-name:rotate-forwards;
-    animation-duration: .3s;
-    animation-fill-mode: forwards;
-  }
-  .rotate-backwards{
-    animation-name:rotate-backwards;
-    animation-duration: .3s;
-    animation-fill-mode: forwards;
-  }
+//animation classes and keyframes===============
 
-  @keyframes rotate-forwards{
-    0%{
-      transform: rotate(0);
-    }
-    100%{
-      transform:rotate(135deg);
-    }
-  }
-  @keyframes rotate-backwards{
-    0%{
-      transform: rotate(135deg);
-    }
-    100%{
-      transform:rotate(0);
-    }
-  }
+.rotate-forwards {
+  animation-name: rotate-forwards;
+  animation-duration: 0.3s;
+  animation-fill-mode: forwards;
+}
+.rotate-backwards {
+  animation-name: rotate-backwards;
+  animation-duration: 0.3s;
+  animation-fill-mode: forwards;
+}
 
-  @keyframes fade-in-right{
-    0%{
-      opacity:0;
-      transform: translateX(15%);
-    }
-    100%{
-      opacity:1;
-      transform: translate(0);
-    }
+@keyframes rotate-forwards {
+  0% {
+    transform: rotate(0);
   }
-  //=================================
+  100% {
+    transform: rotate(135deg);
+  }
+}
+@keyframes rotate-backwards {
+  0% {
+    transform: rotate(135deg);
+  }
+  100% {
+    transform: rotate(0);
+  }
+}
+
+@keyframes fade-in-right {
+  0% {
+    opacity: 0;
+    transform: translateX(15%);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(0);
+  }
+}
+//=================================

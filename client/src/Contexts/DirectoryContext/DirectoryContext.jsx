@@ -40,12 +40,12 @@ export const DirectoryProvider = (props) => {
     axios({
       method: 'Post',
       data: {
-        folderPaths: ['root', 'root#ankur', 'root#public'],
+        folderPaths: ['root', 'root#ankur'],
       },
       url: `${backendUrl}/api/folders/getFolderAndParents`,
     })
       .then((res) => {
-        console.log(res.data.data);
+        console.log(res);
         var dirObj = {};
         var newObj;
         res.data.data.map((data) => {

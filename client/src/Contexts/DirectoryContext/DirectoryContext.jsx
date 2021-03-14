@@ -38,11 +38,8 @@ export const DirectoryProvider = (props) => {
 
   useEffect(() => {
     axios({
-      method: 'Post',
-      data: {
-        folderPaths: ['root', 'root#ankur'],
-      },
-      url: `${backendUrl}/api/folders/getFolderAndParents`,
+      method: 'GET',
+      url: `${backendUrl}/api/folders/getRootSubFolders`,
     })
       .then((res) => {
         console.log(res);

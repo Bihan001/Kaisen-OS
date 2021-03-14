@@ -9,6 +9,8 @@ router.get('/', foldersController.rootFolderController);
 
 router.post('/createRoot', foldersController.createRootFolder);
 
+router.get('/getRootSubFolders', foldersController.getRootSubFolders);
+
 // Add the requireAuth middleware here when required, currently removed for debugging from postman
 router.post('/createFolder', foldersController.createFolderAtPath);
 

@@ -13,6 +13,15 @@ export const rootFolderController = catchAsync(async (req: Request, res: Respons
   res.status(200).json(SuccessResponse({}, 'Folders Route is up and running!'));
 });
 
+export const getRootSubFolders = catchAsync(async (req: Request, res: Response) => {
+  const rootFolder: FolderInterface | null = await Folder.findById('root');
+  if (!rootFolder) throw new CustomError('Root folder missing', 500);
+  const childrenNames: Array<string> = rootFolder.children || [];
+  const childrenPaths: Array<string> = childrenNames.map((name) => `root#${name}`);
+  const folderResultList = await Folder.find({ _id: { $in: childrenPaths } }).populate('editableBy');
+  return res.status(200).json(SuccessResponse(folderResultList));
+});
+
 export const getFolderAndParentsByPath = catchAsync(async (req: Request, res: Response) => {
   const folderPaths: string[] = req.body.folderPaths;
   if (!folderPaths) throw new CustomError('folder paths array required', 400);

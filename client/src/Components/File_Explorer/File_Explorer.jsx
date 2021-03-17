@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
+import firebase from '../../firebase';
 import uuid from 'react-uuid';
 import axios from 'axios';
 import './File_Explorer.scss';
@@ -8,7 +9,7 @@ import { AuthContext } from '../../Contexts/AuthContext';
 
 import { ClassFile, ClassFolder } from '../../Classes/Classes';
 
-import { handleIcon, typeArray } from '../../Utility/functions';
+import { checkFileType, handleIcon, typeArray } from '../../Utility/functions';
 import { backendUrl } from '../../backendUrl';
 
 import back from '../../assets/icons/back.png';
@@ -58,11 +59,17 @@ const File_Explorer = ({
     shown: false,
     data: {},
   });
+  const [storageRef] = useState(firebase.storage().ref());
 
   //New File and Folder States====
   const [name, setname] = useState('');
   const [content, setcontent] = useState('');
-  const [files, setfiles] = useState(null);
+  const [file, setFile] = useState(null);
+  const [uploadDetails, setUploadDetails] = useState({
+    uploadState: '',
+    uploadTask: null,
+    uploadPercentage: 0,
+  });
   //==============================
 
   //Animation Class States===
@@ -113,6 +120,27 @@ const File_Explorer = ({
       setFolder(obj[Folder.path]);
     }
   }, [dirPaths]);
+
+  useEffect(() => {
+    if (uploadDetails.uploadTask != null) {
+      uploadDetails.uploadTask.on(
+        'state_changed',
+        (snap) => {
+          console.log(snap);
+          setUploadDetails({
+            ...uploadDetails,
+            uploadPercentage: Math.round((snap.bytesTransferred / snap.totalBytes) * 100),
+          });
+        },
+        (err) => console.log(err),
+        () => {
+          uploadDetails.uploadTask.snapshot.ref.getDownloadURL().then((url) => {
+            handleAddFileType3(url);
+          });
+        }
+      );
+    }
+  }, [uploadDetails.uploadTask]);
 
   //==================
 
@@ -236,8 +264,7 @@ const File_Explorer = ({
       if (!request) {
         var array = [];
         data.children.map((name) => {
-          if (dirPaths[data.path + '#' + name])
-            array.push(dirPaths[data.path + '#' + name]);
+          if (dirPaths[data.path + '#' + name]) array.push(dirPaths[data.path + '#' + name]);
         });
         setFolderContents(array);
       } else {
@@ -293,10 +320,7 @@ const File_Explorer = ({
 
   const handleRotate = (classname) => {
     const div = document.getElementsByClassName(classname)[0];
-    if (
-      div.classList.contains('rotate-backwards') ||
-      !div.classList.contains('rotate-forwards')
-    ) {
+    if (div.classList.contains('rotate-backwards') || !div.classList.contains('rotate-forwards')) {
       div.classList.remove('rotate-backwards');
       div.classList.add('rotate-forwards');
       //console.log(div);
@@ -319,11 +343,7 @@ const File_Explorer = ({
       return user.isAdmin;
     } else {
       if (user.isAdmin) return true;
-      else if (
-        Folder.path === 'root#public' &&
-        CreateWindow.data.type == 'folder'
-      )
-        return true;
+      else if (Folder.path === 'root#public' && CreateWindow.data.type == 'folder') return true;
       else return Folder.editableBy.id === user.id ? true : false;
     }
   };
@@ -367,10 +387,7 @@ const File_Explorer = ({
                 obj = clone(dirPaths);
                 var newFolder = res.data.data.newFolder;
 
-                obj[Folder.path].children = [
-                  ...obj[Folder.path].children,
-                  newFolder.name,
-                ];
+                obj[Folder.path].children = [...obj[Folder.path].children, newFolder.name];
                 var newFolder_ClassObj;
 
                 //making our own class object
@@ -412,6 +429,24 @@ const File_Explorer = ({
   };
   const handleCreateType3 = () => {
     //Meant for other Files like pdf.png,mp3,mp4 etc..
+    if (file) {
+      const fileType = file.type; // application/pdf, text/html, video/mp4, image/jpeg etc.
+      if (!checkFileType(fileType)) return alert('File type not supported');
+      const fileSize = file.size; // number - in bytes
+      if (fileSize > 15 * 1024 * 1024) return alert('File size shouldnt exceed 15mb');
+      console.log(name, fileType, fileSize);
+      const metadata = { contentType: fileType };
+      setUploadDetails({
+        ...uploadDetails,
+        uploadState: 'uploading',
+        uploadTask: storageRef.child('kaisen-files/' + file.name).put(file, metadata),
+      });
+    }
+  };
+
+  const handleAddFileType3 = (url) => {
+    // upload to nodejs
+    console.log(name, file.type, file.size, url);
   };
 
   const toggleDeleteIcon = () => {
@@ -523,19 +558,14 @@ const File_Explorer = ({
               style={{ width: 'fit-content', height: 'fit-content' }}
               drag={draggable}
               dragConstraints={{ left: -160, right: 160, top: -30, bottom: 50 }}
-              dragElastic={0.1}
-            >
+              dragElastic={0.1}>
               <div
                 className="Topbar"
                 onFocus={() => setdraggable(true)}
                 onBlur={() => setdraggable(false)}
                 style={{ backgroundColor: theme }}
-                tabIndex="-1"
-              >
-                <div
-                  className="Topbar__Zindex_handler"
-                  onClick={FolderhandleZindex}
-                ></div>
+                tabIndex="-1">
+                <div className="Topbar__Zindex_handler" onClick={FolderhandleZindex}></div>
                 <div className="Window_Buttons">
                   <div className="Green" onClick={handleminizestatus}></div>
                   <div className="Yellow"> </div>
@@ -544,10 +574,7 @@ const File_Explorer = ({
               </div>
 
               {Folder && (
-                <div
-                  className="File_Explorer_Config_Window "
-                  onClick={FolderhandleZindex}
-                >
+                <div className="File_Explorer_Config_Window " onClick={FolderhandleZindex}>
                   <div className="Path">
                     <div onClick={handleback} className="back">
                       <img src={back} />
@@ -580,14 +607,9 @@ const File_Explorer = ({
                     <div className="Scrollable">
                       {FolderContents.map((content, index) => (
                         <div
-                          className={
-                            index % 2 == 0
-                              ? 'Row Content grey'
-                              : 'Row Content white'
-                          }
+                          className={index % 2 == 0 ? 'Row Content grey' : 'Row Content white'}
                           onDoubleClick={() => handlecontentclicked(content)}
-                          key={id + content.name}
-                        >
+                          key={id + content.name}>
                           <div className="form-group">
                             <input
                               type="checkbox"
@@ -614,23 +636,13 @@ const File_Explorer = ({
 
                   {CreateWindow.shown && !showDeleteIcon && (
                     <>
-                      {(CreateWindow.data.type == 'folder' ||
-                        CreateWindow.data.type == '.txt') && (
-                        <div
-                          className="CreateWindow type-uni"
-                          style={{ backgroundColor: theme }}
-                        >
+                      {(CreateWindow.data.type == 'folder' || CreateWindow.data.type == '.txt') && (
+                        <div className="CreateWindow type-uni" style={{ backgroundColor: theme }}>
                           <div className="Input_div">
                             <div>Name : </div>
-                            <input
-                              type="text"
-                              value={name}
-                              onChange={(e) => setname(e.target.value)}
-                            />
+                            <input type="text" value={name} onChange={(e) => setname(e.target.value)} />
                           </div>
-                          <div className="Type">
-                            Type : {CreateWindow.data.type}
-                          </div>
+                          <div className="Type">Type : {CreateWindow.data.type}</div>
                           <div className="Create">
                             <div className="button" onClick={handleCreateType1}>
                               Create
@@ -640,30 +652,17 @@ const File_Explorer = ({
                       )}
 
                       {CreateWindow.data.type == '.webapp' && (
-                        <div
-                          className="CreateWindow type-uni"
-                          style={{ backgroundColor: theme }}
-                        >
+                        <div className="CreateWindow type-uni" style={{ backgroundColor: theme }}>
                           <div className="Input_div">
                             <div>Name : </div>
-                            <input
-                              type="text"
-                              value={name}
-                              onChange={(e) => setname(e.target.value)}
-                            />
+                            <input type="text" value={name} onChange={(e) => setname(e.target.value)} />
                           </div>
                           <div className="Input_div">
                             <div>Url : </div>
-                            <input
-                              type="text"
-                              value={content}
-                              onChange={(e) => setcontent(e.target.value)}
-                            />
+                            <input type="text" value={content} onChange={(e) => setcontent(e.target.value)} />
                           </div>
 
-                          <div className="Type">
-                            Type : {CreateWindow.data.type}
-                          </div>
+                          <div className="Type">Type : {CreateWindow.data.type}</div>
                           <div className="Create">
                             <div className="button" onClick={handleCreateType2}>
                               Create
@@ -673,24 +672,30 @@ const File_Explorer = ({
                       )}
 
                       {CreateWindow.data.type == 'other' && (
-                        <div
-                          className="CreateWindow type-uni"
-                          style={{ backgroundColor: theme }}
-                        ></div>
+                        <div className="CreateWindow type-uni" style={{ backgroundColor: theme }}>
+                          <div className="Input_div">
+                            <div>Name : </div>
+                            <input type="text" value={name} onChange={(e) => setname(e.target.value)} />
+                          </div>
+                          <div className="Input_div">
+                            <input type="file" onChange={(e) => setFile(e.target.files[0])} />
+                          </div>
+
+                          {/* <div className="Type">Type : {CreateWindow.data.type}</div> */}
+                          <div className="Create">
+                            <button disabled={!file} className="button" onClick={handleCreateType3}>
+                              Create
+                            </button>
+                          </div>
+                        </div>
                       )}
                     </>
                   )}
 
                   {showTypeList && !showDeleteIcon && (
-                    <div
-                      className="TypeList"
-                      style={{ backgroundColor: 'rgba(41, 45, 48 ,.5)' }}
-                    >
+                    <div className="TypeList" style={{ backgroundColor: 'rgba(41, 45, 48 ,.5)' }}>
                       {typeArray.map((data) => (
-                        <img
-                          src={data.icon}
-                          onClick={() => handleCreateWindow(data)}
-                        />
+                        <img src={data.icon} onClick={() => handleCreateWindow(data)} />
                       ))}
                     </div>
                   )}
@@ -707,8 +712,7 @@ const File_Explorer = ({
                             shown: false,
                             data: {},
                           });
-                      }}
-                    >
+                      }}>
                       <img src={plus} />
                     </div>
                   )}
@@ -723,8 +727,7 @@ const File_Explorer = ({
                         setTimeout(() => {
                           htmlelements.classList.remove('wobble');
                         }, 700);
-                      }}
-                    >
+                      }}>
                       <img src={delete_icon} />
                     </div>
                   )}

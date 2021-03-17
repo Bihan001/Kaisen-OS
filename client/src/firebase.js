@@ -1,6 +1,6 @@
 import firebase from 'firebase';
 
-var firebaseConfig = {
+const firebaseConfig = {
   apiKey: 'AIzaSyCLZfdcAjFI68rP6vUfl5vytzcCZpyU20E',
   authDomain: 'mern-authentication-6634c.firebaseapp.com',
   databaseURL: 'https://mern-authentication-6634c.firebaseio.com',

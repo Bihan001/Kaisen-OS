@@ -24,9 +24,11 @@ export const createFile = catchAsync(async (req: Request, res: Response) => {
   const parentPath: string = req.body.parentPath;
   const fileName: string = req.body.fileName;
   const fileType: string = req.body.fileType;
+  const fileSize: string = req.body.fileSize;
   const fileContent: string = req.body.fileContent;
   const fileCreator: string = req.body.fileCreator;
-  if (!parentPath || !fileName || !fileType) throw new CustomError('Valid path, name and type required', 400);
+  if (!parentPath || !fileName || !fileType || !fileSize)
+    throw new CustomError('Valid path, name, type and size required', 400);
   const folderFormatCheck = /[!@#$%^&*()+\=\[\]{};':"\\|,.<>\/?]+/;
   if (folderFormatCheck.test(fileName)) throw new CustomError('File name can only contain symbols - and _', 400);
   const newPath = `${parentPath}#${fileName}.${fileType}`;
@@ -36,6 +38,7 @@ export const createFile = catchAsync(async (req: Request, res: Response) => {
     _id: newPath,
     name: fileName,
     type: fileType,
+    size: fileSize,
     content: fileContent || '',
     path: newPath,
     editableBy: fileCreator || 'admin',

@@ -429,7 +429,7 @@ const File_Explorer = ({
   };
   const handleCreateType3 = () => {
     //Meant for other Files like pdf.png,mp3,mp4 etc..
-    if (file) {
+    if (file && name) {
       const fileType = file.type; // application/pdf, text/html, video/mp4, image/jpeg etc.
       if (!checkFileType(fileType)) return alert('File type not supported');
       const fileSize = file.size; // number - in bytes
@@ -677,15 +677,19 @@ const File_Explorer = ({
                             <div>Name : </div>
                             <input type="text" value={name} onChange={(e) => setname(e.target.value)} />
                           </div>
-                          <div className="Input_div">
-                            <input type="file" onChange={(e) => setFile(e.target.files[0])} />
+                          <div className="Input_div file-input">
+                            <input type="file" id="file-input" hidden onChange={(e) => setFile(e.target.files[0])} />
+                            <label className="button" htmlFor="file-input">
+                              Choose File
+                            </label>
+                            <span id="file-chosen">{file ? file.name : 'No file chosen'}</span>
                           </div>
 
                           {/* <div className="Type">Type : {CreateWindow.data.type}</div> */}
                           <div className="Create">
-                            <button disabled={!file} className="button" onClick={handleCreateType3}>
+                            <div className="button" onClick={handleCreateType3}>
                               Create
-                            </button>
+                            </div>
                           </div>
                         </div>
                       )}

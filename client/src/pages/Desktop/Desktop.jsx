@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
 import { clone } from 'ramda';
 import axios from 'axios';
-import uuid from "react-uuid";
+import uuid from 'react-uuid';
 import './Desktop.scss';
 //import bgvideo from "../../assets/videos/bgvideo.mp4"
 
@@ -28,16 +28,15 @@ const Desktop = (props) => {
   /*const [folderZindex,setfolderZindex]=useState(0);
   const [fileZindex,setfileZindex]=useState(0);*/
 
-  
-  const [maxValue,setMaxValue]=useState(1);
+  const [maxValue, setMaxValue] = useState(1);
 
   //Utility Variables
   var newdir; //type:String
   var obj;
   var opened_dirPaths = {}; //This is not an array but a dirPath!!!
   var newId;
-//  var fileMaxZindex=0;
- // var folderMaxZindex=0;
+  //  var fileMaxZindex=0;
+  // var folderMaxZindex=0;
   //=================
 
   //taskbar States============================================
@@ -46,29 +45,26 @@ const Desktop = (props) => {
   const [showmenu, setshowmenu] = useState(false);
   //taskbar states==============================
 
- /* useEffect(() => {
+  /* useEffect(() => {
     // if (!user) props.history.push('/login');
     const file = new Folder('Demo', Date.now(), Date.now(), {}, 'root#a', 'folder');
     console.log(file);
   }, []);*/
 
   //Functions
-  const handleOpen = (data) =>
-  {
+  const handleOpen = (data) => {
     opened_dirPaths = {};
-    if (data.type == 'folder') 
-    {
+    if (data.type == 'folder') {
       //this works
       opened_dirPaths = clone(openedfolders);
-      newId=uuid();
-      opened_dirPaths[newId]=data;
+      newId = uuid();
+      opened_dirPaths[newId] = data;
       setopenedfolders(opened_dirPaths);
-     
-    } else if (data.type == '.exe' || data.type == '.txt' || data.type == '.mp3' || data.type == '.mp4') {
+    } else if (data.type == 'exe' || data.type == 'txt' || data.type == 'mp3' || data.type == 'mp4') {
       opened_dirPaths = clone(openedfiles);
-     newId=uuid();
-     opened_dirPaths[newId]=data;
-     setopenedfiles(opened_dirPaths);
+      newId = uuid();
+      opened_dirPaths[newId] = data;
+      setopenedfiles(opened_dirPaths);
     }
   };
 
@@ -76,7 +72,7 @@ const Desktop = (props) => {
     setopenedfiles(dirObj);
   };
   const updatefolderarray = (dirObj) => {
-   // console.log('asdasd');
+    // console.log('asdasd');
     setopenedfolders(dirObj);
   };
 
@@ -90,48 +86,30 @@ const Desktop = (props) => {
     }
   };
 
-  const handleZindex=(id,div)=>
-  {
-    if(div=='folder_div')
-    {
-      opened_dirPaths=clone(openedfolders);
-      if(opened_dirPaths[id].zindex< maxValue)
-      {
-        opened_dirPaths[id].zindex=maxValue;
-        setMaxValue(maxValue+1);
+  const handleZindex = (id, div) => {
+    if (div == 'folder_div') {
+      opened_dirPaths = clone(openedfolders);
+      if (opened_dirPaths[id].zindex < maxValue) {
+        opened_dirPaths[id].zindex = maxValue;
+        setMaxValue(maxValue + 1);
         setopenedfolders(opened_dirPaths);
       }
-
-      
-    }
-      
-    else if(div=='file_div')
-    {
+    } else if (div == 'file_div') {
       // if(fileZindex<=folderZindex)
       // setfileZindex(folderZindex+1);
-      opened_dirPaths=clone(openedfiles);
-      if(opened_dirPaths[id].zindex< maxValue)
-      {
-        opened_dirPaths[id].zindex=maxValue;
-        setMaxValue(maxValue+1);
+      opened_dirPaths = clone(openedfiles);
+      if (opened_dirPaths[id].zindex < maxValue) {
+        opened_dirPaths[id].zindex = maxValue;
+        setMaxValue(maxValue + 1);
         setopenedfiles(opened_dirPaths);
       }
-
-
-   
-
-      
     }
-     
-
-    
-      
-  }
+  };
 
   //==========
 
   return (
-    <div className='Desktop'>
+    <div className="Desktop">
       <button onClick={logout}>Logout</button>
       {/* <div className="bg-video">
                  <video className="bg-video-content" autoPlay muted loop>
@@ -142,14 +120,14 @@ const Desktop = (props) => {
             </div> */}
 
       {dirPaths !== null && (
-        <div className='Desktop_Icons_div'>
+        <div className="Desktop_Icons_div">
           {Object.keys(dirPaths).map((dir) => {
             newdir = dir.toString().split('#');
             newdir.pop();
             newdir.join('#');
             if (newdir == 'root')
               return (
-                <div className='Icons' key={dirPaths[dir].path}>
+                <div className="Icons" key={dirPaths[dir].path}>
                   <img src={handleIcon(dirPaths[dir])} onClick={() => handleOpen(dirPaths[dir])} />
                   <div>{dirPaths[dir].name}</div>
                 </div>
@@ -159,25 +137,23 @@ const Desktop = (props) => {
       )}
 
       {openedfolders && (
-        <div className='Folders_Window_div' >
+        <div className="Folders_Window_div">
           {Object.keys(openedfolders).map((id) => {
             if (!openedfolders[id].closed)
               return (
-                <div  className='border'  style={{zIndex:openedfolders[id].zindex,"position":"relative"}} key={id}>
-                      <File_Explorer
-                      data={openedfolders[id]}
-                      initialfolderpath={openedfolders[id].path}
-                      folderarray={openedfolders}
-                      updatefolderarray={updatefolderarray}
-                      filearray={openedfiles}
-                      updatefilearray={updatefilearray}
-                      key={id}
-                      handleZindex={handleZindex}
-                      id={id}
-                     
-                />
+                <div className="border" style={{ zIndex: openedfolders[id].zindex, position: 'relative' }} key={id}>
+                  <File_Explorer
+                    data={openedfolders[id]}
+                    initialfolderpath={openedfolders[id].path}
+                    folderarray={openedfolders}
+                    updatefolderarray={updatefolderarray}
+                    filearray={openedfiles}
+                    updatefilearray={updatefilearray}
+                    key={id}
+                    handleZindex={handleZindex}
+                    id={id}
+                  />
                 </div>
-              
               );
           })}
 
@@ -195,12 +171,12 @@ const Desktop = (props) => {
       )}
 
       {openedfiles && (
-        <div className='Files_Window_div' >
+        <div className="Files_Window_div">
           {Object.keys(openedfiles).map((id) => {
             if (!openedfiles[id].closed)
               return (
-                <div  className='border'  style={{zIndex:openedfiles[id].zindex,"position":"relative"}} key={id}>
-                   <Particular_File
+                <div className="border" style={{ zIndex: openedfiles[id].zindex, position: 'relative' }} key={id}>
+                  <Particular_File
                     data={openedfiles[id]}
                     filearray={openedfiles}
                     updatefilearray={updatefilearray}
@@ -209,7 +185,6 @@ const Desktop = (props) => {
                     id={id}
                   />
                 </div>
-               
               );
           })}
         </div>
@@ -228,12 +203,12 @@ const Desktop = (props) => {
            )} */}
 
       {showcolorpalatte && (
-        <div className='Color_Palatte' style={{ backgroundColor: theme,zIndex:maxValue }}>
-          <div className='Color_Palatte__First-div'>Choose a Theme</div>
-          <div className='Color_Palatte__Second-div'>
-            <div className='Pink' onClick={() => ChangeTheme('#F5CFCF')}></div>
-            <div className='Purple' onClick={() => ChangeTheme('#D7BDE2 ')}></div>
-            <div className='Teal' onClick={() => ChangeTheme('#40e0d0')}></div>
+        <div className="Color_Palatte" style={{ backgroundColor: theme, zIndex: maxValue }}>
+          <div className="Color_Palatte__First-div">Choose a Theme</div>
+          <div className="Color_Palatte__Second-div">
+            <div className="Pink" onClick={() => ChangeTheme('#F5CFCF')}></div>
+            <div className="Purple" onClick={() => ChangeTheme('#D7BDE2 ')}></div>
+            <div className="Teal" onClick={() => ChangeTheme('#40e0d0')}></div>
           </div>
         </div>
       )}

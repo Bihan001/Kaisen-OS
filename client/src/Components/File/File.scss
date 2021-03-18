@@ -1,63 +1,54 @@
-.File 
-{
-    position:absolute;
-   // border:2px solid black;
-    height: fit-content;
-   top:5%;
-   left:20%;
-   box-shadow: 0 17px 60px 4px rgba(0, 0, 0, 0.56);  
-   
-    .Topbar 
-    {
-        //border:2px solid green;
-       // padding:1rem;
-        cursor:grab;
-        height:5rem;
-        display:flex;
-        flex-direction:row;
-        justify-content: space-between;
-        border-radius:4px 4px 0 0;
-        padding-right:1rem;
-        outline:none;
-        &__Zindex_handler
-        {
-           // border:2px solid green;
-            width:100%;
-        }
-        .Window_Buttons 
-        {
-            display:flex;
-            flex-direction:row;
-            //border:2px solid black;
-            cursor:pointer;
-            div 
-            {
-                margin:.5rem;
-                width:2rem;
-                height:2rem;
-                border-radius:50%;
-                margin-top:1.6rem;
-                 
-            }
-            .Red 
-            {
-                background-color: #EB5B26 ;
-            }
-            .Yellow 
-            {
-                background-color: #E5C62A ;
-            }
-            .Green 
-            {
-                background-color: #27AE60 ;
-            }
-        }
-      
-        
+.File {
+  position: absolute;
+  // border:2px solid black;
+  height: fit-content;
+  top: 5%;
+  left: 20%;
+  box-shadow: 0 17px 60px 4px rgba(0, 0, 0, 0.56);
+  //transform: translate3d(0, 0, 0) !important;
+  .Topbar {
+    //border:2px solid green;
+    // padding:1rem;
+    cursor: grab;
+    height: 5rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    border-radius: 4px 4px 0 0;
+    padding-right: 1rem;
+    outline: none;
+    &__Zindex_handler {
+      // border:2px solid green;
+      width: 100%;
     }
-    .File_Config_Window 
-    {
-      //  border:2px solid orange;
-        height:90%;
+    .Window_Buttons {
+      display: flex;
+      flex-direction: row;
+      //border:2px solid black;
+      cursor: pointer;
+      div {
+        margin: 0.5rem;
+        width: 2rem;
+        height: 2rem;
+        border-radius: 50%;
+        margin-top: 1.6rem;
+      }
+      .Red {
+        background-color: #eb5b26;
+      }
+      .Yellow {
+        background-color: #e5c62a;
+      }
+      .Green {
+        background-color: #27ae60;
+      }
     }
+  }
+  //   .File_Config_Window {
+  //     //  border:2px solid orange;
+  //     height: 90%;
+  //   }
+}
+.reset-position {
+  translate: transform3d(0, 0, 0) !important;
 }

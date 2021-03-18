@@ -4,6 +4,7 @@ import CustomError from '../errors/custom-error';
 import catchAsync from '../utils/catch-async';
 import { SuccessResponse, ErrorResponse } from '../utils/response-handler';
 import Folder from '../models/folder';
+import File from '../models/file';
 
 interface FolderInterface extends Document {
   children?: Array<string>;
@@ -17,19 +18,35 @@ export const getRootSubFolders = catchAsync(async (req: Request, res: Response) 
   const rootFolder: FolderInterface | null = await Folder.findById('root');
   if (!rootFolder) throw new CustomError('Root folder missing', 500);
   const childrenNames: Array<string> = rootFolder.children || [];
-  const childrenPaths: Array<string> = childrenNames.map((name) => `root#${name}`);
-  const folderResultList = await Folder.find({ _id: { $in: childrenPaths } }).populate('editableBy');
+  var folderChildrenPaths: Array<string> = [];
+  var fileChildrenPaths: Array<string> = [];
+  childrenNames.map((name) => {
+    if (name.includes('.')) fileChildrenPaths.push(`root#${name}`);
+    else folderChildrenPaths.push(`root#${name}`);
+  });
+  //const childrenPaths: Array<string> = childrenNames.map((name) => `root#${name}`);
+  var folderResultList = await Folder.find({ _id: { $in: folderChildrenPaths } }).populate('editableBy');
   folderResultList.push(rootFolder);
-  return res.status(200).json(SuccessResponse(folderResultList));
+  var fileResultList = (await File.find({ _id: { $in: fileChildrenPaths } }).populate('editableBy')) || [];
+  return res.status(200).json(SuccessResponse([...folderResultList, ...fileResultList]));
 });
 
 export const getFolderAndParentsByPath = catchAsync(async (req: Request, res: Response) => {
   const folderPaths: string[] = req.body.folderPaths;
+  var files: Array<string> = [],
+    folders: Array<string> = [];
   if (!folderPaths) throw new CustomError('folder paths array required', 400);
+  folderPaths.map((path) => {
+    if (path.includes('.')) files.push(path);
+    else folders.push(path);
+  });
   const folderResultList = await Folder.find({
-    _id: { $in: folderPaths },
+    _id: { $in: folders },
   }).populate('editableBy');
-  return res.status(200).json(SuccessResponse(folderResultList));
+  const fileResultList = await File.find({
+    _id: { $in: files },
+  }).populate('editableBy');
+  return res.status(200).json(SuccessResponse([...folderResultList, ...fileResultList]));
 });
 
 export const createRootFolder = catchAsync(async (req: Request, res: Response) => {

@@ -425,22 +425,68 @@ const File_Explorer = ({
     //Only for webapp!!
     if (handleAuthorized()) {
       console.log('Webapp name:', name, 'webapp  url:', content);
+      var isPresent = false;
+      for (var i in FolderContents) {
+        if (FolderContents[i].name === 'name') {
+          isPresent = true;
+          break;
+        }
+      }
+      if (!isPresent && !name.includes('.')) {
+        axios({
+          method: 'POST',
+          data: {
+            parentPath: Folder.path,
+            fileName: name,
+            fileType: 'webapp',
+            fileSize: 1,
+            fileContent: content,
+            fileCreator: user.id,
+          },
+          url: `${backendUrl}/api/files/createFile`,
+        })
+          .then((res) => {
+            console.log('Now  data is : ', res);
+            obj = clone(dirPaths);
+            var newFile = res.data.data.newFile;
+            obj[Folder.path].children = [...obj[Folder.path].children, newFile.name + '.' + newFile.type];
+            var newFile_ClassObj;
+            newFile_ClassObj = new ClassFile(
+              newFile.name,
+              newFile.dateCreated,
+              newFile.dateModified,
+              newFile.editableBy,
+              newFile.path,
+              newFile.type,
+              newFile.content
+            );
+            obj[newFile_ClassObj.path] = newFile_ClassObj;
+            UpdatedirPaths(obj);
+          })
+          .catch((err) => console.log(err));
+      }
+    } else {
+      console.log('Not Authorized!');
     }
   };
   const handleCreateType3 = () => {
     //Meant for other Files like pdf.png,mp3,mp4 etc..
-    if (file && name) {
-      const fileType = file.type; // application/pdf, text/html, video/mp4, image/jpeg etc.
-      if (!checkFileType(fileType)) return alert('File type not supported');
-      const fileSize = file.size; // number - in bytes
-      if (fileSize > 15 * 1024 * 1024) return alert('File size shouldnt exceed 15mb');
-      console.log(name, fileType, fileSize);
-      const metadata = { contentType: fileType };
-      setUploadDetails({
-        ...uploadDetails,
-        uploadState: 'uploading',
-        uploadTask: storageRef.child('kaisen-files/' + file.name).put(file, metadata),
-      });
+    if (handleAuthorized()) {
+      if (file && name) {
+        const fileType = file.type; // application/pdf, text/html, video/mp4, image/jpeg etc.
+        if (!checkFileType(fileType)) return alert('File type not supported');
+        const fileSize = file.size; // number - in bytes
+        if (fileSize > 15 * 1024 * 1024) return alert('File size shouldnt exceed 15mb');
+        console.log(name, fileType, fileSize);
+        const metadata = { contentType: fileType };
+        setUploadDetails({
+          ...uploadDetails,
+          uploadState: 'uploading',
+          uploadTask: storageRef.child('kaisen-files/' + Date.now() + file.name).put(file, metadata),
+        });
+      }
+    } else {
+      console.log('Not Authorized');
     }
   };
 
@@ -636,7 +682,7 @@ const File_Explorer = ({
 
                   {CreateWindow.shown && !showDeleteIcon && (
                     <>
-                      {(CreateWindow.data.type == 'folder' || CreateWindow.data.type == '.txt') && (
+                      {(CreateWindow.data.type == 'folder' || CreateWindow.data.type == 'txt') && (
                         <div className="CreateWindow type-uni" style={{ backgroundColor: theme }}>
                           <div className="Input_div">
                             <div>Name : </div>
@@ -651,7 +697,7 @@ const File_Explorer = ({
                         </div>
                       )}
 
-                      {CreateWindow.data.type == '.webapp' && (
+                      {CreateWindow.data.type == 'webapp' && (
                         <div className="CreateWindow type-uni" style={{ backgroundColor: theme }}>
                           <div className="Input_div">
                             <div>Name : </div>

@@ -119,6 +119,7 @@ const Particular_File = ({ data, updatefilearray, filearray, handleZindex, id })
                       position: 'fixed',
                       top: getTop(),
                       left: getLeft(),
+                      boxShadow: '0 0 0 black',
                     }
               }
               drag={!fullScreen ? draggable : false}

@@ -61,6 +61,8 @@ const File_Explorer = ({
   });
   const [storageRef] = useState(firebase.storage().ref());
 
+  const [fullScreen, setfullScreen] = useState(false);
+
   //New File and Folder States====
   const [name, setname] = useState('');
   const [content, setcontent] = useState('');
@@ -592,6 +594,37 @@ const File_Explorer = ({
 
     //==================================
   };
+
+  const getTop = () => {
+    htmlElement = document.getElementById(id + 'File_Explorer');
+
+    if (htmlElement) {
+      try {
+        if (htmlElement.style.transform !== undefined) {
+          var top = htmlElement.style.transform.split(',')[1].split('px')[0];
+          return -1 * top + 'px';
+        }
+      } catch {
+        return '0px';
+      }
+    }
+  };
+  const getLeft = () => {
+    htmlElement = document.getElementById(id + 'File_Explorer');
+
+    if (htmlElement) {
+      try {
+        if (htmlElement.style.transform !== undefined) {
+          var left = htmlElement.style.transform.split(',')[0].split('(')[1].split('px')[0];
+
+          return -1 * left + 'px';
+        }
+      } catch {
+        return '0px';
+      }
+    }
+  };
+
   //=========
 
   return (
@@ -601,9 +634,21 @@ const File_Explorer = ({
           {!Folder.minimized && (
             <motion.div
               className="File_Explorer"
-              style={{ width: 'fit-content', height: 'fit-content' }}
-              drag={draggable}
-              dragConstraints={{ left: -160, right: 160, top: -30, bottom: 50 }}
+              id={id + 'File_Explorer'}
+              style={
+                !fullScreen
+                  ? { width: 'fit-content', height: 'fit-content' }
+                  : {
+                      width: 'fit-content',
+                      height: 'fit-content',
+                      position: 'fixed',
+                      top: getTop(),
+                      left: getLeft(),
+                      boxShadow: '0 0 0 black',
+                    }
+              }
+              drag={!fullScreen ? draggable : false}
+              dragConstraints={!fullScreen ? { left: -160, right: 160, top: -30, bottom: 50 } : {}}
               dragElastic={0.1}>
               <div
                 className="Topbar"
@@ -614,13 +659,18 @@ const File_Explorer = ({
                 <div className="Topbar__Zindex_handler" onClick={FolderhandleZindex}></div>
                 <div className="Window_Buttons">
                   <div className="Green" onClick={handleminizestatus}></div>
-                  <div className="Yellow"> </div>
+                  <div className="Yellow" onClick={() => setfullScreen(!fullScreen)}>
+                    {' '}
+                  </div>
                   <div className="Red" onClick={handlecloseapp}></div>
                 </div>
               </div>
 
               {Folder && (
-                <div className="File_Explorer_Config_Window " onClick={FolderhandleZindex}>
+                <div
+                  className="File_Explorer_Config_Window "
+                  onClick={FolderhandleZindex}
+                  style={fullScreen ? { width: '100vw', height: '90vh' } : {}}>
                   <div className="Path">
                     <div onClick={handleback} className="back">
                       <img src={back} />

@@ -49,6 +49,17 @@ $default-box-shadow: 0 17px 60px 4px rgba(0, 0, 0, 0.56);
       }
     }
   }
+  .Progress_Bar {
+    // border: 2px solid black;
+    position: absolute;
+    width: 100%;
+
+    .Progress {
+      background-color: #27ae60;
+      height: 0.6rem;
+      width: 0;
+    }
+  }
   &_Config_Window {
     // border: 2px solid orange;
     //padding:3rem;

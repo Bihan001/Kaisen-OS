@@ -10,6 +10,10 @@ export const handleIcon = (data) => {
       return 'https://res.cloudinary.com/drolmjcot/image/upload/q_auto:good/v1614060786/ba31ac1ab88b5c17cc84283621a6e702_m4cirp.png';
     if (data.type == 'webapp')
       return 'https://res.cloudinary.com/drolmjcot/image/upload/v1615476171/web-app-icon-7_pkp4ya.png';
+    if (data.type == 'pdf') return 'https://res.cloudinary.com/drolmjcot/image/upload/v1616140963/pdf_e7pqp9.png';
+    if (data.type == 'html') return 'https://res.cloudinary.com/drolmjcot/image/upload/v1616164191/html_w3xgjp.png';
+    if (data.type == 'png' || data.type == 'jpeg' || data.type == 'jpg')
+      return 'https://res.cloudinary.com/drolmjcot/image/upload/v1616164422/image_puwasn.png';
   }
 };
 

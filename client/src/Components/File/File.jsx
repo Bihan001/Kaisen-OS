@@ -7,6 +7,9 @@ import './File.scss';
 
 import ReactTerminal from '../Terminal/Terminal';
 import WebApp from '../WebApp/WebApp';
+import Pdf_Viewer from '../Pdf_Viewer/Pdf_Viewer';
+import Html_Viewer from '../Html_Viewer/Html_Viewer';
+import Image_Viewer from '../Image_Viewer/Image_Viewer';
 
 const Particular_File = ({ data, updatefilearray, filearray, handleZindex, id }) => {
   const { theme } = useContext(ThemeContext);
@@ -54,6 +57,10 @@ const Particular_File = ({ data, updatefilearray, filearray, handleZindex, id })
   const configureComponent = (data) => {
     if (data.name == 'terminal') setComponent(<ReactTerminal fullScreen={fullScreen} />);
     if (data.type == 'webapp') setComponent(<WebApp content={data.content} fullScreen={fullScreen} />);
+    if (data.type == 'pdf') setComponent(<Pdf_Viewer content={data.content} fullScreen={fullScreen} />);
+    if (data.type == 'html') setComponent(<Html_Viewer content={data.content} fullScreen={fullScreen} />);
+    if (data.type == 'png' || data.type == 'jpeg' || data.type == 'jpg')
+      setComponent(<Image_Viewer content={data.content} fullScreen={fullScreen} />);
   };
 
   const handleminizestatus = () =>

@@ -46,7 +46,7 @@ const File_Explorer = ({
   var newFolderState;
   var handleRequest;
   var child;
-  var fileChecker = /txt|png|jpg|mpeg|mp3|mp4|pdf|csv/;
+  var fileChecker = /txt|png|jpg|mpeg|mp3|mp4|pdf|csv|html|jpeg/;
   //===================
 
   //States====================
@@ -125,6 +125,7 @@ const File_Explorer = ({
 
   useEffect(() => {
     if (uploadDetails.uploadTask != null) {
+      htmlElement = document.getElementById(id + 'Progress');
       uploadDetails.uploadTask.on(
         'state_changed',
         (snap) => {
@@ -133,6 +134,9 @@ const File_Explorer = ({
             ...uploadDetails,
             uploadPercentage: Math.round((snap.bytesTransferred / snap.totalBytes) * 100),
           });
+          if (htmlElement) {
+            htmlElement.style.width = Math.round((snap.bytesTransferred / snap.totalBytes) * 100) + '%';
+          }
         },
         (err) => console.log(err),
         () => {
@@ -144,6 +148,14 @@ const File_Explorer = ({
     }
   }, [uploadDetails.uploadTask]);
 
+  useEffect(() => {
+    if (uploadDetails.uploadPercentage == 100) {
+      htmlElement = document.getElementById(id + 'Progress');
+      if (htmlElement) {
+        htmlElement.style.width = 0;
+      }
+    }
+  }, [uploadDetails.uploadPercentage]);
   //==================
 
   //Functions
@@ -151,12 +163,12 @@ const File_Explorer = ({
     if (FolderContents.length > 0) {
       // htmlelements=[]
       FolderContents.map((content) => {
-        obj = document.getElementById(id + content.name);
+        obj = document.getElementById(id + content.path);
         if (obj) {
           if (e.target.checked) obj.checked = true;
           else obj.checked = false;
 
-          document.getElementById(id + content.name).innerHTML = obj;
+          document.getElementById(id + content.path).innerHTML = obj;
         }
       });
     }
@@ -429,7 +441,7 @@ const File_Explorer = ({
       console.log('Webapp name:', name, 'webapp  url:', content);
       var isPresent = false;
       for (var i in FolderContents) {
-        if (FolderContents[i].name === 'name') {
+        if (FolderContents[i].name === name) {
           isPresent = true;
           break;
         }
@@ -475,17 +487,28 @@ const File_Explorer = ({
     //Meant for other Files like pdf.png,mp3,mp4 etc..
     if (handleAuthorized()) {
       if (file && name) {
-        const fileType = file.type; // application/pdf, text/html, video/mp4, image/jpeg etc.
-        if (!checkFileType(fileType)) return alert('File type not supported');
-        const fileSize = file.size; // number - in bytes
-        if (fileSize > 15 * 1024 * 1024) return alert('File size shouldnt exceed 15mb');
-        console.log(name, fileType, fileSize);
-        const metadata = { contentType: fileType };
-        setUploadDetails({
-          ...uploadDetails,
-          uploadState: 'uploading',
-          uploadTask: storageRef.child('kaisen-files/' + Date.now() + file.name).put(file, metadata),
-        });
+        var isPresent = false;
+        for (var i in FolderContents) {
+          if (FolderContents[i].name + '.' + FolderContents[i].type === name + '.' + file.type.split('/')[1]) {
+            isPresent = true;
+            break;
+          }
+        }
+        if (!isPresent) {
+          const fileType = file.type; // application/pdf, text/html, video/mp4, image/jpeg etc.
+          if (!checkFileType(fileType)) return alert('File type not supported');
+          const fileSize = file.size; // number - in bytes
+          if (fileSize > 15 * 1024 * 1024) return alert('File size shouldnt exceed 15mb');
+          console.log(name, fileType, fileSize);
+          const metadata = { contentType: fileType };
+          setUploadDetails({
+            ...uploadDetails,
+            uploadState: 'uploading',
+            uploadTask: storageRef.child('kaisen-files/' + Date.now() + file.name).put(file, metadata),
+          });
+        } else {
+          console.log('Already Present');
+        }
       }
     } else {
       console.log('Not Authorized');
@@ -495,12 +518,43 @@ const File_Explorer = ({
   const handleAddFileType3 = (url) => {
     // upload to nodejs
     console.log(name, file.type, file.size, url);
+    axios({
+      method: 'POST',
+      data: {
+        parentPath: Folder.path,
+        fileName: name,
+        fileType: file.type.split('/')[1],
+        fileSize: file.size,
+        fileContent: url,
+        fileCreator: user.id,
+      },
+      url: `${backendUrl}/api/files/createFile`,
+    })
+      .then((res) => {
+        console.log(res);
+        obj = clone(dirPaths);
+        var newFile = res.data.data.newFile;
+        obj[Folder.path].children = [...obj[Folder.path].children, newFile.name + '.' + newFile.type];
+        var newFile_ClassObj;
+        newFile_ClassObj = new ClassFile(
+          newFile.name,
+          newFile.dateCreated,
+          newFile.dateModified,
+          newFile.editableBy,
+          newFile.path,
+          newFile.type,
+          newFile.content
+        );
+        obj[newFile_ClassObj.path] = newFile_ClassObj;
+        UpdatedirPaths(obj);
+      })
+      .catch((err) => console.log(err));
   };
 
   const toggleDeleteIcon = () => {
     var flag = false;
     for (var i in FolderContents) {
-      htmlelements = document.getElementById(id + FolderContents[i].name);
+      htmlelements = document.getElementById(id + FolderContents[i].path);
       if (htmlelements) {
         if (htmlelements.checked) {
           flag = true;
@@ -549,16 +603,19 @@ const File_Explorer = ({
     var names = [];
     array = [];
     FolderContents.map((content) => {
-      htmlElement = document.getElementById(id + content.name);
+      htmlElement = document.getElementById(id + content.path);
       if (htmlElement) {
         if (htmlElement.checked) {
-          paths.push(content.path);
           array.push(content);
+          paths.push(content.path);
           if (content.type !== 'folder') {
-            names.push(content.name + '#' + content.type);
-          } else names.push(content.name);
+            names.push(content.name + '.' + content.type);
+          } else {
+            names.push(content.name);
+          }
         } else {
-          latestChildrenArray.push(content.name);
+          if (content.type == 'folder') latestChildrenArray.push(content.name);
+          else latestChildrenArray.push(content.name + '.' + content.type);
         }
       }
     });
@@ -583,6 +640,7 @@ const File_Explorer = ({
 
             await recursiveDelete(path, type, object);
           });
+          console.log('The latest children array should be : ', latestChildrenArray);
           object[Folder.path].children = latestChildrenArray;
           console.log('new obj is : ', object);
           UpdatedirPaths(object);
@@ -665,7 +723,9 @@ const File_Explorer = ({
                   <div className="Red" onClick={handlecloseapp}></div>
                 </div>
               </div>
-
+              <div className="Progress_Bar">
+                <div className="Progress" id={id + 'Progress'}></div>
+              </div>
               {Folder && (
                 <div
                   className="File_Explorer_Config_Window "
@@ -705,15 +765,15 @@ const File_Explorer = ({
                         <div
                           className={index % 2 == 0 ? 'Row Content grey' : 'Row Content white'}
                           onDoubleClick={() => handlecontentclicked(content)}
-                          key={id + content.name}>
+                          key={id + content.path}>
                           <div className="form-group">
                             <input
                               type="checkbox"
-                              id={id + content.name}
+                              id={id + content.path}
                               value={content.path}
                               onClick={() => toggleDeleteIcon()}
                             />
-                            <label htmlFor={id + content.name}>
+                            <label htmlFor={id + content.path}>
                               <div>
                                 <img src={handleIcon(content)} />
                                 <div>{content.name}</div>

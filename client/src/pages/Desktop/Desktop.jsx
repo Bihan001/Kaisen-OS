@@ -219,6 +219,7 @@ const Desktop = (props) => {
         updatefilearray={updatefilearray}
         folderarray={openedfolders}
         updatefolderarray={updatefolderarray}
+        zIndex={maxValue}
       />
     </div>
   );

@@ -148,14 +148,6 @@ const File_Explorer = ({
     }
   }, [uploadDetails.uploadTask]);
 
-  useEffect(() => {
-    if (uploadDetails.uploadPercentage == 100) {
-      htmlElement = document.getElementById(id + 'Progress');
-      if (htmlElement) {
-        htmlElement.style.width = 0;
-      }
-    }
-  }, [uploadDetails.uploadPercentage]);
   //==================
 
   //Functions
@@ -547,6 +539,8 @@ const File_Explorer = ({
         );
         obj[newFile_ClassObj.path] = newFile_ClassObj;
         UpdatedirPaths(obj);
+        htmlElement = document.getElementById(id + 'Progress');
+        htmlElement.style.width = '0%';
       })
       .catch((err) => console.log(err));
   };

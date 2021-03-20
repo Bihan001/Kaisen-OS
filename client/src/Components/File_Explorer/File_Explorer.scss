@@ -13,7 +13,7 @@ $default-box-shadow: 0 17px 60px 4px rgba(0, 0, 0, 0.56);
     //border:2px solid green;
     // padding:1rem;
     cursor: grab;
-    height: 5rem;
+    height: 4rem;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -29,14 +29,15 @@ $default-box-shadow: 0 17px 60px 4px rgba(0, 0, 0, 0.56);
     .Window_Buttons {
       display: flex;
       flex-direction: row;
-      //border:2px solid black;
+      // border: 2px solid black;
+      align-items: center;
       cursor: pointer;
       div {
         margin: 0.5rem;
-        width: 2rem;
-        height: 2rem;
+        width: 1.65rem;
+        height: 1.65rem;
         border-radius: 50%;
-        margin-top: 1.6rem;
+        // margin-top: 1.6rem;
       }
       .Red {
         background-color: #eb5b26;

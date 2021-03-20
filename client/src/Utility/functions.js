@@ -5,6 +5,8 @@ export const handleIcon = (data) => {
   else {
     if (data.name == 'terminal' && data.type == 'exe')
       return 'https://res.cloudinary.com/drolmjcot/image/upload/q_auto:good/v1614061685/terminal-icon_ac2sdv.png';
+    if (data.name == 'MagicBall' && data.type == 'webapp')
+      return 'https://res.cloudinary.com/drolmjcot/image/upload/v1616249934/magicball_coq09r.png';
 
     if (data.type == 'txt')
       return 'https://res.cloudinary.com/drolmjcot/image/upload/q_auto:good/v1614060786/ba31ac1ab88b5c17cc84283621a6e702_m4cirp.png';
@@ -14,11 +16,22 @@ export const handleIcon = (data) => {
     if (data.type == 'html') return 'https://res.cloudinary.com/drolmjcot/image/upload/v1616164191/html_w3xgjp.png';
     if (data.type == 'png' || data.type == 'jpeg' || data.type == 'jpg')
       return 'https://res.cloudinary.com/drolmjcot/image/upload/v1616164422/image_puwasn.png';
+    if (data.type == 'mp4') return 'https://res.cloudinary.com/drolmjcot/image/upload/v1616247561/audio_rjkner.png';
+    if (data.type == 'mp3' || data.type == 'mpeg')
+      return 'https://res.cloudinary.com/drolmjcot/image/upload/v1616248616/audio-file_b61wad.png';
   }
 };
 
 export const checkFileType = (fileType) => {
-  const supportedTypes = ['application/pdf', 'text/html', 'video/mp4', 'image/jpeg', 'image/png'];
+  const supportedTypes = [
+    'application/pdf',
+    'text/html',
+    'video/mp4',
+    'image/jpeg',
+    'image/png',
+    'audio/mp3',
+    'audio/mpeg',
+  ];
   return supportedTypes.includes(fileType);
 };
 

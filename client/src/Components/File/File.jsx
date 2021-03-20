@@ -10,6 +10,8 @@ import WebApp from '../WebApp/WebApp';
 import Pdf_Viewer from '../Pdf_Viewer/Pdf_Viewer';
 import Html_Viewer from '../Html_Viewer/Html_Viewer';
 import Image_Viewer from '../Image_Viewer/Image_Viewer';
+import Video_Player from '../Video_Player/Video_Player';
+import Audio_Player from '../Audio_Player/Audio_Player';
 
 const Particular_File = ({ data, updatefilearray, filearray, handleZindex, id }) => {
   const { theme } = useContext(ThemeContext);
@@ -61,6 +63,9 @@ const Particular_File = ({ data, updatefilearray, filearray, handleZindex, id })
     if (data.type == 'html') setComponent(<Html_Viewer content={data.content} fullScreen={fullScreen} />);
     if (data.type == 'png' || data.type == 'jpeg' || data.type == 'jpg')
       setComponent(<Image_Viewer content={data.content} fullScreen={fullScreen} />);
+    if (data.type == 'mp4') setComponent(<Video_Player content={data.content} fullScreen={fullScreen} />);
+    if (data.type == 'mp3' || data.type == 'mpeg')
+      setComponent(<Audio_Player content={data.content} fullScreen={fullScreen} />);
   };
 
   const handleminizestatus = () =>

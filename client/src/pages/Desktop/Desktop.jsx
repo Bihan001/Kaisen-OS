@@ -60,7 +60,15 @@ const Desktop = (props) => {
       newId = uuid();
       opened_dirPaths[newId] = data;
       setopenedfolders(opened_dirPaths);
-    } else if (data.type == 'exe' || data.type == 'txt' || data.type == 'mp3' || data.type == 'mp4') {
+    } else if (
+      data.type == 'exe' ||
+      data.type == 'txt' ||
+      data.type == 'mp3' ||
+      data.type == 'mp4' ||
+      data.type == 'webapp' ||
+      data.type == 'pdf' ||
+      data.type == 'mpeg'
+    ) {
       opened_dirPaths = clone(openedfiles);
       newId = uuid();
       opened_dirPaths[newId] = data;

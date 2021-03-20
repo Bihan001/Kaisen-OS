@@ -486,6 +486,7 @@ const File_Explorer = ({
             break;
           }
         }
+        console.log('the file is :', file);
         if (!isPresent) {
           const fileType = file.type; // application/pdf, text/html, video/mp4, image/jpeg etc.
           if (!checkFileType(fileType)) return alert('File type not supported');

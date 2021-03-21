@@ -217,6 +217,7 @@ const Desktop = (props) => {
             <div className="Pink" onClick={() => ChangeTheme('#F5CFCF')}></div>
             <div className="Purple" onClick={() => ChangeTheme('#D7BDE2 ')}></div>
             <div className="Teal" onClick={() => ChangeTheme('#40e0d0')}></div>
+            <div className="Grey" onClick={() => ChangeTheme('#ABB2B9 ')}></div>
           </div>
         </div>
       )}

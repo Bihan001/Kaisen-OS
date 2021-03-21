@@ -1,16 +1,13 @@
-
-
-.Desktop 
-{
-    width:100vw;
-    height:100vh;
+.Desktop {
+  width: 100vw;
+  height: 100vh;
   // border:2px solid red;
-    position:relative;
-    background:url(https://res.cloudinary.com/drolmjcot/image/upload/q_auto:good/v1613837593/wallpaper_goadao.jpg);
-    background-position: center;
-    background-size: cover;
+  position: relative;
+  background: url(https://res.cloudinary.com/drolmjcot/image/upload/q_auto:good/v1613837593/wallpaper_goadao.jpg);
+  background-position: center;
+  background-size: cover;
 
-    /*.bg-video
+  /*.bg-video
     {
         position:absolute;
         top:0;
@@ -31,92 +28,89 @@
 
     }*/
 
-    &_Icons_div 
-    {
-       //border:2px solid red;
-        width:50rem;
-        display:flex;
-        flex-wrap: wrap;
-        position: absolute;
-        margin-top: 1.7rem;
-        .Icons 
-        {
-            //border:2px solid green;
-            width: fit-content;
-            margin:1rem;
-            text-align: center;
-            font-size:2rem;
-            color:white;
-            padding:1rem;
-            img 
-            {
-                width:6rem;
-                height:6rem;
-            }
-            transition: all .3s ease;
-            cursor:pointer;
-            &:hover{
-                background-color: rgba(165, 203, 247 , 0.3);
-            }
-            &:active{
-                
-                background-color: rgba(165, 203, 247 , 0.5);
-            }
-        }
+  &_Icons_div {
+    //border:2px solid red;
+    width: 50rem;
+    display: flex;
+    flex-wrap: wrap;
+    position: absolute;
+    margin-top: 1.7rem;
+    .Icons {
+      //border:2px solid green;
+      width: fit-content;
+      margin: 1rem;
+      text-align: center;
+      font-size: 2rem;
+      color: white;
+      padding: 1rem;
+      img {
+        width: 6rem;
+        height: 6rem;
+      }
+      transition: all 0.3s ease;
+      cursor: pointer;
+      &:hover {
+        background-color: rgba(165, 203, 247, 0.3);
+      }
+      &:active {
+        background-color: rgba(165, 203, 247, 0.5);
+      }
     }
+  }
 
-    .Folders_Window_div 
-    {
-
-    }
-    .Files_Window_div 
-    {
-       // border:2px solid blue;
-
-    }
+  .Folders_Window_div {
+  }
+  .Files_Window_div {
+    // border:2px solid blue;
+  }
 }
 
+.Color_Palatte {
+  //border:2px solid black;
+  width: 19.6rem;
+  height: fit-content;
+  position: absolute;
+  bottom: 7rem;
+  right: 5rem;
+  border-radius: 2px;
+  border-left: 9px solid rgba(41, 45, 48, 0.2);
+  border-right: 9px solid rgba(41, 45, 48, 0.2);
+  text-align: center;
+  color: #615c64;
+  font-size: 2rem;
+  font-weight: bolder;
+  box-shadow: 0 22px 70px 4px rgba(0, 0, 0, 0.56);
 
-    
-     .Color_Palatte 
-     {
-         //border:2px solid black;
-        width:19.6rem;height:9rem;
-        position:absolute;
-      bottom:7rem;
-        right:5rem;
-        border-radius:4px;
-        text-align:center;
-       color:#615C64;
-       font-size:2rem;
-       font-weight:bolder;
-       box-shadow: 0 22px 70px 4px rgba(0, 0, 0, 0.56);  
+  &__First-div {
+    // border: 2px solid red;
+    margin-bottom: 1rem;
+  }
+  &__Second-div {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    //border: 2px solid red;
+    margin: 0.5rem 0 0.5rem 0;
+    div {
+      width: 1.5rem;
+      height: 1.5rem;
+      border-radius: 50%;
+      margin: 1rem;
+      border: 3px solid black;
+      cursor: pointer;
+    }
 
-        &__Second-div
-        {
-            display:flex;
-            justify-content: space-around;
-            div{
-                width:1.5rem;
-            height:1.5rem;
-            border-radius:50%;
-            margin:1rem;
-            border:3px solid black;
-            }   
-            
-            .Pink 
-            {
-                background-color:#F5CFCF;
-            }
-            .Purple 
-            {
-                background-color:#D7BDE2 ;
-            }
-            .Teal
-            {
-                background-color:#40e0d0;
-            }
-        }
-        
-     }
- 
+    .Pink {
+      background-color: #f5cfcf;
+    }
+    .Purple {
+      background-color: #d7bde2;
+    }
+    .Teal {
+      background-color: #40e0d0;
+    }
+    .Grey {
+      background-color: #abb2b9;
+    }
+  }
+}

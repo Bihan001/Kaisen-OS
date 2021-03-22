@@ -46,7 +46,7 @@ const File_Explorer = ({
   var newFolderState;
   var handleRequest;
   var child;
-  var fileChecker = /txt|png|jpg|mpeg|mp3|mp4|pdf|csv|html|jpeg/;
+  var fileChecker = /txt|png|jpg|mpeg|mp3|mp4|pdf|csv|html|jpeg|webapp/;
   //===================
 
   //States====================

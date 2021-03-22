@@ -102,26 +102,30 @@ const Particular_File = ({ data, updatefilearray, filearray, handleZindex, id })
     html = document.getElementById(id + 'File');
 
     if (html) {
-      if (html.style.transform) {
-        var top = html.style.transform.split(',')[1].split('px')[0];
-        return -1 * top + 'px';
+      try {
+        if (html.style.transform !== undefined) {
+          var top = html.style.transform.split(',')[1].split('px')[0];
+          return -1 * top + 'px';
+        }
+      } catch {
+        return '0px';
       }
-      return '0px';
     }
-    return '0px';
   };
   const getLeft = () => {
     html = document.getElementById(id + 'File');
 
     if (html) {
-      if (html.style.transform) {
-        var left = html.style.transform.split(',')[0].split('(')[1].split('px')[0];
+      try {
+        if (html.style.transform !== undefined) {
+          var left = html.style.transform.split(',')[0].split('(')[1].split('px')[0];
 
-        return -1 * left + 'px';
+          return -1 * left + 'px';
+        }
+      } catch {
+        return '0px';
       }
-      return '0px';
     }
-    return '0px';
   };
   return (
     <>

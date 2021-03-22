@@ -9,3 +9,124 @@
     border: 0px solid white;
   }
 }
+
+#custom-seekbar {
+  margin: 10px auto;
+  cursor: pointer;
+  height: 10px;
+  outline: thin solid #02a2f9;
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+
+  & span {
+    background: linear-gradient(to right, #29f29d, #02a2f9);
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 10px;
+    width: 0px;
+  }
+}
+
+.video {
+  height: 101%;
+}
+
+.player .player_controls:hover {
+  opacity: 1 !important;
+}
+
+.player:hover #custom-seekbar {
+  visibility: visible;
+}
+
+.player_volume_slider {
+  width: 100px !important;
+  background: linear-gradient(to right, #29f29d, #02a2f9) !important;
+  height: 5px;
+  border-radius: 3px;
+}
+
+.play_button {
+  border: none;
+  outline: none !important;
+  background: none;
+  color: white;
+  transform: scale(1);
+  &:active {
+    transform: scale(0.9);
+    border: none;
+    outline: none;
+  }
+}
+
+.player_controls {
+  display: flex;
+  flex-direction: column;
+  background-color: rgba(46, 83, 90, 0.274);
+  height: 70px;
+  position: relative;
+  bottom: 75px;
+  opacity: 0;
+  padding: 0 10px;
+  transition: all 0.3s ease;
+}
+
+.player-controls-buttons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.video-play-pause {
+  display: flex;
+  align-items: center;
+}
+
+.play_button_time {
+  color: white;
+  font-size: large;
+  font-weight: 300;
+  z-index: 100;
+  padding-left: 5px;
+}
+
+.play_button_fullscreen {
+  border: none;
+  outline: none !important;
+  background: none;
+  margin-left: 5px;
+  transform: scale(1);
+  &:active {
+    transform: scale(0.9);
+  }
+}
+
+.play_button_mute {
+  border: none;
+  outline: none !important;
+  background: none;
+  transform: scale(1);
+  &:active {
+    transform: scale(0.9);
+  }
+}
+.player:-webkit-full-screen {
+  max-width: none;
+  width: 100%;
+}
+
+video::-webkit-media-controls {
+  display: none !important;
+}
+
+input[type='range'] {
+  -webkit-appearance: none;
+  background: transparent;
+  width: 100%;
+  margin: 0 5px;
+}
+input[type='range']:focus {
+  outline: none;
+}

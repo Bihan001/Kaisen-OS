@@ -31,8 +31,20 @@ export const checkFileType = (fileType) => {
     'image/png',
     'audio/mp3',
     'audio/mpeg',
+    'application/docx',
+    'application/pptx',
+    'application/xlsx',
   ];
   return supportedTypes.includes(fileType);
+};
+
+export const findFileType = (fileType) => {
+  const uniqueTypes = {
+    'application/vnd.openxmlformats-officedocument.wordprocessingml.document': 'application/docx',
+    'application/vnd.openxmlformats-officedocument.presentationml.presentation': 'application/pptx',
+    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': 'application/xlsx',
+  };
+  return uniqueTypes[fileType] || fileType;
 };
 
 export const typeArray = [

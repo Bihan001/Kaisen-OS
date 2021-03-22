@@ -9,7 +9,7 @@ import { AuthContext } from '../../Contexts/AuthContext';
 
 import { ClassFile, ClassFolder } from '../../Classes/Classes';
 
-import { checkFileType, handleIcon, typeArray } from '../../Utility/functions';
+import { checkFileType, findFileType, handleIcon, typeArray } from '../../Utility/functions';
 import { backendUrl } from '../../backendUrl';
 
 import back from '../../assets/icons/back.png';
@@ -481,23 +481,26 @@ const File_Explorer = ({
       if (file && name) {
         var isPresent = false;
         for (var i in FolderContents) {
-          if (FolderContents[i].name + '.' + FolderContents[i].type === name + '.' + file.type.split('/')[1]) {
+          if (
+            FolderContents[i].name + '.' + FolderContents[i].type ===
+            name + '.' + findFileType(file.type).split('/')[1]
+          ) {
             isPresent = true;
             break;
           }
         }
         console.log('the file is :', file);
         if (!isPresent) {
-          const fileType = file.type; // application/pdf, text/html, video/mp4, image/jpeg etc.
+          const fileType = findFileType(file.type); // application/pdf, text/html, video/mp4, image/jpeg etc.
           if (!checkFileType(fileType)) return alert('File type not supported');
           const fileSize = file.size; // number - in bytes
-          if (fileSize > 15 * 1024 * 1024) return alert('File size shouldnt exceed 15mb');
+          // if (fileSize > 15 * 1024 * 1024) return alert('File size shouldnt exceed 15mb');
           console.log(name, fileType, fileSize);
           const metadata = { contentType: fileType };
           setUploadDetails({
             ...uploadDetails,
             uploadState: 'uploading',
-            uploadTask: storageRef.child('kaisen-files/' + Date.now() + file.name).put(file, metadata),
+            uploadTask: storageRef.child(Date.now().toString() + '_' + file.name).put(file, metadata),
           });
         } else {
           console.log('Already Present');
@@ -510,13 +513,13 @@ const File_Explorer = ({
 
   const handleAddFileType3 = (url) => {
     // upload to nodejs
-    console.log(name, file.type, file.size, url);
+    console.log(name, findFileType(file.type), file.size, url);
     axios({
       method: 'POST',
       data: {
         parentPath: Folder.path,
         fileName: name,
-        fileType: file.type.split('/')[1],
+        fileType: findFileType(file.type).split('/')[1],
         fileSize: file.size,
         fileContent: url,
         fileCreator: user.id,

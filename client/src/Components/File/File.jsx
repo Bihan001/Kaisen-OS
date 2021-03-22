@@ -12,6 +12,9 @@ import Html_Viewer from '../Html_Viewer/Html_Viewer';
 import Image_Viewer from '../Image_Viewer/Image_Viewer';
 import Video_Player from '../Video_Player/Video_Player';
 import Audio_Player from '../Audio_Player/Audio_Player';
+import PptViewer from '../ppt-viewer';
+import WordViewer from '../word-viewer';
+import ExcelViewer from '../excel-viewer';
 
 const Particular_File = ({ data, updatefilearray, filearray, handleZindex, id }) => {
   const { theme } = useContext(ThemeContext);
@@ -57,14 +60,20 @@ const Particular_File = ({ data, updatefilearray, filearray, handleZindex, id })
     }, [state]);
 
   const configureComponent = (data) => {
-    if (data.name == 'terminal') setComponent(<ReactTerminal fullScreen={fullScreen} />);
-    if (data.type == 'webapp') setComponent(<WebApp content={data.content} fullScreen={fullScreen} />);
-    if (data.type == 'pdf') setComponent(<Pdf_Viewer content={data.content} fullScreen={fullScreen} />);
-    if (data.type == 'html') setComponent(<Html_Viewer content={data.content} fullScreen={fullScreen} />);
-    if (data.type == 'png' || data.type == 'jpeg' || data.type == 'jpg')
+    if (data.name === 'terminal') setComponent(<ReactTerminal fullScreen={fullScreen} />);
+    if (data.type === 'webapp') setComponent(<WebApp content={data.content} fullScreen={fullScreen} />);
+    if (data.type === 'pdf') setComponent(<Pdf_Viewer content={data.content} fullScreen={fullScreen} />);
+    if (data.type === 'ppt' || data.type === 'pptx')
+      setComponent(<PptViewer content={data.content} fullScreen={fullScreen} />);
+    if (data.type === 'doc' || data.type === 'docx')
+      setComponent(<WordViewer content={data.content} fullScreen={fullScreen} />);
+    if (data.type === 'xls' || data.type === 'xlsx')
+      setComponent(<ExcelViewer content={data.content} fullScreen={fullScreen} />);
+    if (data.type === 'html') setComponent(<Html_Viewer content={data.content} fullScreen={fullScreen} />);
+    if (data.type === 'png' || data.type == 'jpeg' || data.type == 'jpg')
       setComponent(<Image_Viewer content={data.content} fullScreen={fullScreen} />);
-    if (data.type == 'mp4') setComponent(<Video_Player content={data.content} fullScreen={fullScreen} />);
-    if (data.type == 'mp3' || data.type == 'mpeg')
+    if (data.type === 'mp4') setComponent(<Video_Player content={data.content} fullScreen={fullScreen} />);
+    if (data.type === 'mp3' || data.type == 'mpeg')
       setComponent(<Audio_Player content={data.content} fullScreen={fullScreen} />);
   };
 

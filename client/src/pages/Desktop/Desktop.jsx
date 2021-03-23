@@ -218,6 +218,27 @@ const Desktop = (props) => {
             <div className="Purple" onClick={() => ChangeTheme('#D7BDE2 ')}></div>
             <div className="Teal" onClick={() => ChangeTheme('#40e0d0')}></div>
             <div className="Grey" onClick={() => ChangeTheme('#ABB2B9 ')}></div>
+            <div className="Cyan" style={{ backgroundColor: 'cyan' }} onClick={() => ChangeTheme('cyan')}></div>
+            <div className="Gold" style={{ backgroundColor: 'gold' }} onClick={() => ChangeTheme('gold')}></div>
+            <div className="Teal" style={{ backgroundColor: 'teal' }} onClick={() => ChangeTheme('teal')}></div>
+            <div className="Violet" style={{ backgroundColor: 'violet' }} onClick={() => ChangeTheme('violet')}></div>
+            <div className="Orange" style={{ backgroundColor: 'orange' }} onClick={() => ChangeTheme('orange')}></div>
+            <div className="Yellow" style={{ backgroundColor: 'yellow' }} onClick={() => ChangeTheme('yellow')}></div>
+            <div className="lime" style={{ backgroundColor: 'lime' }} onClick={() => ChangeTheme('lime')}></div>
+            <div className="Brown" style={{ backgroundColor: '#DEB887' }} onClick={() => ChangeTheme('#DEB887')}></div>
+            <div className="Pink" style={{ backgroundColor: 'pink' }} onClick={() => ChangeTheme('pink')}></div>
+            <div
+              className="CornSilk"
+              style={{ backgroundColor: '#FFF8DC' }}
+              onClick={() => ChangeTheme('#FFF8DC')}></div>
+            <div
+              className="#FA8072"
+              style={{ backgroundColor: '#FA8072' }}
+              onClick={() => ChangeTheme('#FA8072')}></div>
+            <div
+              className="#ECF0F1"
+              style={{ backgroundColor: '#ECF0F1' }}
+              onClick={() => ChangeTheme('#ECF0F1')}></div>
           </div>
         </div>
       )}

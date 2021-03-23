@@ -2,11 +2,14 @@
   display: flex;
   width: 70vw;
   height: 70vh;
-  background-color: white;
+  background-color: black;
   position: relative;
   iframe {
     position: absolute;
     border: 0px solid white;
+  }
+  button {
+    cursor: pointer;
   }
 }
 
@@ -32,7 +35,9 @@
 .video {
   height: 101%;
 }
-
+.player {
+  z-index: 1;
+}
 .player .player_controls:hover {
   opacity: 1 !important;
 }

@@ -24,9 +24,7 @@ const App = () => {
         <Route
           exact
           path="/"
-          render={(routeProps) =>
-            !user ? <Login {...routeProps} /> : <Desktop {...routeProps} />
-          }
+          render={(routeProps) => (!user ? <Login {...routeProps} /> : <Desktop {...routeProps} />)}
         />
       </Switch>
     </div>

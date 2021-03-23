@@ -19,6 +19,8 @@ export const handleIcon = (data) => {
     if (data.type == 'mp4') return 'https://res.cloudinary.com/drolmjcot/image/upload/v1616247561/audio_rjkner.png';
     if (data.type == 'mp3' || data.type == 'mpeg')
       return 'https://res.cloudinary.com/drolmjcot/image/upload/v1616248616/audio-file_b61wad.png';
+    if (data.type == 'xlsx')
+      return 'https://res.cloudinary.com/drolmjcot/image/upload/v1616477472/xls-icon-3379_czizkl.png';
   }
 };
 

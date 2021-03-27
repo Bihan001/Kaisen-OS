@@ -16,14 +16,14 @@
 #custom-seekbar {
   margin: 10px auto;
   cursor: pointer;
-  height: 10px;
-  outline: thin solid #02a2f9;
+  height: 8px;
+  outline: thin solid #606669;
   overflow: hidden;
   position: relative;
   width: 100%;
 
   & span {
-    background: linear-gradient(to right, #29f29d, #02a2f9);
+    background: #ededed;
     position: absolute;
     top: 0;
     left: 0;
@@ -48,7 +48,7 @@
 
 .player_volume_slider {
   width: 100px !important;
-  background: linear-gradient(to right, #29f29d, #02a2f9) !important;
+  background: #ffffff !important;
   height: 5px;
   border-radius: 3px;
 }
@@ -69,7 +69,7 @@
 .player_controls {
   display: flex;
   flex-direction: column;
-  background-color: rgba(46, 83, 90, 0.274);
+  background-color: rgba(46, 83, 90, 0.6);
   height: 70px;
   position: relative;
   bottom: 75px;

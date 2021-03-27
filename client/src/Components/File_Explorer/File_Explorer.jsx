@@ -704,7 +704,7 @@ const File_Explorer = ({
                     }
               }
               drag={!fullScreen ? draggable : false}
-              dragConstraints={!fullScreen ? { left: -160, right: 160, top: -30, bottom: 50 } : {}}
+              dragConstraints={!fullScreen ? { left: -500, right: 500, top: -30, bottom: 500 } : {}}
               dragElastic={0.1}>
               <div
                 className="Topbar"

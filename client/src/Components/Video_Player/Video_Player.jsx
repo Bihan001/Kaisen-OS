@@ -145,11 +145,11 @@ const Video_Player = ({ content, fullScreen }) => {
             <div className="video-play-pause">
               {videoRef && videoRef.current && videoRef.current.paused ? (
                 <button onClick={togglePausePlay} className="play_button">
-                  <img src={PlayLogo} style={{ width: 30, height: 30 }} />
+                  <img src={PlayLogo} style={{ width: 25, height: 25 }} />
                 </button>
               ) : (
                 <button onClick={togglePausePlay} className="play_button">
-                  <img src={PauseLogo} style={{ width: 30, height: 30 }} />
+                  <img src={PauseLogo} style={{ width: 25, height: 25 }} />
                 </button>
               )}
               <div className="play_button_time">{currentTimeMins + ':' + currentTimeSecs}</div>
@@ -157,9 +157,9 @@ const Video_Player = ({ content, fullScreen }) => {
             <div style={{ display: 'flex', alignItems: 'center' }}>
               <button onClick={handleVolumeMute} className="play_button_mute">
                 {isMuted ? (
-                  <img src={MuteLogo} style={{ width: 30, height: 30 }} />
+                  <img src={MuteLogo} style={{ width: 25, height: 25 }} />
                 ) : (
-                  <img src={VolumeLogo} style={{ width: 30, height: 30 }} />
+                  <img src={VolumeLogo} style={{ width: 25, height: 25 }} />
                 )}
               </button>
               <input
@@ -173,7 +173,7 @@ const Video_Player = ({ content, fullScreen }) => {
                   handleVolumeChange(e);
                 }}></input>
               <button onClick={(e) => handleFullScreen(e)} className="play_button_fullscreen">
-                <img src={FullScreenLogo} style={{ width: 30, height: 30 }} />
+                <img src={FullScreenLogo} style={{ width: 25, height: 25 }} />
               </button>
             </div>
           </div>

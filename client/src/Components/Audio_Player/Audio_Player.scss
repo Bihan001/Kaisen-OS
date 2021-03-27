@@ -2,10 +2,142 @@
   display: flex;
   width: 70vw;
   height: 70vh;
-  background-color: white;
+  background-color: black;
   position: relative;
   iframe {
     position: absolute;
     border: 0px solid white;
   }
+}
+
+#canvas {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+}
+
+#custom-seekbar {
+  margin: 10px auto;
+  cursor: pointer;
+  height: 8px;
+  outline: thin solid #606669;
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+
+  & span {
+    background: #ededed;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 10px;
+    width: 0px;
+  }
+}
+
+.audio {
+  height: 101%;
+}
+.player {
+  width: 100%;
+  z-index: 1;
+}
+.player .player_controls:hover {
+  opacity: 1 !important;
+}
+
+.player:hover #custom-seekbar {
+  visibility: visible;
+}
+
+.player_volume_slider {
+  width: 100px !important;
+  background: #ffffff !important;
+  height: 5px;
+  border-radius: 3px;
+}
+
+.play_button {
+  border: none;
+  outline: none !important;
+  background: none;
+  color: white;
+  transform: scale(1);
+  &:active {
+    transform: scale(0.9);
+    border: none;
+    outline: none;
+  }
+}
+
+.player_controls {
+  display: flex;
+  flex-direction: column;
+  background-color: rgba(46, 83, 90, 0.6);
+  height: 70px;
+  position: relative;
+  bottom: 75px;
+  opacity: 0;
+  padding: 0 10px;
+  transition: all 0.3s ease;
+}
+
+.player-controls-buttons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.audio-play-pause {
+  display: flex;
+  align-items: center;
+}
+
+.play_button_time {
+  color: white;
+  font-size: large;
+  font-weight: 300;
+  z-index: 100;
+  padding-left: 5px;
+}
+
+.play_button_fullscreen {
+  border: none;
+  outline: none !important;
+  background: none;
+  margin-left: 5px;
+  transform: scale(1);
+  &:active {
+    transform: scale(0.9);
+  }
+}
+
+.play_button_mute {
+  border: none;
+  outline: none !important;
+  background: none;
+  transform: scale(1);
+  &:active {
+    transform: scale(0.9);
+  }
+}
+.player:-webkit-full-screen {
+  max-width: none;
+  width: 100%;
+}
+
+audio::-webkit-media-controls {
+  display: none !important;
+}
+
+input[type='range'] {
+  -webkit-appearance: none;
+  background: transparent;
+  width: 100%;
+  margin: 0 5px;
+}
+input[type='range']:focus {
+  outline: none;
 }

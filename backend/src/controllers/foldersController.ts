@@ -15,7 +15,7 @@ export const rootFolderController = catchAsync(async (req: Request, res: Respons
 });
 
 export const getRootSubFolders = catchAsync(async (req: Request, res: Response) => {
-  const rootFolder: FolderInterface | null = await Folder.findById('root');
+  const rootFolder: FolderInterface | null = await Folder.findById('root').populate('editableBy');
   if (!rootFolder) throw new CustomError('Root folder missing', 500);
   const childrenNames: Array<string> = rootFolder.children || [];
   var folderChildrenPaths: Array<string> = [];

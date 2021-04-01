@@ -36,6 +36,7 @@ export const checkFileType = (fileType) => {
     'application/docx',
     'application/pptx',
     'application/xlsx',
+    'application/txt',
   ];
   return supportedTypes.includes(fileType);
 };
@@ -45,6 +46,7 @@ export const findFileType = (fileType) => {
     'application/vnd.openxmlformats-officedocument.wordprocessingml.document': 'application/docx',
     'application/vnd.openxmlformats-officedocument.presentationml.presentation': 'application/pptx',
     'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': 'application/xlsx',
+    'text/plain': 'application/txt',
   };
   return uniqueTypes[fileType] || fileType;
 };

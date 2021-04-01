@@ -1,0 +1,16 @@
+.text {
+  display: flex;
+  width: 70vw;
+  height: 70vh;
+  background-color: white;
+  position: relative;
+  iframe {
+    position: absolute;
+
+    border: 0px solid white;
+  }
+}
+
+.DraftEditor-root {
+  height: 100% !important;
+}

@@ -15,6 +15,7 @@ import Audio_Player from '../Audio_Player/Audio_Player';
 import PptViewer from '../ppt-viewer';
 import WordViewer from '../word-viewer';
 import ExcelViewer from '../excel-viewer';
+import TextViewer from '../text-viewer';
 
 const Particular_File = ({ data, updatefilearray, filearray, handleZindex, id }) => {
   const { theme } = useContext(ThemeContext);
@@ -59,22 +60,28 @@ const Particular_File = ({ data, updatefilearray, filearray, handleZindex, id })
       }
     }, [state]);
 
+  const componentsMap = {
+    exe: <ReactTerminal fullScreen={fullScreen} />,
+    webapp: <WebApp content={data.content} fullScreen={fullScreen} />,
+    pdf: <PptViewer content={data.content} fullScreen={fullScreen} />,
+    ppt: <PptViewer content={data.content} fullScreen={fullScreen} />,
+    pptx: <PptViewer content={data.content} fullScreen={fullScreen} />,
+    doc: <WordViewer content={data.content} fullScreen={fullScreen} />,
+    docx: <WordViewer content={data.content} fullScreen={fullScreen} />,
+    xls: <ExcelViewer content={data.content} fullScreen={fullScreen} />,
+    xlsx: <ExcelViewer content={data.content} fullScreen={fullScreen} />,
+    html: <Html_Viewer content={data.content} fullScreen={fullScreen} />,
+    png: <Image_Viewer content={data.content} fullScreen={fullScreen} />,
+    jpeg: <Image_Viewer content={data.content} fullScreen={fullScreen} />,
+    jpg: <Image_Viewer content={data.content} fullScreen={fullScreen} />,
+    mp4: <Video_Player content={data.content} fullScreen={fullScreen} />,
+    mp3: <Audio_Player content={data.content} fullScreen={fullScreen} />,
+    mpeg: <Audio_Player content={data.content} fullScreen={fullScreen} />,
+    txt: <TextViewer content={data.content} fullScreen={fullScreen} />,
+  };
+
   const configureComponent = (data) => {
-    if (data.name === 'terminal') setComponent(<ReactTerminal fullScreen={fullScreen} />);
-    if (data.type === 'webapp') setComponent(<WebApp content={data.content} fullScreen={fullScreen} />);
-    if (data.type === 'pdf') setComponent(<Pdf_Viewer content={data.content} fullScreen={fullScreen} />);
-    if (data.type === 'ppt' || data.type === 'pptx')
-      setComponent(<PptViewer content={data.content} fullScreen={fullScreen} />);
-    if (data.type === 'doc' || data.type === 'docx')
-      setComponent(<WordViewer content={data.content} fullScreen={fullScreen} />);
-    if (data.type === 'xls' || data.type === 'xlsx')
-      setComponent(<ExcelViewer content={data.content} fullScreen={fullScreen} />);
-    if (data.type === 'html') setComponent(<Html_Viewer content={data.content} fullScreen={fullScreen} />);
-    if (data.type === 'png' || data.type == 'jpeg' || data.type == 'jpg')
-      setComponent(<Image_Viewer content={data.content} fullScreen={fullScreen} />);
-    if (data.type === 'mp4') setComponent(<Video_Player content={data.content} fullScreen={fullScreen} />);
-    if (data.type === 'mp3' || data.type == 'mpeg')
-      setComponent(<Audio_Player content={data.content} fullScreen={fullScreen} />);
+    setComponent(componentsMap[data.type] || null);
   };
 
   const handleminizestatus = () =>

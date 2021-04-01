@@ -12,8 +12,18 @@ import usersRoute from './routes/users';
 
 console.log(`Environment : ${process.env.NODE_ENV}`);
 
+var whitelist = ['http://localhost:3000', 'https://kaisen-os.loca.lt'];
+
 app.use(express.json(), cookieParser(), morgan('dev'));
-app.use(cors({ credentials: true, origin: 'http://localhost:3000' }));
+app.use(
+  cors({
+    credentials: true,
+    origin: (origin, callback) => {
+      if (!origin || whitelist.indexOf(origin) === -1) return callback(new Error('Not allowed by CORS'));
+      return callback(null, true);
+    },
+  })
+);
 
 app.get(
   '/',

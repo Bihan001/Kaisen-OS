@@ -46,7 +46,7 @@ const File_Explorer = ({
   var newFolderState;
   var handleRequest;
   var child;
-  var fileChecker = /txt|png|jpg|mpeg|mp3|mp4|pdf|csv|html|jpeg|webapp/;
+  var fileChecker = /txt|png|jpg|mpeg|mp3|mp4|pdf|csv|html|jpeg|webapp|exe/;
   //===================
 
   //States====================
@@ -439,6 +439,10 @@ const File_Explorer = ({
         }
       }
       if (!isPresent && !name.includes('.')) {
+        var newEditableBy = '';
+        if (Folder.editableBy.id === user.id) newEditableBy = user.id;
+        else if (Folder.path == 'root#public') newEditableBy = user.id;
+        else if (user.isAdmin) newEditableBy = Folder.editableBy.id;
         axios({
           method: 'POST',
           data: {
@@ -447,7 +451,7 @@ const File_Explorer = ({
             fileType: 'webapp',
             fileSize: 1,
             fileContent: content,
-            fileCreator: user.id,
+            fileCreator: newEditableBy,
           },
           url: `${backendUrl}/api/files/createFile`,
         })
@@ -514,6 +518,10 @@ const File_Explorer = ({
   const handleAddFileType3 = (url) => {
     // upload to nodejs
     console.log(name, findFileType(file.type), file.size, url);
+    var newEditableBy = '';
+    if (Folder.editableBy.id === user.id) newEditableBy = user.id;
+    else if (Folder.path == 'root#public') newEditableBy = user.id;
+    else if (user.isAdmin) newEditableBy = Folder.editableBy.id;
     axios({
       method: 'POST',
       data: {
@@ -522,7 +530,7 @@ const File_Explorer = ({
         fileType: findFileType(file.type).split('/')[1],
         fileSize: file.size,
         fileContent: url,
-        fileCreator: user.id,
+        fileCreator: newEditableBy,
       },
       url: `${backendUrl}/api/files/createFile`,
     })

@@ -19,7 +19,6 @@ app.use(
   cors({
     credentials: true,
     origin: (origin, callback) => {
-      if (!origin || whitelist.indexOf(origin) === -1) return callback(new Error('Not allowed by CORS'));
       return callback(null, true);
     },
   })

@@ -61,11 +61,15 @@ export const updateFileContent = catchAsync(async (req: Request, res: Response) 
   const path: string = req.body.path;
   const fileContent: string = req.body.fileContent;
   if (!path || !fileContent) throw new CustomError('Valid path and content required', 400);
-  const existingFile: FileInterface | null = await File.findById(path);
+  const existingFile: FileInterface | null = await File.findByIdAndUpdate(
+    path,
+    { content: fileContent },
+    { new: true }
+  );
   if (!existingFile) throw new CustomError('Cannot find file', 400);
-  existingFile.content = fileContent;
-  await existingFile.save();
-  res.status(200).json(SuccessResponse({}, 'Updation successfull'));
+  // existingFile.content = fileContent;
+  // await existingFile.save();
+  res.status(200).json(SuccessResponse(existingFile, 'Updation successfull'));
 });
 
 export const deleteFilesAndFolders = catchAsync(async (req: Request, res: Response) => {

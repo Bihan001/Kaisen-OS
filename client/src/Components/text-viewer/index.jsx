@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { clone } from 'ramda';
 import './text.scss';
 import Loader from '../Loader/Loader';
 import RichTextEditor from 'react-rte';
@@ -7,7 +8,14 @@ import firebase from '../../firebase';
 import axios from 'axios';
 import { backendUrl } from '../../backendUrl';
 
+import { DirectoryContext } from '../../Contexts/DirectoryContext/DirectoryContext';
+import { AuthContext } from '../../Contexts/AuthContext';
+import { ClassFile, ClassFolder } from '../../Classes/Classes';
+
 const TextViewer = ({ content, path, fullScreen }) => {
+  const { dirPaths, UpdatedirPaths } = useContext(DirectoryContext);
+  const { user } = useContext(AuthContext);
+
   const [editorState, setEditorState] = React.useState(() => RichTextEditor.createEmptyValue());
   const [storageRef] = React.useState(firebase.storage().ref());
 
@@ -33,7 +41,10 @@ const TextViewer = ({ content, path, fullScreen }) => {
           try {
             console.log(path, url);
             const res = await axios.post(`${backendUrl}/api/files/updateFile`, { path, fileContent: url });
-            console.log(res.data);
+            var obj = clone(dirPaths);
+            var pastFile = obj[res.data.data.path];
+            pastFile.content = res.data.data.content;
+            UpdatedirPaths(obj);
           } catch (err) {
             console.log(err);
           }

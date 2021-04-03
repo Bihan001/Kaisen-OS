@@ -8,6 +8,8 @@ router.post('/createFile', filesController.createFile);
 
 router.post('/getFile', filesController.getFile);
 
+router.post('/updateFile', filesController.updateFileContent);
+
 router.post('/deleteFilesAndFolders', filesController.deleteFilesAndFolders);
 
 export default router;

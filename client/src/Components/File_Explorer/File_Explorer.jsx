@@ -419,7 +419,53 @@ const File_Explorer = ({
               .catch((err) => console.log(err));
           }
         } else {
-          console.log('text file will be handled soon!!');
+          const blankTextFile = new Blob([''], { type: 'text/plain;charset=utf-8' });
+          const fileType = findFileType('text/plain');
+          const metadata = { contentType: fileType };
+          storageRef
+            .child(Date.now().toString() + '_' + name + '.txt')
+            .put(blankTextFile, metadata)
+            .then((snap) => {
+              snap.ref.getDownloadURL().then((url) => {
+                var newEditableBy = '';
+                if (Folder.editableBy.id === user.id) newEditableBy = user.id;
+                else if (Folder.path == 'root#public') newEditableBy = user.id;
+                else if (user.isAdmin) newEditableBy = Folder.editableBy.id;
+                axios({
+                  method: 'POST',
+                  data: {
+                    parentPath: Folder.path,
+                    fileName: name,
+                    fileType: findFileType('text/plain').split('/')[1],
+                    fileSize: blankTextFile.size,
+                    fileContent: url,
+                    fileCreator: newEditableBy,
+                  },
+                  url: `${backendUrl}/api/files/createFile`,
+                })
+                  .then((res) => {
+                    console.log(res);
+                    obj = clone(dirPaths);
+                    var newFile = res.data.data.newFile;
+                    obj[Folder.path].children = [...obj[Folder.path].children, newFile.name + '.' + newFile.type];
+                    var newFile_ClassObj;
+                    newFile_ClassObj = new ClassFile(
+                      newFile.name,
+                      newFile.dateCreated,
+                      newFile.dateModified,
+                      newFile.editableBy,
+                      newFile.path,
+                      newFile.type,
+                      newFile.content
+                    );
+                    obj[newFile_ClassObj.path] = newFile_ClassObj;
+                    UpdatedirPaths(obj);
+                    htmlElement = document.getElementById(id + 'Progress');
+                    htmlElement.style.width = '0%';
+                  })
+                  .catch((err) => console.log(err));
+              });
+            });
         }
       } else {
         console.log('Enter a valid name');

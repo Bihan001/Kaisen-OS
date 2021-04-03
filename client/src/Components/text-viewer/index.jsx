@@ -2,22 +2,43 @@ import React from 'react';
 import './text.scss';
 import Loader from '../Loader/Loader';
 import RichTextEditor from 'react-rte';
+import { findFileType } from '../../Utility/functions';
+import firebase from '../../firebase';
+import axios from 'axios';
+import { backendUrl } from '../../backendUrl';
 
-const TextViewer = ({ content, fullScreen }) => {
+const TextViewer = ({ content, path, fullScreen }) => {
   const [editorState, setEditorState] = React.useState(() => RichTextEditor.createEmptyValue());
-  const [rawData, setRawData] = React.useState('');
+  const [storageRef] = React.useState(firebase.storage().ref());
 
   React.useEffect(() => {
     fetch(content)
       .then((res) => res.text())
       .then((text) => {
-        setRawData(text);
         setEditorState(RichTextEditor.createValueFromString(text, 'html'));
       });
   }, []);
 
   const handleSave = () => {
-    console.log(editorState.toString('html'));
+    const rawData = editorState.toString('html');
+    console.log(rawData);
+    const newFile = new Blob([rawData], { type: 'text/plain;charset=utf-8' });
+    const fileType = findFileType('text/plain');
+    const metadata = { contentType: fileType };
+    storageRef
+      .child(Date.now().toString() + '_text_file.txt')
+      .put(newFile, metadata)
+      .then((snap) => {
+        snap.ref.getDownloadURL().then(async (url) => {
+          try {
+            console.log(path, url);
+            const res = await axios.post(`${backendUrl}/api/files/updateFile`, { path, fileContent: url });
+            console.log(res.data);
+          } catch (err) {
+            console.log(err);
+          }
+        });
+      });
   };
 
   const saveButton = () => (

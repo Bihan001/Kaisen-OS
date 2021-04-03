@@ -9,6 +9,9 @@ import CustomError from '../errors/custom-error';
 interface FolderInterface extends Document {
   children?: Array<string>;
 }
+interface FileInterface extends Document {
+  content?: String;
+}
 export const rootFileController = catchAsync(async (req: Request, res: Response) => {
   res.status(200).json(SuccessResponse({}, 'Files Route is up and running!'));
 });
@@ -27,7 +30,7 @@ export const createFile = catchAsync(async (req: Request, res: Response) => {
   const fileSize: string = req.body.fileSize;
   const fileContent: string = req.body.fileContent;
   const fileCreator: string = req.body.fileCreator;
-  if (!parentPath || !fileName || !fileType || !fileSize)
+  if (!parentPath || !fileName || !fileType || isNaN(+fileSize))
     throw new CustomError('Valid path, name, type and size required', 400);
   const folderFormatCheck = /[!@#$%^&*()+\=\[\]{};':"\\|,.<>\/?]+/;
   if (folderFormatCheck.test(fileName)) throw new CustomError('File name can only contain symbols - and _', 400);
@@ -52,6 +55,17 @@ export const createFile = catchAsync(async (req: Request, res: Response) => {
   await parentFolder.save();
   await parentFolder.populate('editableBy').execPopulate();
   return res.status(200).json(SuccessResponse({ parentFolder, newFile }, 'Creation successful'));
+});
+
+export const updateFileContent = catchAsync(async (req: Request, res: Response) => {
+  const path: string = req.body.path;
+  const fileContent: string = req.body.fileContent;
+  if (!path || !fileContent) throw new CustomError('Valid path and content required', 400);
+  const existingFile: FileInterface | null = await File.findById(path);
+  if (!existingFile) throw new CustomError('Cannot find file', 400);
+  existingFile.content = fileContent;
+  await existingFile.save();
+  res.status(200).json(SuccessResponse({}, 'Updation successfull'));
 });
 
 export const deleteFilesAndFolders = catchAsync(async (req: Request, res: Response) => {

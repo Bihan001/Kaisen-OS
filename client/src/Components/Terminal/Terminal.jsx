@@ -8,9 +8,11 @@ import Terminal from 'terminal-in-react';
 import './Terminal.scss';
 import { DirectoryContext } from '../../Contexts/DirectoryContext/DirectoryContext';
 import { AuthContext } from '../../Contexts/AuthContext';
+import { ThemeContext } from '../../Contexts/ThemeContext/ThemeContext';
+
 //import fullscreen_icon from "../assets/fullscreen.svg";
 
-const ReactTerminal = () => {
+const ReactTerminal = ({ id }) => {
   //variables
   var obj;
   //=========
@@ -20,6 +22,7 @@ const ReactTerminal = () => {
 
   const { dirPaths, UpdatedirPaths } = useContext(DirectoryContext);
   const { user } = useContext(AuthContext);
+  const { theme } = useContext(ThemeContext);
 
   const [Folder, setFolder] = useState(null);
   const [FolderContents, setFolderContents] = useState([]);
@@ -35,8 +38,27 @@ const ReactTerminal = () => {
   }, []);
 
   useEffect(() => {
-    if (Folder) loadfoldercontents(Folder);
+    if (Folder) {
+      loadfoldercontents(Folder);
+      let html = document.getElementById(id + 'File');
+      try {
+        console.log(html);
+        html.getElementsByClassName('sc-dnqmqq')[0].innerHTML = Folder.path.split('#').join('/') + ' > ';
+        html.getElementsByClassName('sc-dnqmqq')[0].style.color = theme;
+      } catch {
+        console.log('Opps Couldnt Find html');
+      }
+    }
   }, [Folder]);
+
+  useEffect(() => {
+    let html = document.getElementById(id + 'File');
+    try {
+      html.getElementsByClassName('sc-dnqmqq')[0].style.color = theme;
+    } catch {
+      console.log('Opps Counldnt find the html');
+    }
+  }, [theme]);
 
   useEffect(() => {
     newRef.current = {
@@ -69,12 +91,12 @@ const ReactTerminal = () => {
       const data = args.slice(1).join('');
       if (data == '..') {
         let returnedValue = handleback(); //object { success:bool , currentdir:String }
-        if (returnedValue.success) print(`Current Directory ${returnedValue.currentDir}`);
-        else print('Opps Error Occured!');
+        // if (returnedValue.success) print(`Current Directory ${returnedValue.currentDir}`);
+        // else print('Opps Error Occured!');
       } else {
         let returnedValue = loadFolder(data.split('/').join('#'));
-        if (returnedValue.success) print(`Current Directory ${returnedValue.currentDir}`);
-        else print('Directory Incorrect!');
+        // if (returnedValue.success) print(`Current Directory ${returnedValue.currentDir}`);
+        // else print('Directory Incorrect!');
       }
     },
     mkdir: (args, print, runcommand) => {

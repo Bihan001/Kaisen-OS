@@ -61,7 +61,7 @@ const Particular_File = ({ data, updatefilearray, filearray, handleZindex, id })
     }, [state]);
 
   const componentsMap = {
-    exe: <ReactTerminal fullScreen={fullScreen} />,
+    exe: <ReactTerminal fullScreen={fullScreen} id={id} />,
     webapp: <WebApp content={data.content} fullScreen={fullScreen} />,
     pdf: <PptViewer content={data.content} fullScreen={fullScreen} />,
     ppt: <PptViewer content={data.content} fullScreen={fullScreen} />,

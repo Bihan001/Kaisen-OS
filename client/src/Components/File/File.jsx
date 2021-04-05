@@ -77,7 +77,7 @@ const Particular_File = ({ data, updatefilearray, filearray, handleZindex, id })
     mp4: <Video_Player content={data.content} fullScreen={fullScreen} />,
     mp3: <Audio_Player content={data.content} fullScreen={fullScreen} />,
     mpeg: <Audio_Player content={data.content} fullScreen={fullScreen} />,
-    txt: <TextViewer content={data.content} path={data.path} fullScreen={fullScreen} />,
+    txt: <TextViewer content={data.content} editableBy={data.editableBy} path={data.path} fullScreen={fullScreen} />,
   };
 
   const configureComponent = (data) => {

@@ -98,6 +98,10 @@ const ReactTerminal = () => {
         print(string + '\n');
       });
     },
+    rm: (args, print, runcommand) => {
+      const data = args.slice(1).join(' ');
+      handleDelete(data);
+    },
   };
   //Commands=
 
@@ -124,11 +128,12 @@ const ReactTerminal = () => {
   const handleback = () => {
     if (newRef.current.Folder) {
       let newpath = newRef.current.Folder.path.split('#');
+      let dirRef = newRef.current.dirPaths;
       newpath.pop();
       newpath = newpath.join('#');
 
-      obj = dirPaths[newpath];
-
+      obj = dirRef[newpath];
+      console.log('newpath is :', newpath, 'obj is : ', obj);
       if (obj) {
         setFolder(obj);
         return {
@@ -141,6 +146,10 @@ const ReactTerminal = () => {
           currentDir: '',
         };
     }
+    return {
+      success: false,
+      currentDir: '',
+    };
   };
   const loadFolder = (path) => {
     if (newRef.current.Folder) {
@@ -235,6 +244,75 @@ const ReactTerminal = () => {
           }
         }
       }
+    }
+  };
+
+  const deleteAuthorized = (data) => {
+    let userRef = newRef.current.user;
+    if (userRef.isAdmin) return true;
+    if (data) return data.editableBy.id === userRef.id;
+    else return false;
+  };
+
+  const recursiveDelete = (path, type, object) => {
+    console.log('path for :', path, 'lets see', object);
+    if (type == 'file') {
+      delete object[path];
+    } else {
+      var childType = '';
+      const obj = object[path];
+      if (obj) {
+        obj.children.map((name) => {
+          childType = name.includes('.') ? 'file' : 'folder';
+          recursiveDelete(obj.path + '#' + name, childType, object);
+        });
+        delete object[path];
+      } else {
+        console.log('Not deleted', { path: path, obj: obj });
+      }
+    }
+  };
+
+  const handleDelete = (name) => {
+    let folder = newRef.current.Folder;
+    let userRef = newRef.current.user;
+    let dirRef = newRef.current.dirPaths;
+    let FolderContents = newRef.current.dirPaths;
+    let data = dirRef[folder.path + '#' + name];
+    if (deleteAuthorized(data) && data) {
+      let paths = [data.path];
+      let names = [name];
+      let latestChildrenArray = folder.children.filter((childName) => childName !== name);
+      if (paths.length > 0 && names.length > 0) {
+        axios({
+          method: 'post',
+          data: {
+            paths: paths,
+            names: names,
+          },
+          url: `${backendUrl}/api/files/deleteFilesAndFolders`,
+        })
+          .then((res) => {
+            let dirRef = newRef.current.dirPaths;
+            let folder = newRef.current.Folder;
+            console.log(res);
+            let object = clone(dirRef);
+            var type = '';
+            paths.map(async (path) => {
+              type = path.includes('.') ? 'file' : 'folder';
+              await recursiveDelete(path, type, object);
+            });
+            console.log('The latest children array should be : ', latestChildrenArray);
+            object[folder.path].children = latestChildrenArray;
+            console.log('new obj is : ', object);
+            UpdatedirPaths(object);
+          })
+          .catch((err) => console.log(err));
+      } else {
+        console.log('OPPS an error occured!');
+      }
+    } else {
+      console.log('Deletion Not Authorized!');
     }
   };
   //=====================================

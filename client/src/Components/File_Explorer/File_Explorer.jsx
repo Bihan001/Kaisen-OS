@@ -636,7 +636,7 @@ const File_Explorer = ({
       delete object[path];
     } else {
       var childType = '';
-      obj = object[path];
+      const obj = object[path];
 
       if (obj) {
         obj.children.map((name) => {

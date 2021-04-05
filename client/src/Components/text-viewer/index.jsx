@@ -12,7 +12,7 @@ import { DirectoryContext } from '../../Contexts/DirectoryContext/DirectoryConte
 import { AuthContext } from '../../Contexts/AuthContext';
 import { ClassFile, ClassFolder } from '../../Classes/Classes';
 
-const TextViewer = ({ content, path, fullScreen }) => {
+const TextViewer = ({ content, editableBy, path, fullScreen }) => {
   const { dirPaths, UpdatedirPaths } = useContext(DirectoryContext);
   const { user } = useContext(AuthContext);
 
@@ -27,29 +27,38 @@ const TextViewer = ({ content, path, fullScreen }) => {
       });
   }, []);
 
+  const handleUpdateAuthorized = () => {
+    if (user.isAdmin) return true;
+    return user.id === editableBy.id;
+  };
+
   const handleSave = () => {
-    const rawData = editorState.toString('html');
-    console.log(rawData);
-    const newFile = new Blob([rawData], { type: 'text/plain;charset=utf-8' });
-    const fileType = findFileType('text/plain');
-    const metadata = { contentType: fileType };
-    storageRef
-      .child(Date.now().toString() + '_text_file.txt')
-      .put(newFile, metadata)
-      .then((snap) => {
-        snap.ref.getDownloadURL().then(async (url) => {
-          try {
-            console.log(path, url);
-            const res = await axios.post(`${backendUrl}/api/files/updateFile`, { path, fileContent: url });
-            var obj = clone(dirPaths);
-            var pastFile = obj[res.data.data.path];
-            pastFile.content = res.data.data.content;
-            UpdatedirPaths(obj);
-          } catch (err) {
-            console.log(err);
-          }
+    if (handleUpdateAuthorized()) {
+      const rawData = editorState.toString('html');
+      console.log(rawData);
+      const newFile = new Blob([rawData], { type: 'text/plain;charset=utf-8' });
+      const fileType = findFileType('text/plain');
+      const metadata = { contentType: fileType };
+      storageRef
+        .child(Date.now().toString() + '_text_file.txt')
+        .put(newFile, metadata)
+        .then((snap) => {
+          snap.ref.getDownloadURL().then(async (url) => {
+            try {
+              console.log(path, url);
+              const res = await axios.post(`${backendUrl}/api/files/updateFile`, { path, fileContent: url });
+              var obj = clone(dirPaths);
+              var pastFile = obj[res.data.data.path];
+              pastFile.content = res.data.data.content;
+              UpdatedirPaths(obj);
+            } catch (err) {
+              console.log(err);
+            }
+          });
         });
-      });
+    } else {
+      console.log('Not Authorized to update!');
+    }
   };
 
   const saveButton = () => (

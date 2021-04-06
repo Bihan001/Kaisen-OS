@@ -1,16 +1,24 @@
 import express, { Request, Response } from 'express';
 
-import { rootUserCheck, sessionLogin, getProfile, sessionLogout } from '../controllers/usersController';
+import * as usersController from '../controllers/usersController';
 import requireAuth from '../middlewares/require-auth';
 
 const router = express.Router();
 
-router.get('/', rootUserCheck);
+router.get('/', usersController.rootUserCheck);
 
-router.get('/profile', requireAuth, getProfile);
+router.get('/profile', requireAuth, usersController.getProfile);
 
-router.post('/sessionLogin', sessionLogin);
+router.post('/sessionLogin', usersController.sessionLogin);
 
-router.post('/sessionLogout', sessionLogout);
+router.post('/sessionLogout', usersController.sessionLogout);
+
+router.get('/getAllWallpapers', usersController.getAllWallpapers);
+
+router.get('/getAllThemes', usersController.getAllThemes);
+
+router.post('/addWallpaper', usersController.addWallpaper);
+
+router.post('/addTheme', usersController.addTheme);
 
 export default router;

@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, useContext } from 'react';
-import { clone } from 'ramda';
+import { clone, forEach } from 'ramda';
 import axios from 'axios';
 import { backendUrl } from '../../backendUrl';
 import { ClassFile, ClassFolder } from '../../Classes/Classes';
@@ -12,7 +12,7 @@ import { ThemeContext } from '../../Contexts/ThemeContext/ThemeContext';
 
 //import fullscreen_icon from "../assets/fullscreen.svg";
 
-const ReactTerminal = ({ id }) => {
+const ReactTerminal = ({ id, fullScreen }) => {
   //variables
   var obj;
   //=========
@@ -33,32 +33,85 @@ const ReactTerminal = ({ id }) => {
     user: {},
   });
 
+  //Configuring on change bash
+  let html = document.getElementById(id + 'File');
+  try {
+    html.getElementsByClassName('lfnIny')[0].addEventListener('click', () => {
+      setTimeout(() => {
+        try {
+          html.getElementsByClassName('sc-dnqmqq')[0].innerHTML = Folder.path.split('#').join('/') + ' > ';
+          html.getElementsByClassName('sc-dnqmqq')[0].style.color = theme;
+          if (fullScreen) {
+            html.style.width = '100vw';
+            html.getElementsByClassName('terminal-base')[0].style.width = '100vw';
+            html.getElementsByClassName('terminal-base')[0].style.height = '100%';
+            html.getElementsByClassName('terminal-base')[0].style.maxWidth = '100vw';
+            html.getElementsByClassName('sc-jTzLTM')[0].style.width = '100vw';
+            html.getElementsByClassName('lfnIny')[0].style.maxWidth = '100vw';
+            html.getElementsByClassName('gCWpcM')[0].style.maxWidth = '100vw';
+          } else {
+            html.style.width = '90rem';
+            html.getElementsByClassName('terminal-base')[0].style.width = '90rem';
+            html.getElementsByClassName('terminal-base')[0].style.height = '100%';
+            html.getElementsByClassName('terminal-base')[0].style.minHeight = '80vh';
+            html.getElementsByClassName('terminal-base')[0].style.maxWidth = '90rem';
+            html.getElementsByClassName('sc-jTzLTM')[0].style.width = '90rem';
+            html.getElementsByClassName('lfnIny')[0].style.maxWidth = '90rem';
+            html.getElementsByClassName('gCWpcM')[0].style.maxWidth = '90rem';
+          }
+        } catch {}
+      }, 10);
+    });
+  } catch {
+    console.log('Opps didnt find html');
+  }
+
+  //==========================
+
   useEffect(() => {
-    if (dirPaths) setFolder(dirPaths['root#public']);
+    if (dirPaths) setFolder(dirPaths['root']);
   }, []);
 
   useEffect(() => {
-    if (Folder) {
-      loadfoldercontents(Folder);
-      let html = document.getElementById(id + 'File');
-      try {
-        console.log(html);
-        html.getElementsByClassName('sc-dnqmqq')[0].innerHTML = Folder.path.split('#').join('/') + ' > ';
-        html.getElementsByClassName('sc-dnqmqq')[0].style.color = theme;
-      } catch {
-        console.log('Opps Couldnt Find html');
-      }
-    }
+    if (Folder) loadfoldercontents(Folder);
   }, [Folder]);
 
   useEffect(() => {
     let html = document.getElementById(id + 'File');
     try {
+      console.log(html);
+      html.getElementsByClassName('sc-dnqmqq')[0].innerHTML = Folder.path.split('#').join('/') + ' > ';
       html.getElementsByClassName('sc-dnqmqq')[0].style.color = theme;
     } catch {
-      console.log('Opps Counldnt find the html');
+      console.log('Opps Couldnt Find html');
     }
-  }, [theme]);
+  }, [Folder, theme]);
+
+  useEffect(() => {
+    let html = document.getElementById(id + 'File');
+    try {
+      if (fullScreen) {
+        html.style.width = '100vw';
+        html.getElementsByClassName('terminal-base')[0].style.width = '100vw';
+        html.getElementsByClassName('terminal-base')[0].style.height = '100%';
+        html.getElementsByClassName('terminal-base')[0].style.maxWidth = '100vw';
+        html.getElementsByClassName('sc-jTzLTM')[0].style.width = '100vw';
+        html.getElementsByClassName('lfnIny')[0].style.maxWidth = '100vw';
+        html.getElementsByClassName('gCWpcM')[0].style.maxWidth = '100vw';
+      } else {
+        html.style.width = '90rem';
+        html.getElementsByClassName('terminal-base')[0].style.width = '90rem';
+        html.getElementsByClassName('terminal-base')[0].style.height = '100%';
+        html.getElementsByClassName('terminal-base')[0].style.minHeight = '80vh';
+        html.getElementsByClassName('terminal-base')[0].style.maxWidth = '90rem';
+        html.getElementsByClassName('sc-jTzLTM')[0].style.width = '90rem';
+        html.getElementsByClassName('lfnIny')[0].style.maxWidth = '90rem';
+        html.getElementsByClassName('gCWpcM')[0].style.maxWidth = '90rem';
+      }
+    } catch {
+      console.log('Opps an error occured!!');
+    }
+  }, [fullScreen]);
 
   useEffect(() => {
     newRef.current = {
@@ -404,7 +457,7 @@ const ReactTerminal = ({ id }) => {
   //===================================
 
   return (
-    <div className="Terminal">
+    <div className="Terminal" style={fullScreen ? { width: '100vw', height: '87vh' } : {}}>
       <Terminal
         color="#C4BFBF"
         backgroundColor="rgb(34, 34, 34)"

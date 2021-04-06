@@ -1,15 +1,16 @@
 import express, { Request, Response } from 'express';
 import * as filesController from '../controllers/filesController';
+import requireAuth from '../middlewares/require-auth';
 const router = express.Router();
 
 router.get('/', filesController.rootFileController);
 
-router.post('/createFile', filesController.createFile);
+router.post('/createFile', requireAuth, filesController.createFile);
 
-router.post('/getFile', filesController.getFile);
+router.post('/getFile', requireAuth, filesController.getFile);
 
-router.post('/updateFile', filesController.updateFileContent);
+router.post('/updateFile', requireAuth, filesController.updateFileContent);
 
-router.post('/deleteFilesAndFolders', filesController.deleteFilesAndFolders);
+router.post('/deleteFilesAndFolders', requireAuth, filesController.deleteFilesAndFolders);
 
 export default router;

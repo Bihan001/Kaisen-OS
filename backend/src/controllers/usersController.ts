@@ -3,6 +3,9 @@ import admin from '../firebase-admin';
 import User from '../models/user';
 import { SuccessResponse, ErrorResponse } from '../utils/response-handler';
 import catchAsync from '../utils/catch-async';
+import CustomError from '../errors/custom-error';
+import Wallpaper from '../models/wallpaper';
+import Theme from '../models/theme';
 
 export const rootUserCheck = catchAsync(async (req: Request, res: Response) => {
   res.status(200).json(SuccessResponse({}, 'Users Route is up and running!'));
@@ -40,4 +43,30 @@ export const sessionLogout = catchAsync(async (req: Request, res: Response) => {
   const decodedClaims = await admin.auth().verifySessionCookie(sessionCookie);
   await admin.auth().revokeRefreshTokens(decodedClaims.sub);
   return res.status(200).json(SuccessResponse({}, 'User logged out'));
+});
+
+export const addWallpaper = catchAsync(async (req: Request, res: Response) => {
+  const wallpaper: string = req.body.wallpaper;
+  if (!wallpaper) throw new CustomError('Wallpaper field required', 400);
+  const newWallpaper = new Wallpaper({ image: wallpaper });
+  await newWallpaper.save();
+  return res.status(200).json(SuccessResponse(newWallpaper, 'Wallpaper added'));
+});
+
+export const getAllWallpapers = catchAsync(async (req: Request, res: Response) => {
+  const wallpapers = await Wallpaper.find({});
+  return res.status(200).json(SuccessResponse(wallpapers, 'Fetched all wallpapers'));
+});
+
+export const addTheme = catchAsync(async (req: Request, res: Response) => {
+  const color: string = req.body.color;
+  if (!color) throw new CustomError('Color field required', 400);
+  const newTheme = new Theme({ color });
+  await newTheme.save();
+  return res.status(200).json(SuccessResponse(newTheme, 'Wallpaper added'));
+});
+
+export const getAllThemes = catchAsync(async (req: Request, res: Response) => {
+  const themes = await Theme.find({});
+  return res.status(200).json(SuccessResponse(themes, 'Fetched all themes'));
 });

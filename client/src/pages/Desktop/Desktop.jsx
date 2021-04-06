@@ -12,6 +12,7 @@ import { DirectoryContext } from '../../Contexts/DirectoryContext/DirectoryConte
 import Taskbar from '../../Components/TaskBar/Taskbar';
 import Particular_File from '../../Components/File/File';
 import File_Explorer from '../../Components/File_Explorer/File_Explorer';
+import { backendUrl } from '../../backendUrl';
 
 import { Folder, File } from '../../Classes/Classes';
 
@@ -24,6 +25,11 @@ const Desktop = (props) => {
 
   const [openedfiles, setopenedfiles] = useState({});
   const [openedfolders, setopenedfolders] = useState({});
+
+  const [startMenuContents, setStartMenuContents] = useState({
+    folders: [],
+    files: [],
+  });
 
   /*const [folderZindex,setfolderZindex]=useState(0);
   const [fileZindex,setfileZindex]=useState(0);*/
@@ -42,7 +48,7 @@ const Desktop = (props) => {
   //taskbar States============================================
   //const [showtaskbarfloatingcontents,setshowtaskbarfloatingcontents]=useState(false);
   const [showcolorpalatte, setshowcolorpalatte] = useState(false);
-  const [showmenu, setshowmenu] = useState(false);
+  const [showmenu, setshowmenu] = useState(true);
   //taskbar states==============================
 
   /* useEffect(() => {
@@ -50,6 +56,27 @@ const Desktop = (props) => {
     const file = new Folder('Demo', Date.now(), Date.now(), {}, 'root#a', 'folder');
     console.log(file);
   }, []);*/
+
+  useEffect(() => {
+    axios({
+      method: 'post',
+      url: `${backendUrl}/api/folders/getFilesAndFolders`,
+      data: {
+        filePaths: ['root#leetcode.txt'],
+        folderPaths: [],
+      },
+    })
+      .then((res) => {
+        console.log('/getFilesAndFolders : ', res);
+        setStartMenuContents({
+          folders: res.data.data.folderResultList,
+          files: res.data.data.fileResultList,
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
 
   //Functions
   const handleOpen = (data) => {
@@ -209,6 +236,12 @@ const Desktop = (props) => {
                 ))}
                </div>
            )} */}
+
+      {false && (
+        <div className="Start_Menu " style={{ backgroundColor: theme, zIndex: maxValue }}>
+          start Menu
+        </div>
+      )}
 
       {showcolorpalatte && (
         <div className="Color_Palatte" style={{ backgroundColor: theme, zIndex: maxValue }}>

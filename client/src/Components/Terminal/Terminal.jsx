@@ -136,7 +136,10 @@ const ReactTerminal = ({ id, fullScreen }) => {
 
   //Commands
   const commands = {
-    'open-google': () => window.open('https://www.google.com/', '_blank'),
+    'open-google': () => {
+      const newWindow = window.open('https://www.google.com', '_blank', 'noopener,noreferrer');
+      if (newWindow) newWindow.opener = null;
+    },
 
     popup: () => alert('Oni Chaan!!'),
 
@@ -182,13 +185,15 @@ const ReactTerminal = ({ id, fullScreen }) => {
 
   //Descriptions
   const descriptions = {
-    'open-google': '........opens google.com',
+    'open-google': '........opens Google in new tab',
     showmsg: '........shows a message',
     alert: '........alert',
     popup: '........alert',
     cd: '........Enters the Directory',
     mkdir: '........Creates a Folder',
     dir: '.............Shows current Directory',
+    ls: '.............Shows current files and folders',
+    rm: '.............Remove a file or directory',
   };
   //===========
 

@@ -16,6 +16,6 @@ router.post('/createFolder', requireAuth, foldersController.createFolderAtPath);
 
 router.post('/getFolderAndParents', requireAuth, foldersController.getFolderAndParentsByPath);
 
-router.post('/getFilesAndFolders', foldersController.getFilesAndFolders);
+router.post('/getFilesAndFolders', requireAuth, foldersController.getFilesAndFolders);
 
 export default router;

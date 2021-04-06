@@ -9,12 +9,16 @@ import MuteLogo from './images/mute.svg';
 
 let audioControlsTimer;
 
-const Audio_Player = ({ content, fullScreen }) => {
+const Audio_Player = ({ content, id, fullScreen }) => {
   const audioPlayerRef = useRef(null);
   const audioRef = useRef(null);
   const [isMuted, setIsMuted] = useState(false);
   const [currentTimeMins, setCurrentTimeMins] = useState('0');
   const [currentTimeSecs, setCurrentTimeSecs] = useState('0');
+
+  const convertToUniqueId = (name) => 'lol' + id + '_' + name;
+
+  const getUniqueQuery = (name) => '#' + 'lol' + id + '_' + name;
 
   const togglePausePlay = () => {
     if (audioRef && audioRef.current) {
@@ -25,14 +29,14 @@ const Audio_Player = ({ content, fullScreen }) => {
 
   const handleSeekBar = (e) => {
     console.log(e);
-    let rect = document.querySelector('#custom-seekbar').getBoundingClientRect();
+    let rect = document.querySelector(getUniqueQuery('custom-seekbar')).getBoundingClientRect();
     let offset = {
       top: rect.top + window.scrollY,
       left: rect.left + window.scrollX,
     };
     let left = e.pageX - offset.left;
     let totalWidth = parseFloat(
-      getComputedStyle(document.querySelector('#custom-seekbar'), null).width.replace('px', '')
+      getComputedStyle(document.querySelector(getUniqueQuery('custom-seekbar')), null).width.replace('px', '')
     );
     let percentage = left / totalWidth;
     let vidTime = audioRef.current.duration * percentage;
@@ -41,7 +45,7 @@ const Audio_Player = ({ content, fullScreen }) => {
 
   const handleSeekBarUpdate = () => {
     let percentage = (audioRef.current.currentTime / audioRef.current.duration) * 100;
-    document.querySelector('#custom-seekbar span').style.width = percentage + '%';
+    document.querySelector(getUniqueQuery('custom-seekbar span')).style.width = percentage + '%';
     setCurrentTimeMins(
       Math.floor(audioRef.current.currentTime / 60) < 10
         ? '0' + Math.floor(audioRef.current.currentTime / 60)
@@ -64,21 +68,21 @@ const Audio_Player = ({ content, fullScreen }) => {
         document.webkitExitFullscreen().catch((err) => console.log(err));
       }
     } else {
-      document.querySelector('.player').requestFullscreen();
+      document.querySelector(getUniqueQuery('player')).requestFullscreen();
     }
   };
 
   const handleMouseMoveInAudio = (e) => {
-    let pc = document.querySelector('.player_controls');
+    let pc = document.querySelector(getUniqueQuery('player_controls'));
     if (pc) {
       pc.style.opacity = 1;
-      let player = document.getElementById('player');
+      let player = document.querySelector(getUniqueQuery('player'));
       if (player) player.style.cursor = 'default';
     }
     clearTimeout(audioControlsTimer);
     audioControlsTimer = setTimeout(() => {
       if (pc) pc.style.opacity = 0;
-      let player = document.getElementById('player');
+      let player = document.querySelector(getUniqueQuery('player'));
       if (player) player.style.cursor = 'none';
     }, 3000);
   };
@@ -110,7 +114,7 @@ const Audio_Player = ({ content, fullScreen }) => {
   };
 
   useEffect(() => {
-    var audio = document.getElementsByTagName('audio')[0];
+    var audio = audioRef.current;
     console.log('yayyy');
     audio.src = content;
     audio.load();
@@ -119,7 +123,7 @@ const Audio_Player = ({ content, fullScreen }) => {
     var src = context.createMediaElementSource(audio);
     var analyser = context.createAnalyser();
 
-    var canvas = document.getElementById('canvas');
+    var canvas = document.querySelector(getUniqueQuery('canvas'));
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
     var ctx = canvas.getContext('2d');
@@ -176,10 +180,11 @@ const Audio_Player = ({ content, fullScreen }) => {
         onMouseMove={(e) => handleMouseMoveInAudio(e)}
         ref={audioPlayerRef}
         className="player"
-        id="player"
+        onMouseOver={(e) => (document.querySelector(getUniqueQuery('custom-seekbar')).style.visibility = 'visible')}
+        id={convertToUniqueId('player')}
         onDoubleClick={handleFullScreen}>
         <div onClick={togglePausePlay} className="audio">
-          <canvas id="canvas"></canvas>
+          <canvas id={convertToUniqueId('canvas')} style={styles.canvas}></canvas>
           <audio
             onTimeUpdate={(e) => handleSeekBarUpdate(e)}
             ref={audioRef}
@@ -191,9 +196,16 @@ const Audio_Player = ({ content, fullScreen }) => {
           />
         </div>
 
-        <div className="player_controls">
-          <div id="custom-seekbar" onClick={(e) => handleSeekBar(e)}>
-            <span></span>
+        <div
+          id={convertToUniqueId('player_controls')}
+          className="player_controls"
+          onMouseOver={(e) => (e.target.style.opacity = 1)}>
+          <div
+            id={convertToUniqueId('custom-seekbar')}
+            style={styles.customSeekbar}
+            className="custom-seekbar"
+            onClick={(e) => handleSeekBar(e)}>
+            <span style={styles.customSeekbarSpan}></span>
           </div>
           <div className="player-controls-buttons">
             <div className="audio-play-pause">
@@ -237,3 +249,30 @@ const Audio_Player = ({ content, fullScreen }) => {
   );
 };
 export default Audio_Player;
+
+const styles = {
+  canvas: {
+    position: 'absolute',
+    left: 0,
+    top: 0,
+    width: '100%',
+    height: '100%',
+  },
+  customSeekbar: {
+    margin: '10px auto',
+    cursor: 'pointer',
+    height: '8px',
+    outline: 'thin solid #606669',
+    overflow: 'hidden',
+    position: 'relative',
+    width: '100%',
+  },
+  customSeekbarSpan: {
+    background: '#ededed',
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    height: '10px',
+    width: '0px',
+  },
+};

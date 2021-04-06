@@ -7,6 +7,7 @@ import { ThemeProvider } from './Contexts/ThemeContext/ThemeContext';
 import { DirectoryProvider } from './Contexts/DirectoryContext/DirectoryContext';
 import { BrowserRouter } from 'react-router-dom';
 import axios from 'axios';
+import NotificationProvider from './Contexts/NotificationContext';
 
 axios.defaults.withCredentials = true;
 
@@ -15,7 +16,9 @@ ReactDOM.render(
     <AuthProvider>
       <ThemeProvider>
         <DirectoryProvider>
-          <App />
+          <NotificationProvider>
+            <App />
+          </NotificationProvider>
         </DirectoryProvider>
       </ThemeProvider>
     </AuthProvider>

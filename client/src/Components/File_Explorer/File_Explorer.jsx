@@ -6,6 +6,7 @@ import './File_Explorer.scss';
 import { ThemeContext } from '../../Contexts/ThemeContext/ThemeContext';
 import { DirectoryContext } from '../../Contexts/DirectoryContext/DirectoryContext';
 import { AuthContext } from '../../Contexts/AuthContext';
+import { NotificationContext } from '../../Contexts/NotificationContext';
 
 import { ClassFile, ClassFolder } from '../../Classes/Classes';
 
@@ -32,6 +33,7 @@ const File_Explorer = ({
 }) => {
   const { theme } = useContext(ThemeContext);
   const { dirPaths, UpdatedirPaths } = useContext(DirectoryContext);
+  const { addNotification } = useContext(NotificationContext);
   const { user } = useContext(AuthContext);
 
   //Utility Variables
@@ -374,6 +376,7 @@ const File_Explorer = ({
 
             if (obj.name === name && obj.type == 'folder') {
               console.log('FOlder with Same Name already exists!!');
+              addNotification('error', 'Error', 'Folder name already exists');
               success = false;
               break;
             }

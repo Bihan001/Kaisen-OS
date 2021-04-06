@@ -17,6 +17,15 @@ import WordViewer from '../word-viewer';
 import ExcelViewer from '../excel-viewer';
 import TextViewer from '../text-viewer';
 
+const expandObject = (obj) => {
+  Object.keys(obj).map((key) => {
+    let target = obj[key];
+    delete obj[key];
+    key.split(',').map((k) => (obj[k.trim()] = target));
+  });
+  return obj;
+};
+
 const Particular_File = ({ data, updatefilearray, filearray, handleZindex, id }) => {
   const { theme } = useContext(ThemeContext);
 
@@ -60,27 +69,25 @@ const Particular_File = ({ data, updatefilearray, filearray, handleZindex, id })
       }
     }, [state]);
 
-  const componentsMap = {
-    exe: <ReactTerminal fullScreen={fullScreen} id={id} />,
+  const componentsMap = expandObject({
+    exe: [{ terminal: <ReactTerminal fullScreen={fullScreen} id={id} /> }],
     webapp: <WebApp content={data.content} fullScreen={fullScreen} />,
-    pdf: <PptViewer content={data.content} fullScreen={fullScreen} />,
-    ppt: <PptViewer content={data.content} fullScreen={fullScreen} />,
-    pptx: <PptViewer content={data.content} fullScreen={fullScreen} />,
-    doc: <WordViewer content={data.content} fullScreen={fullScreen} />,
-    docx: <WordViewer content={data.content} fullScreen={fullScreen} />,
-    xls: <ExcelViewer content={data.content} fullScreen={fullScreen} />,
-    xlsx: <ExcelViewer content={data.content} fullScreen={fullScreen} />,
+    pdf: <Pdf_Viewer content={data.content} fullScreen={fullScreen} />,
+    'ppt, pptx': <PptViewer content={data.content} fullScreen={fullScreen} />,
+    'doc, docx': <WordViewer content={data.content} fullScreen={fullScreen} />,
+    'xls, xlsx': <ExcelViewer content={data.content} fullScreen={fullScreen} />,
     html: <Html_Viewer content={data.content} fullScreen={fullScreen} />,
-    png: <Image_Viewer content={data.content} fullScreen={fullScreen} />,
-    jpeg: <Image_Viewer content={data.content} fullScreen={fullScreen} />,
-    jpg: <Image_Viewer content={data.content} fullScreen={fullScreen} />,
-    mp4: <Video_Player content={data.content} fullScreen={fullScreen} />,
-    mp3: <Audio_Player content={data.content} fullScreen={fullScreen} />,
-    mpeg: <Audio_Player content={data.content} fullScreen={fullScreen} />,
+    'png, jpeg, jpg, bmp': <Image_Viewer content={data.content} fullScreen={fullScreen} />,
+    'mp4, mkv': <Video_Player id={id} content={data.content} fullScreen={fullScreen} />,
+    'mp3, mpeg': <Audio_Player id={id} content={data.content} fullScreen={fullScreen} />,
     txt: <TextViewer content={data.content} editableBy={data.editableBy} path={data.path} fullScreen={fullScreen} />,
-  };
+  });
 
   const configureComponent = (data) => {
+    console.log(componentsMap);
+    if (Array.isArray(componentsMap[data.type])) {
+      return setComponent(componentsMap[data.type][0][data.name]);
+    }
     setComponent(componentsMap[data.type] || null);
   };
 

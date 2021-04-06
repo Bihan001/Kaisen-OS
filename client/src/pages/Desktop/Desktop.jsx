@@ -18,10 +18,14 @@ import { Folder, File } from '../../Classes/Classes';
 
 import { handleIcon } from '../../Utility/functions';
 
+import Notification from '../../Components/notification';
+import { NotificationContext } from '../../Contexts/NotificationContext';
+
 const Desktop = (props) => {
   const { user, setUser } = useContext(AuthContext);
   const { theme, ChangeTheme } = useContext(ThemeContext);
   const { dirPaths, UpdatedirPaths } = useContext(DirectoryContext);
+  const { notifications, removeNotification } = useContext(NotificationContext);
 
   const [openedfiles, setopenedfiles] = useState({});
   const [openedfolders, setopenedfolders] = useState({});
@@ -145,6 +149,18 @@ const Desktop = (props) => {
 
   return (
     <div className="Desktop">
+      <div style={{ position: 'absolute', right: 5, bottom: 60, zIndex: maxValue }}>
+        {Object.keys(notifications).map((key) => (
+          <Notification
+            key={key}
+            id={key}
+            type={notifications[key].type}
+            heading={notifications[key].heading}
+            description={notifications[key].description}
+            removeNotification={removeNotification}
+          />
+        ))}
+      </div>
       <button onClick={logout}>Logout</button>
       {/* <div className="bg-video">
                  <video className="bg-video-content" autoPlay muted loop>

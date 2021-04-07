@@ -376,7 +376,7 @@ const File_Explorer = ({
 
             if (obj.name === name && obj.type == 'folder') {
               console.log('FOlder with Same Name already exists!!');
-              addNotification('error', 'Error', 'Folder name already exists');
+              addNotification('warning', 'Warning', 'Folder name already exists');
               success = false;
               break;
             }
@@ -414,12 +414,12 @@ const File_Explorer = ({
                 obj[newFolder_ClassObj.path] = newFolder_ClassObj;
                 console.log('the new dirPath is : ', obj);
                 UpdatedirPaths(obj);
-
+                addNotification('success', 'Success', 'Folder Created !');
                 //=============================
 
                 console.log(res);
               })
-              .catch((err) => console.log(err));
+              .catch((err) => addNotification('error', 'Error', err.message));
           }
         } else {
           const blankTextFile = new Blob([''], { type: 'text/plain;charset=utf-8' });
@@ -465,14 +465,19 @@ const File_Explorer = ({
                     UpdatedirPaths(obj);
                     htmlElement = document.getElementById(id + 'Progress');
                     htmlElement.style.width = '0%';
+                    addNotification('success', 'Success', 'Text File Created !');
                   })
-                  .catch((err) => console.log(err));
+                  .catch((err) => {
+                    addNotification('error', 'Error', err.message);
+                  });
               });
             });
         }
       } else {
-        console.log('Enter a valid name');
+        addNotification('warning', 'Warning', 'Enter a valid Name');
       }
+    } else {
+      addNotification('warning', 'Warning', 'You are Not Authorized !');
     }
   };
 
@@ -487,7 +492,8 @@ const File_Explorer = ({
           break;
         }
       }
-      if (!isPresent && !name.includes('.')) {
+      var reg = /[$&+,:;=?@#|'<>.^*()%!-]/;
+      if (!isPresent && !name.includes('.') && !reg.test(name)) {
         var newEditableBy = '';
         if (Folder.editableBy.id === user.id) newEditableBy = user.id;
         else if (Folder.path == 'root#public') newEditableBy = user.id;
@@ -521,11 +527,14 @@ const File_Explorer = ({
             );
             obj[newFile_ClassObj.path] = newFile_ClassObj;
             UpdatedirPaths(obj);
+            addNotification('success', 'Success', 'WebApp Created !');
           })
           .catch((err) => console.log(err));
+      } else {
+        addNotification('warning', 'Warning', 'Enter a Valid Name !');
       }
     } else {
-      console.log('Not Authorized!');
+      addNotification('warning', 'Warning', 'You are Not Authorized !');
     }
   };
   const handleCreateType3 = () => {
@@ -543,7 +552,8 @@ const File_Explorer = ({
           }
         }
         console.log('the file is :', file);
-        if (!isPresent) {
+        var reg = /[$&+,:;=?@#|'<>.^*()%!-]/;
+        if (!isPresent && !reg.test(name)) {
           const fileType = findFileType(file.type); // application/pdf, text/html, video/mp4, image/jpeg etc.
           if (!checkFileType(fileType)) return alert('File type not supported');
           const fileSize = file.size; // number - in bytes
@@ -556,11 +566,11 @@ const File_Explorer = ({
             uploadTask: storageRef.child(Date.now().toString() + '_' + file.name).put(file, metadata),
           });
         } else {
-          console.log('Already Present');
+          addNotification('warning', 'Warning', 'Enter a Valid Name !');
         }
       }
     } else {
-      console.log('Not Authorized');
+      addNotification('warning', 'Warning', 'Not Authorized !');
     }
   };
 
@@ -602,8 +612,11 @@ const File_Explorer = ({
         UpdatedirPaths(obj);
         htmlElement = document.getElementById(id + 'Progress');
         htmlElement.style.width = '0%';
+        addNotification('success', 'Success', 'File Created !');
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        addNotification('error', 'Error', err.message);
+      });
   };
 
   const toggleDeleteIcon = () => {
@@ -643,7 +656,7 @@ const File_Explorer = ({
 
       if (obj) {
         obj.children.map((name) => {
-          childType = fileChecker.test(name) ? 'file' : 'folder';
+          childType = name.includes('.') ? 'file' : 'folder';
 
           recursiveDelete(obj.path + '#' + name, childType, object);
         });
@@ -691,7 +704,7 @@ const File_Explorer = ({
           let object = clone(dirPaths);
           var type = '';
           paths.map(async (path) => {
-            type = fileChecker.test(path) ? 'file' : 'folder';
+            type = path.includes('.') ? 'file' : 'folder';
 
             await recursiveDelete(path, type, object);
           });
@@ -699,10 +712,13 @@ const File_Explorer = ({
           object[Folder.path].children = latestChildrenArray;
           console.log('new obj is : ', object);
           UpdatedirPaths(object);
+          addNotification('success', 'Success', 'Successfully Deleted !');
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+          addNotification('error', 'Error', err.message);
+        });
     } else {
-      console.log('You re not Authorized to delete the data');
+      addNotification('error', 'Error', 'Not Authorized !');
     }
 
     //==================================

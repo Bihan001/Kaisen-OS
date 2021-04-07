@@ -5,7 +5,7 @@ const router = express.Router();
 
 router.get('/', filesController.rootFileController);
 
-router.post('/createFile', requireAuth, filesController.createFile);
+router.post('/createFile', filesController.createFile);
 
 router.post('/getFile', requireAuth, filesController.getFile);
 

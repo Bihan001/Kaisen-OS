@@ -7,14 +7,14 @@ const router = express.Router();
 
 router.get('/', foldersController.rootFolderController);
 
-router.post('/createRoot', requireAuth, foldersController.createRootFolder);
+router.post('/createRoot', foldersController.createRootFolder);
 
 router.get('/getRootSubFolders', requireAuth, foldersController.getRootSubFolders);
 
 // Add the requireAuth middleware here when required, currently removed for debugging from postman
-router.post('/createFolder', requireAuth, foldersController.createFolderAtPath);
+router.post('/createFolder', foldersController.createFolderAtPath);
 
-router.post('/getFolderAndParents', requireAuth, foldersController.getFolderAndParentsByPath);
+router.post('/getFolderAndParents', foldersController.getFolderAndParentsByPath);
 
 router.post('/getFilesAndFolders', requireAuth, foldersController.getFilesAndFolders);
 

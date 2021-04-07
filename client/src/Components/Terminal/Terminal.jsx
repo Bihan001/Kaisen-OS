@@ -9,6 +9,7 @@ import './Terminal.scss';
 import { DirectoryContext } from '../../Contexts/DirectoryContext/DirectoryContext';
 import { AuthContext } from '../../Contexts/AuthContext';
 import { ThemeContext } from '../../Contexts/ThemeContext/ThemeContext';
+import { NotificationContext } from '../../Contexts/NotificationContext';
 
 //import fullscreen_icon from "../assets/fullscreen.svg";
 
@@ -23,6 +24,7 @@ const ReactTerminal = ({ id, fullScreen }) => {
   const { dirPaths, UpdatedirPaths } = useContext(DirectoryContext);
   const { user } = useContext(AuthContext);
   const { theme } = useContext(ThemeContext);
+  const { addNotification } = useContext(NotificationContext);
 
   const [Folder, setFolder] = useState(null);
   const [FolderContents, setFolderContents] = useState([]);
@@ -277,7 +279,7 @@ const ReactTerminal = ({ id, fullScreen }) => {
           obj = folderContents[i];
 
           if (obj.name === name && obj.type == 'folder') {
-            console.log('FOlder with Same Name already exists!!');
+            addNotification('warning', 'Warning', 'Folder With Same Name Exists in this Directory !');
             success = false;
 
             break;
@@ -317,13 +319,18 @@ const ReactTerminal = ({ id, fullScreen }) => {
               obj[newFolder_ClassObj.path] = newFolder_ClassObj;
               console.log('the new dirPath is : ', obj, 'and the newfolder is : ', obj[newFolder_ClassObj.path]);
               UpdatedirPaths(obj);
+              addNotification('success', 'Success', 'Folder Created !');
             } else {
             }
           } catch (err) {
-            console.log(err);
+            addNotification('error', 'Error', err.message);
           }
         }
+      } else {
+        addNotification('warning', 'Warning', 'Enter A Valid Name !');
       }
+    } else {
+      addNotification('warning', 'Warning', 'Not Auhthorized !');
     }
   };
 
@@ -386,13 +393,16 @@ const ReactTerminal = ({ id, fullScreen }) => {
             object[folder.path].children = latestChildrenArray;
             console.log('new obj is : ', object);
             UpdatedirPaths(object);
+            addNotification('success', 'Success', 'Successfully Deleted !');
           })
-          .catch((err) => console.log(err));
+          .catch((err) => {
+            addNotification('error', 'Error', err.message);
+          });
       } else {
         console.log('OPPS an error occured!');
       }
     } else {
-      console.log('Deletion Not Authorized!');
+      addNotification('warning', 'Warning', 'Not Auhthorized !');
     }
   };
   //=====================================

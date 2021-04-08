@@ -70,3 +70,8 @@ export const typeArray = [
     icon: 'https://res.cloudinary.com/drolmjcot/image/upload/v1615477432/add-file_whluwf.png',
   },
 ];
+
+export const wallpapers = [
+  'https://res.cloudinary.com/drolmjcot/image/upload/q_auto:good/v1613837593/wallpaper_goadao.jpg',
+  'https://res.cloudinary.com/drolmjcot/image/upload/q_auto:good/v1617892120/ink_clots_abstraction_203059_1920x1200_tgyguh.jpg',
+];

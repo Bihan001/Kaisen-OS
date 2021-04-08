@@ -14,7 +14,9 @@ import Particular_File from '../../Components/File/File';
 import File_Explorer from '../../Components/File_Explorer/File_Explorer';
 import { backendUrl } from '../../backendUrl';
 
-import { Folder, File } from '../../Classes/Classes';
+import arrow from '../../assets/icons/arrow.png';
+
+import { Folder, File, ClassFolder, ClassFile } from '../../Classes/Classes';
 
 import { handleIcon } from '../../Utility/functions';
 
@@ -49,10 +51,12 @@ const Desktop = (props) => {
   // var folderMaxZindex=0;
   //=================
 
+  const [wallpapers, setWallpapers] = useState([]);
+  const [presentWallpaper, setPresentWallpaper] = useState(0);
   //taskbar States============================================
   //const [showtaskbarfloatingcontents,setshowtaskbarfloatingcontents]=useState(false);
   const [showcolorpalatte, setshowcolorpalatte] = useState(false);
-  const [showmenu, setshowmenu] = useState(true);
+  const [showmenu, setshowmenu] = useState(false);
   //taskbar states==============================
 
   /* useEffect(() => {
@@ -66,21 +70,64 @@ const Desktop = (props) => {
       method: 'post',
       url: `${backendUrl}/api/folders/getFilesAndFolders`,
       data: {
-        filePaths: ['root#leetcode.txt'],
-        folderPaths: [],
+        filePaths: ['root#terminal.exe', 'root#public#rock#newTextFile.txt', 'root#demo.txt', 'root#demo2.txt'],
+        folderPaths: ['root#public', 'root#ankur', 'root#bihan'],
       },
     })
       .then((res) => {
         console.log('/getFilesAndFolders : ', res);
+
         setStartMenuContents({
-          folders: res.data.data.folderResultList,
-          files: res.data.data.fileResultList,
+          folders: res.data.data.folderResultList.map((data) => {
+            return new ClassFolder(
+              data.name,
+              data.dateCreated,
+              data.dateModified,
+              data.editableBy,
+              data.path,
+              data.type,
+              data.children
+            );
+          }),
+          files: res.data.data.fileResultList.map((data) => {
+            return new ClassFile(
+              data.name,
+              data.dateCreated,
+              data.dateModified,
+              data.editableBy,
+              data.path,
+              data.type,
+              data.content
+            );
+          }),
         });
       })
       .catch((err) => {
         console.log(err);
       });
+
+    axios({
+      method: 'GET',
+      url: `${backendUrl}/api/auth/getAllWallpapers`,
+    })
+      .then((res) => {
+        setWallpapers(res.data.data);
+      })
+      .catch((err) => console.log(err));
   }, []);
+
+  useEffect(() => {
+    if (wallpapers && user) {
+      if (user.wallpaper) {
+        for (var i in wallpapers) {
+          if (wallpapers[i].id === user.wallpaper) {
+            setPresentWallpaper(i);
+            break;
+          }
+        }
+      } else setPresentWallpaper(0);
+    }
+  }, [wallpapers, user]);
 
   //Functions
   const handleOpen = (data) => {
@@ -145,10 +192,31 @@ const Desktop = (props) => {
     }
   };
 
+  const handleWallpaperLeft = () => {
+    let index = presentWallpaper;
+    if (wallpapers[index - 1]) setPresentWallpaper(index - 1);
+    else setPresentWallpaper(wallpapers.length - 1);
+  };
+  const handleWallpaperRight = () => {
+    let index = presentWallpaper;
+    if (wallpapers[index + 1]) setPresentWallpaper(index + 1);
+    else setPresentWallpaper(0);
+  };
+
   //==========
 
   return (
-    <div className="Desktop">
+    <div
+      className="Desktop"
+      style={
+        wallpapers.length > 0
+          ? {
+              backgroundImage: `url(${wallpapers[presentWallpaper].image})`,
+              backgroundPosition: 'center',
+              backgroundSize: 'cover',
+            }
+          : {}
+      }>
       <div style={{ position: 'absolute', right: 5, bottom: 60, zIndex: maxValue }}>
         {Object.keys(notifications).map((key) => (
           <Notification
@@ -253,9 +321,42 @@ const Desktop = (props) => {
                </div>
            )} */}
 
-      {false && (
+      {showmenu && user && (
         <div className="Start_Menu " style={{ backgroundColor: theme, zIndex: maxValue }}>
-          start Menu
+          <div className="Info_n_Content">
+            <div className="User_Info">
+              <div className="dp_div">
+                <img src={user.displayImage} />
+              </div>
+              <div className="User_Name">{user.name}</div>
+            </div>
+            <div className="StartMenu__Content StartMenu__Content__Scrollable">
+              {startMenuContents.folders.map((content) => (
+                <div className="StartMenu__Content__Data" onClick={() => handleOpen(content)}>
+                  <img src={handleIcon(content)} />
+                  <div>{content.name}</div>
+                </div>
+              ))}
+              {startMenuContents.files.map((content) => (
+                <div className="StartMenu__Content__Data" onClick={() => handleOpen(content)}>
+                  <img src={handleIcon(content)} />
+                  <div>{content.name}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="Wallpaper_n_Widgets">
+            <div className="Wallpaper_n_Widgets__Top">
+              <div>{wallpapers.length > 0 && <img src={wallpapers[presentWallpaper].image} />}</div>
+              <div className="Left" onClick={handleWallpaperLeft}>
+                <img src={arrow} />
+              </div>
+              <div className="Right" onClick={handleWallpaperRight}>
+                <img src={arrow} />
+              </div>
+            </div>
+            <div className="Wallpaper_n_Widgets__Bottom">Bottom</div>
+          </div>
         </div>
       )}
 

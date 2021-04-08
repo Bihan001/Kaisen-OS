@@ -51,7 +51,8 @@ const Taskbar = ({
           className="Kaisen_Button"
           style={buttonthemes}
           onMouseEnter={() => setbuttonthemes({ backgroundColor: theme })}
-          onMouseLeave={() => setbuttonthemes({ backgroundColor: 'transparent' })}>
+          onMouseLeave={() => setbuttonthemes({ backgroundColor: 'transparent' })}
+          onClick={togglemenu}>
           <img src={k} />
         </div>
 

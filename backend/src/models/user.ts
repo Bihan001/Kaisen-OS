@@ -30,6 +30,11 @@ const userSchema = new mongoose.Schema(
       type: Date,
       default: Date.now,
     },
+    wallpaper: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Wallpaper',
+      default: null,
+    },
   },
   {
     toJSON: {

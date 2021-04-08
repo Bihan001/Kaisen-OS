@@ -3,7 +3,7 @@
   height: 100vh;
   // border:2px solid red;
   position: relative;
-  background: url(https://res.cloudinary.com/drolmjcot/image/upload/q_auto:good/v1613837593/wallpaper_goadao.jpg);
+  // background: url(https://res.cloudinary.com/drolmjcot/image/upload/q_auto:good/v1613837593/wallpaper_goadao.jpg);
   background-position: center;
   background-size: cover;
 
@@ -68,10 +68,140 @@
 .Start_Menu {
   position: absolute;
   height: 80vh;
-  width: 19.6rem;
+  width: 90rem;
   bottom: 4.8rem;
   left: 0;
-  background-color: red;
+  display: flex;
+  border-radius: 0 4px 0 0;
+  box-shadow: 0 22px 70px 4px rgba(0, 0, 0, 0.56);
+  .Info_n_Content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    //border: 2px solid red;
+    .User_Info {
+      .dp_div {
+        //border: 2px solid brown;
+        display: flex;
+        justify-content: center;
+        padding: 1rem;
+        img {
+          width: 7rem;
+          height: 7rem;
+          border-radius: 50%;
+          border: 3px solid white;
+        }
+      }
+      .User_Name {
+        text-align: center;
+        font-weight: bold;
+        font-size: 2.6rem;
+        color: black;
+      }
+    }
+    .StartMenu__Content {
+      max-height: 35rem;
+      height: fit-content;
+      margin-left: 2rem;
+      margin-bottom: 2rem;
+      &__Data {
+        //border: 2px solid green;
+        display: flex;
+        padding: 0.5rem;
+        font-size: 2rem;
+        color: black;
+        font-weight: bold;
+        margin-bottom: 1rem;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        &:hover {
+          background-color: rgba(236, 240, 241, 0.7);
+        }
+
+        div,
+        img {
+          margin-right: 1.5rem;
+        }
+        img {
+          width: 4rem;
+          height: 4rem;
+        }
+        div {
+        }
+      }
+    }
+  }
+  .Wallpaper_n_Widgets {
+    flex: 2;
+    margin-left: 0.5rem;
+    // border-top: 9px solid rgba(41, 45, 48, 0.2);
+    // border-bottom: 9px solid rgba(41, 45, 48, 0.2);
+    // border-left: 9px solid rgba(41, 45, 48, 0.3);
+    // border-radius: 0 4px 0 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    div {
+      // border: 2px solid red;
+    }
+    &__Top {
+      position: relative;
+      // max-height: 50%;
+      margin: 1rem;
+      margin-top: 2rem;
+      div:first-child {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+        img {
+          width: 46rem;
+          height: 28rem;
+          border-radius: 4px;
+          opacity: 0.9;
+        }
+      }
+      .Left {
+        position: absolute;
+        top: 50%;
+        left: 0;
+        transform: rotate(180deg);
+        cursor: pointer;
+        img {
+          width: 3rem;
+          height: 3rem;
+        }
+        transition: all 0.3s ease;
+        &:hover {
+          transform: rotate(180deg) scale(1.05);
+        }
+        &:active {
+          transform: rotate(180deg) scale(0.8);
+        }
+      }
+      .Right {
+        position: absolute;
+        // background-color: white;
+        top: 50%;
+        right: 0;
+        cursor: pointer;
+        img {
+          width: 3rem;
+          height: 3rem;
+        }
+        transition: all 0.3s ease;
+        &:hover {
+          transform: scale(1.05);
+        }
+        &:active {
+          transform: scale(0.8);
+        }
+      }
+    }
+    &__Bottom {
+      max-height: 50%;
+    }
+  }
 }
 
 .Color_Palatte {
@@ -125,5 +255,26 @@
     .Grey {
       background-color: #abb2b9;
     }
+  }
+}
+.StartMenu__Content__Scrollable {
+  //border: 2px solid purple;
+  margin-left: 0.3rem;
+  margin-bottom: 0.5rem;
+  overflow-y: auto;
+  &::-webkit-scrollbar {
+    width: 5px;
+    padding-right: 1px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: 5px;
+    background-color: #9ba1a4;
+    cursor: pointer;
+    width: 100%;
   }
 }

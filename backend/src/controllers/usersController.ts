@@ -30,10 +30,13 @@ export const sessionLogin = catchAsync(async (req: Request, res: Response) => {
     chkUser = new User({ _id: idResults.uid, name: user.displayName, email: user.email, displayImage: user.photoURL });
     await chkUser.save();
   }
+  chkUser.populate('wallpaper');
   return res.status(200).json(SuccessResponse(chkUser, 'User logged in'));
 });
 
 export const getProfile = catchAsync(async (req: Request, res: Response) => {
+  if (req.user) return res.status(200).json(SuccessResponse({ user: req.user.populate('wallpaper') }));
+
   return res.status(200).json(SuccessResponse({ user: req.user }));
 });
 

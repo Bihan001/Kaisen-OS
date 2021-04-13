@@ -22,20 +22,18 @@ import { handleIcon } from '../../Utility/functions';
 
 import Notification from '../../Components/notification';
 import { NotificationContext } from '../../Contexts/NotificationContext';
+import StartMenu from './start-menu';
+import { WallpaperContext } from '../../Contexts/WallpaperContext';
 
 const Desktop = (props) => {
   const { user, setUser } = useContext(AuthContext);
   const { theme, ChangeTheme } = useContext(ThemeContext);
+  const { changeWallpaper } = useContext(WallpaperContext);
   const { dirPaths, UpdatedirPaths } = useContext(DirectoryContext);
   const { notifications, removeNotification } = useContext(NotificationContext);
 
   const [openedfiles, setopenedfiles] = useState({});
   const [openedfolders, setopenedfolders] = useState({});
-
-  const [startMenuContents, setStartMenuContents] = useState({
-    folders: [],
-    files: [],
-  });
 
   /*const [folderZindex,setfolderZindex]=useState(0);
   const [fileZindex,setfileZindex]=useState(0);*/
@@ -52,11 +50,11 @@ const Desktop = (props) => {
   //=================
 
   const [wallpapers, setWallpapers] = useState([]);
-  const [presentWallpaper, setPresentWallpaper] = useState(0);
+  const [presentWallpaper, setPresentWallpaper] = useState(-1);
   //taskbar States============================================
   //const [showtaskbarfloatingcontents,setshowtaskbarfloatingcontents]=useState(false);
   const [showcolorpalatte, setshowcolorpalatte] = useState(false);
-  const [showmenu, setshowmenu] = useState(false);
+  const [showMenu, setshowmenu] = useState(false);
   //taskbar states==============================
 
   /* useEffect(() => {
@@ -66,46 +64,6 @@ const Desktop = (props) => {
   }, []);*/
 
   useEffect(() => {
-    axios({
-      method: 'post',
-      url: `${backendUrl}/api/folders/getFilesAndFolders`,
-      data: {
-        filePaths: ['root#terminal.exe', 'root#public#rock#newTextFile.txt', 'root#demo.txt', 'root#demo2.txt'],
-        folderPaths: ['root#public', 'root#ankur', 'root#bihan'],
-      },
-    })
-      .then((res) => {
-        console.log('/getFilesAndFolders : ', res);
-
-        setStartMenuContents({
-          folders: res.data.data.folderResultList.map((data) => {
-            return new ClassFolder(
-              data.name,
-              data.dateCreated,
-              data.dateModified,
-              data.editableBy,
-              data.path,
-              data.type,
-              data.children
-            );
-          }),
-          files: res.data.data.fileResultList.map((data) => {
-            return new ClassFile(
-              data.name,
-              data.dateCreated,
-              data.dateModified,
-              data.editableBy,
-              data.path,
-              data.type,
-              data.content
-            );
-          }),
-        });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-
     axios({
       method: 'GET',
       url: `${backendUrl}/api/auth/getAllWallpapers`,
@@ -119,9 +77,9 @@ const Desktop = (props) => {
   useEffect(() => {
     if (wallpapers && user) {
       if (user.wallpaper) {
-        for (var i in wallpapers) {
+        for (let i in wallpapers) {
           if (wallpapers[i].id === user.wallpaper) {
-            setPresentWallpaper(i);
+            setPresentWallpaper(+i);
             break;
           }
         }
@@ -129,24 +87,23 @@ const Desktop = (props) => {
     }
   }, [wallpapers, user]);
 
+  useEffect(() => {
+    if (presentWallpaper >= 0 && wallpapers.length > 0 && user) {
+      changeWallpaper(wallpapers[presentWallpaper].image);
+    }
+  }, [presentWallpaper]);
+
   //Functions
   const handleOpen = (data) => {
     opened_dirPaths = {};
+    const fileTypes = ['exe', 'txt', 'mp3', 'mp4', 'webapp', 'pdf', 'mpeg'];
     if (data.type == 'folder') {
       //this works
       opened_dirPaths = clone(openedfolders);
       newId = uuid();
       opened_dirPaths[newId] = data;
       setopenedfolders(opened_dirPaths);
-    } else if (
-      data.type == 'exe' ||
-      data.type == 'txt' ||
-      data.type == 'mp3' ||
-      data.type == 'mp4' ||
-      data.type == 'webapp' ||
-      data.type == 'pdf' ||
-      data.type == 'mpeg'
-    ) {
+    } else if (fileTypes.includes(data.type)) {
       opened_dirPaths = clone(openedfiles);
       newId = uuid();
       opened_dirPaths[newId] = data;
@@ -160,16 +117,6 @@ const Desktop = (props) => {
   const updatefolderarray = (dirObj) => {
     // console.log('asdasd');
     setopenedfolders(dirObj);
-  };
-
-  const logout = async () => {
-    try {
-      const res = await axios.post('http://localhost:5000/api/auth/sessionLogout');
-      setUser(null);
-      console.log(res);
-    } catch (err) {
-      console.log(err);
-    }
   };
 
   const handleZindex = (id, div) => {
@@ -192,16 +139,16 @@ const Desktop = (props) => {
     }
   };
 
-  const handleWallpaperLeft = () => {
-    let index = presentWallpaper;
-    if (wallpapers[index - 1]) setPresentWallpaper(index - 1);
-    else setPresentWallpaper(wallpapers.length - 1);
-  };
-  const handleWallpaperRight = () => {
-    let index = presentWallpaper;
-    if (wallpapers[index + 1]) setPresentWallpaper(index + 1);
-    else setPresentWallpaper(0);
-  };
+  useEffect(() => {
+    const delayDebounceFn = setTimeout(async () => {
+      if (presentWallpaper !== -1 && wallpapers.length > 0) {
+        const res = await axios.put(`${backendUrl}/api/auth/saveWallpaper/${wallpapers[presentWallpaper].id}`);
+        console.log(res);
+      }
+    }, 1500);
+
+    return () => clearTimeout(delayDebounceFn);
+  }, [presentWallpaper]);
 
   //==========
 
@@ -209,7 +156,7 @@ const Desktop = (props) => {
     <div
       className="Desktop"
       style={
-        wallpapers.length > 0
+        wallpapers.length > 0 && presentWallpaper >= 0
           ? {
               backgroundImage: `url(${wallpapers[presentWallpaper].image})`,
               backgroundPosition: 'center',
@@ -229,7 +176,6 @@ const Desktop = (props) => {
           />
         ))}
       </div>
-      <button onClick={logout}>Logout</button>
       {/* <div className="bg-video">
                  <video className="bg-video-content" autoPlay muted loop>
                     <source src={bgvideo} type="video/mp4"/>
@@ -321,7 +267,20 @@ const Desktop = (props) => {
                </div>
            )} */}
 
-      {showmenu && user && (
+      <StartMenu
+        user={user}
+        setUser={setUser}
+        showMenu={showMenu}
+        wallpapers={wallpapers}
+        presentWallpaper={presentWallpaper}
+        setPresentWallpaper={setPresentWallpaper}
+        handleOpen={handleOpen}
+        handleIcon={handleIcon}
+        maxZindex={maxValue}
+        theme={theme}
+      />
+
+      {/* {showMenu && user && (
         <div className="Start_Menu " style={{ backgroundColor: theme, zIndex: maxValue }}>
           <div className="Info_n_Content">
             <div className="User_Info">
@@ -331,14 +290,14 @@ const Desktop = (props) => {
               <div className="User_Name">{user.name}</div>
             </div>
             <div className="StartMenu__Content StartMenu__Content__Scrollable">
-              {startMenuContents.folders.map((content) => (
-                <div className="StartMenu__Content__Data" onClick={() => handleOpen(content)}>
+              {startMenuContents.folders.map((content, idx) => (
+                <div key={idx} className="StartMenu__Content__Data" onClick={() => handleOpen(content)}>
                   <img src={handleIcon(content)} />
                   <div>{content.name}</div>
                 </div>
               ))}
-              {startMenuContents.files.map((content) => (
-                <div className="StartMenu__Content__Data" onClick={() => handleOpen(content)}>
+              {startMenuContents.files.map((content, idx) => (
+                <div key={idx} className="StartMenu__Content__Data" onClick={() => handleOpen(content)}>
                   <img src={handleIcon(content)} />
                   <div>{content.name}</div>
                 </div>
@@ -358,7 +317,7 @@ const Desktop = (props) => {
             <div className="Wallpaper_n_Widgets__Bottom">Bottom</div>
           </div>
         </div>
-      )}
+      )} */}
 
       {showcolorpalatte && (
         <div className="Color_Palatte" style={{ backgroundColor: theme, zIndex: maxValue }}>
@@ -394,7 +353,7 @@ const Desktop = (props) => {
       )}
       <Taskbar
         togglecolorpalatte={() => setshowcolorpalatte(!showcolorpalatte)}
-        togglemenu={() => setshowmenu(!showmenu)}
+        togglemenu={() => setshowmenu(!showMenu)}
         filearray={openedfiles}
         updatefilearray={updatefilearray}
         folderarray={openedfolders}

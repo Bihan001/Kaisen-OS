@@ -73,3 +73,17 @@ export const getAllThemes = catchAsync(async (req: Request, res: Response) => {
   const themes = await Theme.find({});
   return res.status(200).json(SuccessResponse(themes, 'Fetched all themes'));
 });
+
+export const saveThemeForUser = catchAsync(async (req: Request, res: Response) => {
+  const themeId: string = req.params.id;
+  if (!req.user) throw new CustomError('Not authenticated', 403);
+  await User.findByIdAndUpdate(req.user.id, { theme: themeId });
+  return res.status(200).json(SuccessResponse({}, 'Saved theme'));
+});
+
+export const saveWallpaperForUser = catchAsync(async (req: Request, res: Response) => {
+  const wallpaperId: string = req.params.id;
+  if (!req.user) throw new CustomError('Not authenticated', 403);
+  await User.findByIdAndUpdate(req.user.id, { wallpaper: wallpaperId });
+  return res.status(200).json(SuccessResponse({}, 'Saved wallpaper'));
+});

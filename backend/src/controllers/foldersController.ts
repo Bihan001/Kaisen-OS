@@ -92,15 +92,10 @@ export const createFolderAtPath = catchAsync(async (req: Request, res: Response)
 });
 
 export const getFilesAndFolders = catchAsync(async (req: Request, res: Response) => {
-  console.log('getFilesAndFolders route!!');
   const folderPaths: string[] = req.body.folderPaths;
   const filePaths: string[] = req.body.filePaths;
   if (!folderPaths || !filePaths) throw new CustomError('folder paths array required', 400);
-  const folderResultList = await Folder.find({
-    _id: { $in: folderPaths },
-  }).populate('editableBy');
-  const fileResultList = await File.find({
-    _id: { $in: filePaths },
-  }).populate('editableBy');
-  return res.status(200).json(SuccessResponse({ folderResultList, fileResultList }));
+  const folderResultList = await Folder.find({ _id: { $in: folderPaths } }).populate('editableBy');
+  const fileResultList = await File.find({ _id: { $in: filePaths } }).populate('editableBy');
+  return res.status(200).json(SuccessResponse({ folderResultList, fileResultList }, 'Fetched files and folders'));
 });

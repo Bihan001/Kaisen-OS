@@ -35,6 +35,10 @@ const userSchema = new mongoose.Schema(
       ref: 'Wallpaper',
       default: null,
     },
+    theme: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Theme',
+    },
   },
   {
     toJSON: {

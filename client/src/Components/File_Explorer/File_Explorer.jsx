@@ -20,6 +20,7 @@ import delete_icon from '../../assets/icons/delete.png';
 
 import { motion } from 'framer-motion';
 import { clone } from 'ramda';
+import FrostedGlass from '../../Utility/frosted-glass';
 
 const File_Explorer = ({
   data,
@@ -780,11 +781,12 @@ const File_Explorer = ({
               dragConstraints={!fullScreen ? { left: -500, right: 500, top: -30, bottom: 500 } : {}}
               dragElastic={0.1}>
               <div
-                className="Topbar"
+                className="Topbar Frosted_Glass"
                 onFocus={() => setdraggable(true)}
                 onBlur={() => setdraggable(false)}
-                style={{ backgroundColor: theme }}
+                id={'topbar' + id}
                 tabIndex="-1">
+                <FrostedGlass frostId={'topbar' + id} opacityHex="99" showMargin={false} />
                 <div className="Topbar__Zindex_handler" onClick={FolderhandleZindex}></div>
                 <div className="Window_Buttons">
                   <div className="Green" onClick={handleminizestatus}></div>

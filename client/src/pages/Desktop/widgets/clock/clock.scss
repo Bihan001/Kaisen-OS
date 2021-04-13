@@ -1,0 +1,16 @@
+#clock {
+  text-align: center;
+  color: black;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  .time {
+    font-size: 4rem;
+    letter-spacing: 3px;
+    margin-top: -0.3rem;
+  }
+  .date {
+    color: black;
+    letter-spacing: 0.1em;
+    font-size: 1.5rem;
+  }
+}

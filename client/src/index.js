@@ -8,6 +8,7 @@ import { DirectoryProvider } from './Contexts/DirectoryContext/DirectoryContext'
 import { BrowserRouter } from 'react-router-dom';
 import axios from 'axios';
 import NotificationProvider from './Contexts/NotificationContext';
+import { WallpaperProvider } from './Contexts/WallpaperContext';
 
 axios.defaults.withCredentials = true;
 
@@ -15,11 +16,13 @@ ReactDOM.render(
   <BrowserRouter>
     <AuthProvider>
       <ThemeProvider>
-        <DirectoryProvider>
-          <NotificationProvider>
-            <App />
-          </NotificationProvider>
-        </DirectoryProvider>
+        <WallpaperProvider>
+          <DirectoryProvider>
+            <NotificationProvider>
+              <App />
+            </NotificationProvider>
+          </DirectoryProvider>
+        </WallpaperProvider>
       </ThemeProvider>
     </AuthProvider>
   </BrowserRouter>,

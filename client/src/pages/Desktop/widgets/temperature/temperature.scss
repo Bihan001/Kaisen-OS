@@ -1,0 +1,75 @@
+.thermometer {
+  display: flex;
+  margin-left: 6.5rem;
+  margin-top: 4.3rem;
+  width: 50%;
+  & .glass {
+    background: #e5e5e5;
+    border-radius: 100px 100px 0 0;
+    height: 200px;
+    // padding: 5px;
+    position: relative;
+    width: 15px;
+    display: flex;
+    justify-content: center;
+  }
+  & .amount {
+    background: #f34e54;
+    border-radius: 100px;
+    display: block;
+    width: 7.5px;
+    position: absolute;
+    bottom: -5px;
+    z-index: 100;
+    transition: all 0.3s ease;
+  }
+  & strong {
+    text-align: center;
+    height: fit-content;
+    color: black;
+  }
+  & .total-temp {
+    font-size: 4rem;
+    align-self: flex-end;
+    margin-bottom: 4rem;
+    margin-left: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+.bulb {
+  background: #e5e5e5;
+  border-radius: 100px;
+  display: flex;
+  justify-content: center;
+  // padding: 5px;
+  position: relative;
+  top: -20px;
+  right: 8px;
+  width: 30px;
+  height: 30px;
+  & > div {
+    display: flex;
+    align-items: center;
+  }
+  & .red-circle {
+    background: #f34e54;
+    border-radius: 100px;
+    display: block;
+    height: 25px;
+    width: 25px;
+  }
+  & .filler {
+    background: #f34e54;
+    border-radius: 100px 100px 0 0;
+    display: block;
+    height: 30px;
+    width: 10px;
+    position: relative;
+    top: -30px;
+    right: -8px;
+    z-index: 30;
+  }
+}

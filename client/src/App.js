@@ -12,11 +12,6 @@ import './App.css';
 const App = () => {
   const { user, setUser } = useContext(AuthContext);
   useEffect(() => {
-    fetch(
-      'https://firebasestorage.googleapis.com/v0/b/mern-authentication-6634c.appspot.com/o/test.txt?alt=media&token=d65533ec-227a-4e2b-8e4f-25dfb36801d1'
-    )
-      .then((res) => res.text())
-      .then((text) => console.log(text));
     axios
       .get('http://localhost:5000/api/auth/profile')
       .then((res) => setUser(res.data.data.user))

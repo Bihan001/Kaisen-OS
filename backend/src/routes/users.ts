@@ -21,4 +21,8 @@ router.post('/addWallpaper', usersController.addWallpaper);
 
 router.post('/addTheme', usersController.addTheme);
 
+router.put('/saveTheme/:id', requireAuth, usersController.saveThemeForUser);
+
+router.put('/saveWallpaper/:id', requireAuth, usersController.saveWallpaperForUser);
+
 export default router;

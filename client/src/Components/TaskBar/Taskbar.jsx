@@ -6,6 +6,8 @@ import k from '../../assets/icons/k.png';
 import { handleIcon } from '../../Utility/functions';
 
 import { ThemeContext } from '../../Contexts/ThemeContext/ThemeContext';
+import FrostedGlass from '../../Utility/frosted-glass';
+import Clock from '../../pages/Desktop/widgets/clock';
 
 const Taskbar = ({
   togglecolorpalatte,
@@ -45,7 +47,8 @@ const Taskbar = ({
   };
 
   return (
-    <div className="Taskbar Frosted_Glass" style={{ zIndex: zIndex + 1 }}>
+    <div className="Taskbar Frosted_Glass" id="taskbar" style={{ zIndex: zIndex + 1 }}>
+      <FrostedGlass frostId="taskbar" opacityHex="77" />
       <div className="Apps_N_Info">
         <div
           className="Kaisen_Button"

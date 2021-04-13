@@ -16,6 +16,7 @@ import PptViewer from '../ppt-viewer';
 import WordViewer from '../word-viewer';
 import ExcelViewer from '../excel-viewer';
 import TextViewer from '../text-viewer';
+import FrostedGlass from '../../Utility/frosted-glass';
 
 const expandObject = (obj) => {
   Object.keys(obj).map((key) => {
@@ -165,11 +166,12 @@ const Particular_File = ({ data, updatefilearray, filearray, handleZindex, id })
               dragElastic={0.3}
               dragConstraints={!fullScreen ? { left: -150, right: 500, top: -15, bottom: 10 } : {}}>
               <div
-                className="Topbar"
+                className="Topbar Frosted_Glass"
+                id={'topbar' + id}
                 onFocus={() => setdraggable(true)}
                 onBlur={() => setdraggable(false)}
-                style={{ backgroundColor: theme }}
                 tabIndex="-1">
+                <FrostedGlass frostId={'topbar' + id} opacityHex="99" showMargin={false} />
                 <div className="Topbar__Zindex_handler" onClick={FilehandleZindex}></div>
                 <div className="Window_Buttons">
                   <div className="Green" onClick={handleminizestatus}></div>

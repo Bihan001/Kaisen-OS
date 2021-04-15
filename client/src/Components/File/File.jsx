@@ -5,6 +5,8 @@ import { motion } from 'framer-motion';
 import { clone, set } from 'ramda';
 import './File.scss';
 
+import { handleIcon } from '../../Utility/functions';
+
 import ReactTerminal from '../Terminal/Terminal';
 import WebApp from '../WebApp/WebApp';
 import Pdf_Viewer from '../Pdf_Viewer/Pdf_Viewer';
@@ -27,7 +29,7 @@ const expandObject = (obj) => {
   return obj;
 };
 
-const Particular_File = ({ data, updatefilearray, filearray, handleZindex, id }) => {
+const Particular_File = ({ data, updatefilearray, filearray, handleZindex, id, folderarray, updatefolderarray }) => {
   const { theme } = useContext(ThemeContext);
 
   const [state, setState] = useState(null);
@@ -57,6 +59,10 @@ const Particular_File = ({ data, updatefilearray, filearray, handleZindex, id })
     configureComponent(data);
   }, [fullScreen]);
 
+  useEffect(() => {
+    if (data.name == 'terminal' && data.type == 'exe') configureComponent(data);
+  }, [filearray, folderarray]);
+
   useEffect(() =>
     //Updating the minimizing function
     {
@@ -71,7 +77,20 @@ const Particular_File = ({ data, updatefilearray, filearray, handleZindex, id })
     }, [state]);
 
   const componentsMap = expandObject({
-    exe: [{ terminal: <ReactTerminal fullScreen={fullScreen} id={id} /> }],
+    exe: [
+      {
+        terminal: (
+          <ReactTerminal
+            fullScreen={fullScreen}
+            id={id}
+            filearray={filearray}
+            updatefilearray={updatefilearray}
+            folderarray={folderarray}
+            updatefolderarray={updatefolderarray}
+          />
+        ),
+      },
+    ],
     webapp: <WebApp content={data.content} fullScreen={fullScreen} />,
     pdf: <Pdf_Viewer content={data.content} fullScreen={fullScreen} />,
     'ppt, pptx': <PptViewer content={data.content} fullScreen={fullScreen} />,
@@ -146,46 +165,51 @@ const Particular_File = ({ data, updatefilearray, filearray, handleZindex, id })
     <>
       {state && (
         <>
-          {!state.minimized && (
-            <motion.div
-              className="File"
-              id={id + 'File'}
-              style={
-                !fullScreen
-                  ? { width: 'fit-content', height: 'fit-content' }
-                  : {
-                      width: 'fit-content',
-                      height: 'fit-content',
-                      position: 'fixed',
-                      top: getTop(),
-                      left: getLeft(),
-                      boxShadow: '0 0 0 black',
-                    }
-              }
-              drag={!fullScreen ? draggable : false}
-              dragElastic={0.3}
-              dragConstraints={!fullScreen ? { left: -150, right: 500, top: -15, bottom: 10 } : {}}>
-              <div
-                className="Topbar Frosted_Glass"
-                id={'topbar' + id}
-                onFocus={() => setdraggable(true)}
-                onBlur={() => setdraggable(false)}
-                tabIndex="-1">
-                <FrostedGlass frostId={'topbar' + id} opacityHex="99" showMargin={false} />
-                <div className="Topbar__Zindex_handler" onClick={FilehandleZindex}></div>
-                <div className="Window_Buttons">
-                  <div className="Green" onClick={handleminizestatus}></div>
-                  <div className="Yellow" onClick={() => setfullScreen(!fullScreen)}>
-                    {' '}
-                  </div>
-                  <div className="Red" onClick={handlecloseapp}></div>
+          <motion.div
+            className="File"
+            id={id + 'File'}
+            style={
+              !fullScreen
+                ? { width: 'fit-content', height: 'fit-content', display: !data.minimized ? 'initial' : 'none' }
+                : {
+                    width: 'fit-content',
+                    height: 'fit-content',
+                    position: 'fixed',
+                    top: getTop(),
+                    left: getLeft(),
+                    boxShadow: '0 0 0 black',
+                    display: !data.minimized ? 'initial' : 'none',
+                  }
+            }
+            drag={!fullScreen ? draggable : false}
+            dragElastic={0.3}
+            dragConstraints={!fullScreen ? { left: -150, right: 500, top: -15, bottom: 10 } : {}}>
+            <div
+              className="Topbar Frosted_Glass"
+              id={'topbar' + id}
+              onFocus={() => setdraggable(true)}
+              onBlur={() => setdraggable(false)}
+              tabIndex="-1">
+              <FrostedGlass frostId={'topbar' + id} opacityHex="99" showMargin={false} />
+              <div className="Topbar__Zindex_handler" onClick={FilehandleZindex}>
+                <div className="Topbar__Zindex_handler_Icon">
+                  <img src={handleIcon(data)} />
                 </div>
+                <div className="Topbar__Zindex_handler_Name">{data.name + '.' + data.type}</div>
               </div>
-              <div className="File_Config_Window" onClick={FilehandleZindex}>
-                {Component}
+
+              <div className="Window_Buttons">
+                <div className="Green" onClick={handleminizestatus}></div>
+                <div className="Yellow" onClick={() => setfullScreen(!fullScreen)}>
+                  {' '}
+                </div>
+                <div className="Red" onClick={handlecloseapp}></div>
               </div>
-            </motion.div>
-          )}
+            </div>
+            <div className="File_Config_Window" onClick={FilehandleZindex}>
+              {Component}
+            </div>
+          </motion.div>
         </>
       )}
     </>

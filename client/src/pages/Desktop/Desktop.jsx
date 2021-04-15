@@ -245,6 +245,8 @@ const Desktop = (props) => {
                     data={openedfiles[id]}
                     filearray={openedfiles}
                     updatefilearray={updatefilearray}
+                    folderarray={openedfolders}
+                    updatefolderarray={updatefolderarray}
                     handleZindex={handleZindex}
                     key={id}
                     id={id}
@@ -324,18 +326,18 @@ const Desktop = (props) => {
           <div className="Color_Palatte__First-div">Choose a Theme</div>
           <div className="Color_Palatte__Second-div">
             <div className="Pink" onClick={() => ChangeTheme('#F5CFCF')}></div>
-            <div className="Purple" onClick={() => ChangeTheme('#D7BDE2 ')}></div>
+            <div className="Purple" onClick={() => ChangeTheme('#D7BDE2')}></div>
             <div className="Teal" onClick={() => ChangeTheme('#40e0d0')}></div>
-            <div className="Grey" onClick={() => ChangeTheme('#ABB2B9 ')}></div>
-            <div className="Cyan" style={{ backgroundColor: 'cyan' }} onClick={() => ChangeTheme('cyan')}></div>
-            <div className="Gold" style={{ backgroundColor: 'gold' }} onClick={() => ChangeTheme('gold')}></div>
-            <div className="Teal" style={{ backgroundColor: 'teal' }} onClick={() => ChangeTheme('teal')}></div>
-            <div className="Violet" style={{ backgroundColor: 'violet' }} onClick={() => ChangeTheme('violet')}></div>
+            <div className="Grey" onClick={() => ChangeTheme('#ABB2B9')}></div>
+            <div className="Cyan" style={{ backgroundColor: 'cyan' }} onClick={() => ChangeTheme('#00FFFF')}></div>
+            <div className="Gold" style={{ backgroundColor: 'gold' }} onClick={() => ChangeTheme('#D7BE69')}></div>
+            <div className="Teal" style={{ backgroundColor: 'teal' }} onClick={() => ChangeTheme('#008080')}></div>
+            <div className="Violet" style={{ backgroundColor: 'violet' }} onClick={() => ChangeTheme('#EE82EE')}></div>
             <div className="Orange" style={{ backgroundColor: 'orange' }} onClick={() => ChangeTheme('orange')}></div>
             <div className="Yellow" style={{ backgroundColor: 'yellow' }} onClick={() => ChangeTheme('yellow')}></div>
-            <div className="lime" style={{ backgroundColor: 'lime' }} onClick={() => ChangeTheme('lime')}></div>
+            <div className="lime" style={{ backgroundColor: 'lime' }} onClick={() => ChangeTheme('#00FF00')}></div>
             <div className="Brown" style={{ backgroundColor: '#DEB887' }} onClick={() => ChangeTheme('#DEB887')}></div>
-            <div className="Pink" style={{ backgroundColor: 'pink' }} onClick={() => ChangeTheme('pink')}></div>
+            <div className="Pink" style={{ backgroundColor: 'pink' }} onClick={() => ChangeTheme('#FFC0CB')}></div>
             <div
               className="CornSilk"
               style={{ backgroundColor: '#FFF8DC' }}

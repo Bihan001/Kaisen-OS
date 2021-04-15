@@ -1,12 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { backendUrl } from '../../../backendUrl';
 import { Folder, File, ClassFolder, ClassFile } from '../../../Classes/Classes';
 import arrow from '../../../assets/icons/arrow.png';
+import powerOff from '../../../assets/icons/power-button.png';
+import alan_ai_icon from '../../../assets/icons/alan_ai.png';
 import Temperature from '../widgets/temperature';
 import './start-menu.scss';
 import Clock from '../widgets/clock';
 import FrostedGlass from '../../../Utility/frosted-glass';
+import { NotificationContext } from '../../../Contexts/NotificationContext';
 
 const StartMenu = (props) => {
   const {
@@ -21,6 +24,8 @@ const StartMenu = (props) => {
     maxZindex,
     theme,
   } = props;
+
+  const { addNotification } = useContext(NotificationContext);
 
   const [startMenuContents, setStartMenuContents] = useState({
     folders: [],
@@ -127,9 +132,16 @@ const StartMenu = (props) => {
             <Clock />
             <div className="Wallpaper_n_Widgets__Bottom__right-top__buttons">
               <button className="start-button logout" onClick={() => logout()}>
-                Logout
+                <img src={powerOff} />
               </button>
-              <button className="start-button ai">Speak</button>
+              <button
+                className="start-button ai"
+                onClick={() => {
+                  addNotification('info', 'AI', 'Feature Coming Soon !');
+                }}>
+                {' '}
+                <img src={alan_ai_icon} />
+              </button>
             </div>
           </div>
         </div>

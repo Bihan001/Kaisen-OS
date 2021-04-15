@@ -3,6 +3,7 @@ import { clone, forEach } from 'ramda';
 import axios from 'axios';
 import { backendUrl } from '../../backendUrl';
 import { ClassFile, ClassFolder } from '../../Classes/Classes';
+import uuid from 'react-uuid';
 
 import Terminal from 'terminal-in-react';
 import './Terminal.scss';
@@ -13,7 +14,7 @@ import { NotificationContext } from '../../Contexts/NotificationContext';
 
 //import fullscreen_icon from "../assets/fullscreen.svg";
 
-const ReactTerminal = ({ id, fullScreen }) => {
+const ReactTerminal = ({ id, fullScreen, filearray, updatefilearray, folderarray, updatefolderarray }) => {
   //variables
   var obj;
   //=========
@@ -33,6 +34,8 @@ const ReactTerminal = ({ id, fullScreen }) => {
     FolderContents: [],
     dirPaths: {},
     user: {},
+    filearray: [],
+    folderarray: [],
   });
 
   //Configuring on change bash
@@ -121,8 +124,21 @@ const ReactTerminal = ({ id, fullScreen }) => {
       FolderContents: FolderContents,
       dirPaths: dirPaths,
       user: user,
+      filearray: filearray,
+      folderarray: folderarray,
     };
   }, [FolderContents, dirPaths, user]);
+
+  useEffect(() => {
+    newRef.current = {
+      Folder: Folder,
+      FolderContents: FolderContents,
+      dirPaths: dirPaths,
+      user: user,
+      filearray: filearray,
+      folderarray: folderarray,
+    };
+  }, [filearray, folderarray]);
 
   useEffect(() => {
     if (Folder) {
@@ -182,6 +198,10 @@ const ReactTerminal = ({ id, fullScreen }) => {
       const data = args.slice(1).join(' ');
       handleDelete(data);
     },
+    open: (args, print, runcommand) => {
+      const data = args.slice(1).join(' ');
+      handleOpen(data);
+    },
   };
   //Commands=
 
@@ -196,6 +216,7 @@ const ReactTerminal = ({ id, fullScreen }) => {
     dir: '.............Shows current Directory',
     ls: '.............Shows current files and folders',
     rm: '.............Remove a file or directory',
+    open: '............Opens a File or Folder',
   };
   //===========
 
@@ -247,6 +268,24 @@ const ReactTerminal = ({ id, fullScreen }) => {
         success: false,
         currentDir: '',
       };
+    }
+  };
+
+  const handleOpen = (name) => {
+    console.log(name);
+    if (newRef.current.Folder && newRef.current.dirPaths) {
+      let data = newRef.current.dirPaths[newRef.current.Folder.path + '#' + name];
+      if (data) {
+        if (data.type !== 'folder') {
+          let opened_dirPaths = clone(newRef.current.filearray);
+          opened_dirPaths[uuid()] = data;
+          updatefilearray(opened_dirPaths);
+        } else {
+          let opened_folderPaths = clone(newRef.current.folderarray);
+          opened_folderPaths[uuid()] = data;
+          updatefolderarray(opened_folderPaths);
+        }
+      } else addNotification('error', 'Error', 'File Not Found !');
     }
   };
 

@@ -787,7 +787,12 @@ const File_Explorer = ({
                 id={'topbar' + id}
                 tabIndex="-1">
                 <FrostedGlass frostId={'topbar' + id} opacityHex="99" showMargin={false} />
-                <div className="Topbar__Zindex_handler" onClick={FolderhandleZindex}></div>
+                <div className="Topbar__Zindex_handler" onClick={FolderhandleZindex}>
+                  <div className="Topbar__Zindex_handler_Icon">
+                    <img src={handleIcon(data)} />
+                  </div>
+                  <div className="Topbar__Zindex_handler_Name">File Explorer</div>
+                </div>
                 <div className="Window_Buttons">
                   <div className="Green" onClick={handleminizestatus}></div>
                   <div className="Yellow" onClick={() => setfullScreen(!fullScreen)}>

@@ -65,6 +65,7 @@ export const createRootFolder = catchAsync(async (req: Request, res: Response) =
 });
 
 export const createFolderAtPath = catchAsync(async (req: Request, res: Response) => {
+  console.log(req.body);
   const parentPath: string = req.body.parentPath;
   const folderName: string = req.body.folderName;
   const folderCreator: string = req.body.folderCreator;

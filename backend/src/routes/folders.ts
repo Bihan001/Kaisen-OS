@@ -18,4 +18,6 @@ router.post('/getFolderAndParents', foldersController.getFolderAndParentsByPath)
 
 router.post('/getFilesAndFolders', requireAuth, foldersController.getFilesAndFolders);
 
+router.post('/diagnoseFolder', foldersController.diagnoseFolder);
+
 export default router;

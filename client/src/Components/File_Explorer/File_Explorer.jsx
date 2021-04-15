@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useRef } from 'react';
 import firebase from '../../firebase';
 import uuid from 'react-uuid';
 import axios from 'axios';
@@ -66,6 +66,10 @@ const File_Explorer = ({
 
   const [fullScreen, setfullScreen] = useState(false);
 
+  const [requestCounter, setRequestCounter] = useState(0);
+  const [requestTimerId, setRequestTimerId] = useState(null);
+  const [disableReload, setDisableReload] = useState(false);
+
   //New File and Folder States====
   const [name, setname] = useState('');
   const [content, setcontent] = useState('');
@@ -90,6 +94,53 @@ const File_Explorer = ({
     setFolder(data);
     //setinitialfolderpath(data.path);
   }, []);
+
+  //Auto Diagnose useEffects and Functions
+  useEffect(() => {
+    if (requestCounter > 10 && !disableReload) {
+      setDisableReload(true);
+      addNotification('error', 'Error', 'Kaisen OS ran into some Problems! Auto Fix Started !');
+      startDiagnose();
+    }
+  }, [requestCounter]);
+
+  const startDiagnose = async () => {
+    try {
+      let res = await axios.post(`${backendUrl}/api/folders/diagnoseFolder`, {
+        folderPath: Folder.path,
+        folderChildrenPaths: Folder.children.map((name) => {
+          return Folder.path + '#' + name;
+        }),
+      });
+      if (res) {
+        let dirObj = clone(dirPaths);
+        let newObj;
+        let data = res.data.data;
+        console.log('Diagnosed data is : ', res);
+        newObj = new ClassFolder(
+          data.name,
+          data.dateCreated,
+          data.dateModified,
+          data.editableBy,
+          data.path,
+          data.type,
+          data.children
+        );
+
+        dirObj[newObj.path] = newObj;
+
+        UpdatedirPaths(dirObj);
+
+        setDisableReload(false);
+        addNotification('success', 'Success', 'Diagnose Completed !');
+      }
+    } catch (err) {
+      console.log(err);
+      addNotification('error', 'Error', err.message);
+    }
+  };
+
+  //=================================
 
   useEffect(() =>
     //For updatng minimized
@@ -182,15 +233,17 @@ const File_Explorer = ({
   };
 
   const handleback = () => {
-    if (Folder) {
-      newpath = Folder.path.split('#');
-      newpath.pop();
-      newpath = newpath.join('#');
+    if (!disableReload) {
+      if (Folder) {
+        newpath = Folder.path.split('#');
+        newpath.pop();
+        newpath = newpath.join('#');
 
-      obj = dirPaths[newpath];
+        obj = dirPaths[newpath];
 
-      if (obj) {
-        setFolder(obj);
+        if (obj) {
+          setFolder(obj);
+        }
       }
     }
   };
@@ -201,6 +254,7 @@ const File_Explorer = ({
     setTimeout(() => {
       setreloadClass('reload');
     }, 500);
+
     axios({
       method: 'POST',
       data: {
@@ -278,45 +332,59 @@ const File_Explorer = ({
         setFolderContents(array);
       } else {
         //have to make axios request to get the folder contents!!
-        axios({
-          method: 'POST',
-          data: {
-            folderPaths: data.children.map((content) => {
-              return data.path + '#' + content;
-            }),
-          },
-          url: `${backendUrl}/api/folders/getFolderAndParents`,
-        })
-          .then((res) => {
-            var dirObj = clone(dirPaths);
-            var newObj;
-            res.data.data.map((data) => {
-              if (data.type == 'folder') {
-                newObj = new ClassFolder(
-                  data.name,
-                  data.dateCreated,
-                  data.dateModified,
-                  data.editableBy,
-                  data.path,
-                  data.type,
-                  data.children
-                );
-              } else {
-                newObj = new ClassFile(
-                  data.name,
-                  data.dateCreated,
-                  data.dateModified,
-                  data.editableBy,
-                  data.path,
-                  data.type,
-                  data.content
-                );
-              }
-              dirObj[newObj.path] = newObj;
-            });
-            UpdatedirPaths(dirObj);
+
+        //Diagnose requestCounter =====================
+        setRequestCounter(requestCounter + 1);
+        if (requestTimerId) clearInterval(requestTimerId);
+        setRequestTimerId(
+          setTimeout(() => {
+            setRequestCounter(0);
+            setRequestTimerId(null);
+          }, 2000)
+        );
+        //==============================================
+        console.log('jjjjj', disableReload);
+        if (!disableReload) {
+          axios({
+            method: 'POST',
+            data: {
+              folderPaths: data.children.map((content) => {
+                return data.path + '#' + content;
+              }),
+            },
+            url: `${backendUrl}/api/folders/getFolderAndParents`,
           })
-          .catch((err) => console.log(err));
+            .then((res) => {
+              var dirObj = clone(dirPaths);
+              var newObj;
+              res.data.data.map((data) => {
+                if (data.type == 'folder') {
+                  newObj = new ClassFolder(
+                    data.name,
+                    data.dateCreated,
+                    data.dateModified,
+                    data.editableBy,
+                    data.path,
+                    data.type,
+                    data.children
+                  );
+                } else {
+                  newObj = new ClassFile(
+                    data.name,
+                    data.dateCreated,
+                    data.dateModified,
+                    data.editableBy,
+                    data.path,
+                    data.type,
+                    data.content
+                  );
+                }
+                dirObj[newObj.path] = newObj;
+              });
+              UpdatedirPaths(dirObj);
+            })
+            .catch((err) => console.log(err));
+        }
       }
     } else setFolderContents([]);
   };
@@ -826,7 +894,11 @@ const File_Explorer = ({
                     <div onClick={handleback} className="back">
                       <img src={back} />
                     </div>
-                    <div className={reloadClass} onClick={() => handelReload()}>
+                    <div
+                      className={reloadClass}
+                      onClick={() => {
+                        if (!disableReload) handelReload();
+                      }}>
                       <img src={reload} />
                     </div>
                     <div>{Folder.path.split('#').join('/')}</div>
@@ -855,7 +927,9 @@ const File_Explorer = ({
                       {FolderContents.map((content, index) => (
                         <div
                           className={index % 2 == 0 ? 'Row Content grey' : 'Row Content white'}
-                          onDoubleClick={() => handlecontentclicked(content)}
+                          onDoubleClick={() => {
+                            if (!disableReload) handlecontentclicked(content);
+                          }}
                           key={id + content.path}>
                           <div className="form-group">
                             <input

@@ -14,15 +14,7 @@ class MainFile {
 }
 
 class ClassFolder extends MainFile {
-  constructor(
-    name,
-    date_created,
-    date_modified,
-    creator,
-    path,
-    type,
-    children
-  ) {
+  constructor(name, date_created, date_modified, creator, path, type, children) {
     super(name, date_created, date_modified, creator, path, type);
     this.children = children;
   }

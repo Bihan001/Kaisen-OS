@@ -100,3 +100,33 @@ export const getFilesAndFolders = catchAsync(async (req: Request, res: Response)
   const fileResultList = await File.find({ _id: { $in: filePaths } }).populate('editableBy');
   return res.status(200).json(SuccessResponse({ folderResultList, fileResultList }, 'Fetched files and folders'));
 });
+
+export const diagnoseFolder = catchAsync(async (req: Request, res: Response) => {
+  const folderPath = req.body.folderPath;
+  const folderChildrenPaths: Array<String> = req.body.folderChildrenPaths;
+  let sanitizedChildrenArray: Array<String> = [];
+  const promise = await Promise.all(
+    folderChildrenPaths.map(async (path) => {
+      let data;
+      if (path.includes('.')) data = await File.findById(path);
+      else data = await Folder.findById(path);
+      if (data != null) await sanitizedChildrenArray.push(path);
+    })
+  ).then(async () => {
+    const sanitizedFolder = await Folder.findByIdAndUpdate(
+      folderPath,
+      {
+        children: sanitizedChildrenArray.map((path) => {
+          let array = path.split('#');
+          return array.pop();
+        }),
+      },
+      { new: true }
+    );
+    if (sanitizedFolder) {
+      await sanitizedFolder.populate('editableBy').execPopulate();
+      return res.status(200).json(SuccessResponse(sanitizedFolder, 'Diagnose Completed !'));
+    }
+    throw new CustomError('Folder Not Found !', 400);
+  });
+});

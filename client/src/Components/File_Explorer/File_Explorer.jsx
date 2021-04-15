@@ -18,7 +18,7 @@ import plus from '../../assets/icons/plus.png';
 import reload from '../../assets/icons/reload.png';
 import delete_icon from '../../assets/icons/delete.png';
 
-import { motion } from 'framer-motion';
+import { motion, useDragControls } from 'framer-motion';
 import { clone } from 'ramda';
 import FrostedGlass from '../../Utility/frosted-glass';
 
@@ -713,6 +713,7 @@ const File_Explorer = ({
           object[Folder.path].children = latestChildrenArray;
           console.log('new obj is : ', object);
           UpdatedirPaths(object);
+          setshowDeleteIcon(false);
           addNotification('success', 'Success', 'Successfully Deleted !');
         })
         .catch((err) => {
@@ -755,6 +756,13 @@ const File_Explorer = ({
     }
   };
 
+  const dragControls = useDragControls();
+
+  const startDrag = (event) => {
+    setdraggable(true);
+    dragControls.start(event, { snapToCursor: false });
+  };
+
   //=========
 
   return (
@@ -778,12 +786,16 @@ const File_Explorer = ({
                     }
               }
               drag={!fullScreen ? draggable : false}
+              dragControls={dragControls}
               dragConstraints={!fullScreen ? { left: -500, right: 500, top: -30, bottom: 500 } : {}}
-              dragElastic={0.1}>
+              dragElastic={false}
+              dragMomentum={false}>
               <div
                 className="Topbar Frosted_Glass"
-                onFocus={() => setdraggable(true)}
-                onBlur={() => setdraggable(false)}
+                // onMouseEnter={() => setdraggable(true)}
+                // onFocus={() => setdraggable(true)}
+                // onBlur={() => setdraggable(false)}
+                onPointerDown={(e) => startDrag(e)}
                 id={'topbar' + id}
                 tabIndex="-1">
                 <FrostedGlass frostId={'topbar' + id} opacityHex="99" showMargin={false} />
@@ -808,6 +820,7 @@ const File_Explorer = ({
                 <div
                   className="File_Explorer_Config_Window "
                   onClick={FolderhandleZindex}
+                  onPointerDown={(e) => setdraggable(false)}
                   style={fullScreen ? { width: '100vw', height: '90vh' } : {}}>
                   <div className="Path">
                     <div onClick={handleback} className="back">
@@ -851,12 +864,11 @@ const File_Explorer = ({
                               value={content.path}
                               onClick={() => toggleDeleteIcon()}
                             />
-                            <label htmlFor={id + content.path}>
-                              <div>
-                                <img src={handleIcon(content)} />
-                                <div>{content.name}</div>
-                              </div>
-                            </label>
+                            <label htmlFor={id + content.path}></label>
+                          </div>
+                          <div className="file-folder-name">
+                            <img src={handleIcon(content)} />
+                            <div>{content.name}</div>
                           </div>
                           <div className="content-data">
                             {/* <div>{content.dateModified.toISOString().substring(0, 10)}</div>    */}

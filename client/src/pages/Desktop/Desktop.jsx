@@ -192,8 +192,8 @@ const Desktop = (props) => {
             newdir.join('#');
             if (newdir == 'root')
               return (
-                <div className="Icons" key={dirPaths[dir].path}>
-                  <img src={handleIcon(dirPaths[dir])} onClick={() => handleOpen(dirPaths[dir])} />
+                <div className="Icons" key={dirPaths[dir].path} onClick={() => handleOpen(dirPaths[dir])}>
+                  <img src={handleIcon(dirPaths[dir])} />
                   <div>{dirPaths[dir].name}</div>
                 </div>
               );

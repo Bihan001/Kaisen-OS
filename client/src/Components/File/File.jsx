@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext, useRef } from 'react';
 import { ThemeContext } from '../../Contexts/ThemeContext/ThemeContext';
 
-import { motion } from 'framer-motion';
+import { motion, useDragControls } from 'framer-motion';
 import { clone, set } from 'ramda';
 import './File.scss';
 
@@ -161,6 +161,14 @@ const Particular_File = ({ data, updatefilearray, filearray, handleZindex, id, f
       }
     }
   };
+
+  const dragControls = useDragControls();
+
+  const startDrag = (event) => {
+    setdraggable(true);
+    dragControls.start(event, { snapToCursor: false });
+  };
+
   return (
     <>
       {state && (
@@ -182,14 +190,11 @@ const Particular_File = ({ data, updatefilearray, filearray, handleZindex, id, f
                   }
             }
             drag={!fullScreen ? draggable : false}
-            dragElastic={0.3}
-            dragConstraints={!fullScreen ? { left: -150, right: 500, top: -15, bottom: 10 } : {}}>
-            <div
-              className="Topbar Frosted_Glass"
-              id={'topbar' + id}
-              onFocus={() => setdraggable(true)}
-              onBlur={() => setdraggable(false)}
-              tabIndex="-1">
+            dragControls={dragControls}
+            dragConstraints={!fullScreen ? { left: -500, right: 500, top: -30, bottom: 500 } : {}}
+            dragElastic={false}
+            dragMomentum={false}>
+            <div className="Topbar Frosted_Glass" id={'topbar' + id} onPointerDown={(e) => startDrag(e)} tabIndex="-1">
               <FrostedGlass frostId={'topbar' + id} opacityHex="99" showMargin={false} />
               <div className="Topbar__Zindex_handler" onClick={FilehandleZindex}>
                 <div className="Topbar__Zindex_handler_Icon">
@@ -206,7 +211,7 @@ const Particular_File = ({ data, updatefilearray, filearray, handleZindex, id, f
                 <div className="Red" onClick={handlecloseapp}></div>
               </div>
             </div>
-            <div className="File_Config_Window" onClick={FilehandleZindex}>
+            <div className="File_Config_Window" onClick={FilehandleZindex} onPointerDown={(e) => setdraggable(false)}>
               {Component}
             </div>
           </motion.div>

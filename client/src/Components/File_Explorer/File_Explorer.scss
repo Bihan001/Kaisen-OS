@@ -25,20 +25,22 @@ $default-box-shadow: 0 17px 60px 4px rgba(0, 0, 0, 0.56);
       // border:2px solid green;
       width: 100%;
       display: flex;
+      align-items: center;
       &_Icon {
-        // border: 2px solid green;
-        margin: 0.5rem 1rem 0 1rem;
+        margin: 0;
+        margin-left: 1.3rem;
+        margin-right: 1rem;
+        height: 3rem;
         img {
-          width: 3.2rem;
-          height: 3.2rem;
+          width: 3rem;
+          height: 3rem;
         }
       }
       &_Name {
         //border: 2px solid green;
         color: white;
         font-weight: bold;
-        font-size: 2rem;
-        padding-top: 0.5rem;
+        font-size: 1.7rem;
         font-family: 'Roboto', sans-serif;
         letter-spacing: 2px;
       }
@@ -166,6 +168,7 @@ $default-box-shadow: 0 17px 60px 4px rgba(0, 0, 0, 0.56);
         margin-left: 0.3rem;
         margin-bottom: 0.5rem;
         overflow-y: auto;
+        height: 100%;
         &::-webkit-scrollbar {
           width: 13px;
           padding-right: 1px;
@@ -184,10 +187,13 @@ $default-box-shadow: 0 17px 60px 4px rgba(0, 0, 0, 0.56);
       }
       .Content {
         justify-content: space-between;
+        align-items: center;
+        padding-top: 1rem;
+        padding-bottom: 1rem;
         cursor: pointer;
         transition: all 0.3s ease;
         .content-data {
-          width: 50%;
+          width: 100%;
           //border:2px solid red;
           display: flex;
           justify-content: space-around;
@@ -310,7 +316,8 @@ $default-box-shadow: 0 17px 60px 4px rgba(0, 0, 0, 0.56);
 
 .form-group {
   display: block;
-  margin-bottom: 15px;
+  // margin-bottom: 15px;
+  margin-right: 1rem;
 }
 
 .form-group input {
@@ -325,26 +332,25 @@ $default-box-shadow: 0 17px 60px 4px rgba(0, 0, 0, 0.56);
 .form-group label {
   position: relative;
   cursor: pointer;
+}
+
+.file-folder-name {
+  // border:2px solid red;
+  display: flex;
+  width: 100%;
+  overflow: hidden;
+  img {
+    width: 3.5rem;
+    height: 3.5rem;
+    margin-right: 1rem;
+  }
   div {
-    display: inline-block;
-    // border:2px solid red;
-    position: relative;
-    img {
-      width: 3.5rem;
-      height: 3.5rem;
-      //border:2px solid red;
-      position: absolute;
-      top: -2.1rem;
-      left: 1rem;
-    }
-    div {
-      position: absolute;
-      top: -2.1rem;
-      left: 5rem;
-      font-size: $default-font-size;
-      color: black;
-      font-weight: bold;
-    }
+    font-size: $default-font-size;
+    color: black;
+    font-weight: bold;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 }
 

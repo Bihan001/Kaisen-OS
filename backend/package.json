@@ -4,6 +4,7 @@
   "description": "Backend of the Kaisen OS Application",
   "main": "src/server.ts",
   "scripts": {
+    "prestart": "npm run build --prefix client",
     "start": "node dist/server.js",
     "dev": "nodemon src/server.ts",
     "build": "tsc -p ."

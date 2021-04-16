@@ -2,7 +2,7 @@ require('dotenv').config({ path: process.env.NODE_ENV === 'production' ? 'prod.e
 import mongoose, { Document } from 'mongoose';
 import app from './app';
 // Variables
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.BACKEND_PORT || 5000;
 
 declare global {
   namespace Express {
@@ -25,4 +25,4 @@ if (process.env.MONGODB_URI) {
   throw new Error('MONGODB_URI not defined');
 }
 
-app.listen(PORT, () => console.log('Server is running at ' + PORT));
+app.listen(PORT, () => console.log('Server is up and running at ' + PORT));

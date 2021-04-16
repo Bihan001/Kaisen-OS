@@ -1,6 +1,7 @@
 .git/
-backend/node_modules/
+node_modules
 client/node_modules/
 npm-debug
-docker-compose*.yml
+*.yaml
+*.env
 Dockerfile

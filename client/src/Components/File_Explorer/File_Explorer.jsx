@@ -335,7 +335,7 @@ const File_Explorer = ({
 
         //Diagnose requestCounter =====================
         setRequestCounter(requestCounter + 1);
-        if (requestTimerId) clearInterval(requestTimerId);
+        if (requestTimerId) clearTimeout(requestTimerId);
         setRequestTimerId(
           setTimeout(() => {
             setRequestCounter(0);

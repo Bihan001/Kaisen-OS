@@ -38,6 +38,10 @@ const ReactTerminal = ({ id, fullScreen, filearray, updatefilearray, folderarray
     folderarray: [],
   });
 
+  const [requestCounter, setRequestCounter] = useState(0);
+  const [requestTimerId, setRequestTimerId] = useState(null);
+  const [disableReload, setDisableReload] = useState(false);
+
   //Configuring on change bash
   let html = document.getElementById(id + 'File');
   try {
@@ -73,6 +77,53 @@ const ReactTerminal = ({ id, fullScreen, filearray, updatefilearray, folderarray
 
   //==========================
 
+  //Auto Diagnose useEffects and Functions
+  useEffect(() => {
+    if (requestCounter > 10 && !disableReload) {
+      setDisableReload(true);
+      addNotification('error', 'Error', 'Kaisen OS ran into some Problems! Auto Fix Started !');
+      startDiagnose();
+    }
+  }, [requestCounter]);
+
+  const startDiagnose = async () => {
+    try {
+      let res = await axios.post(`${backendUrl}/api/folders/diagnoseFolder`, {
+        folderPath: Folder.path,
+        folderChildrenPaths: Folder.children.map((name) => {
+          return Folder.path + '#' + name;
+        }),
+      });
+      if (res) {
+        let dirObj = clone(dirPaths);
+        let newObj;
+        let data = res.data.data;
+        console.log('Diagnosed data is : ', res);
+        newObj = new ClassFolder(
+          data.name,
+          data.dateCreated,
+          data.dateModified,
+          data.editableBy,
+          data.path,
+          data.type,
+          data.children
+        );
+
+        dirObj[newObj.path] = newObj;
+
+        UpdatedirPaths(dirObj);
+
+        setDisableReload(false);
+        addNotification('success', 'Success', 'Diagnose Completed !');
+      }
+    } catch (err) {
+      console.log(err);
+      addNotification('error', 'Error', err.message);
+    }
+  };
+
+  //=================================
+
   useEffect(() => {
     if (dirPaths) setFolder(dirPaths['root']);
   }, []);
@@ -84,7 +135,7 @@ const ReactTerminal = ({ id, fullScreen, filearray, updatefilearray, folderarray
   useEffect(() => {
     let html = document.getElementById(id + 'File');
     try {
-      console.log(html);
+      //console.log(html);
       html.getElementsByClassName('sc-dnqmqq')[0].innerHTML = Folder.path.split('#').join('/') + ' > ';
       html.getElementsByClassName('sc-dnqmqq')[0].style.color = theme;
     } catch {
@@ -466,45 +517,60 @@ const ReactTerminal = ({ id, fullScreen, filearray, updatefilearray, folderarray
         setFolderContents(array);
       } else {
         //have to make axios request to get the folder contents!!
-        axios({
-          method: 'POST',
-          data: {
-            folderPaths: data.children.map((content) => {
-              return data.path + '#' + content;
-            }),
-          },
-          url: `${backendUrl}/api/folders/getFolderAndParents`,
-        })
-          .then((res) => {
-            var dirObj = clone(dirPaths);
-            var newObj;
-            res.data.data.map((data) => {
-              if (data.type == 'folder') {
-                newObj = new ClassFolder(
-                  data.name,
-                  data.dateCreated,
-                  data.dateModified,
-                  data.editableBy,
-                  data.path,
-                  data.type,
-                  data.children
-                );
-              } else {
-                newObj = new ClassFile(
-                  data.name,
-                  data.dateCreated,
-                  data.dateModified,
-                  data.editableBy,
-                  data.path,
-                  data.type,
-                  data.content
-                );
-              }
-              dirObj[newObj.path] = newObj;
-            });
-            UpdatedirPaths(dirObj);
+
+        //Diagnose requestCounter =====================
+        setRequestCounter(requestCounter + 1);
+        if (requestTimerId) clearTimeout(requestTimerId);
+        setRequestTimerId(
+          setTimeout(() => {
+            setRequestCounter(0);
+            setRequestTimerId(null);
+          }, 2000)
+        );
+        //==============================================
+        console.log('terminal_jjjjj', disableReload);
+
+        if (!disableReload) {
+          axios({
+            method: 'POST',
+            data: {
+              folderPaths: data.children.map((content) => {
+                return data.path + '#' + content;
+              }),
+            },
+            url: `${backendUrl}/api/folders/getFolderAndParents`,
           })
-          .catch((err) => console.log(err));
+            .then((res) => {
+              var dirObj = clone(dirPaths);
+              var newObj;
+              res.data.data.map((data) => {
+                if (data.type == 'folder') {
+                  newObj = new ClassFolder(
+                    data.name,
+                    data.dateCreated,
+                    data.dateModified,
+                    data.editableBy,
+                    data.path,
+                    data.type,
+                    data.children
+                  );
+                } else {
+                  newObj = new ClassFile(
+                    data.name,
+                    data.dateCreated,
+                    data.dateModified,
+                    data.editableBy,
+                    data.path,
+                    data.type,
+                    data.content
+                  );
+                }
+                dirObj[newObj.path] = newObj;
+              });
+              UpdatedirPaths(dirObj);
+            })
+            .catch((err) => console.log(err));
+        }
       }
     } else setFolderContents([]);
   };

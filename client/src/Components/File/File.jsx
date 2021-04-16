@@ -104,7 +104,7 @@ const Particular_File = ({ data, updatefilearray, filearray, handleZindex, id, f
   });
 
   const configureComponent = (data) => {
-    console.log(componentsMap);
+    //console.log(componentsMap);
     if (Array.isArray(componentsMap[data.type])) {
       return setComponent(componentsMap[data.type][0][data.name]);
     }

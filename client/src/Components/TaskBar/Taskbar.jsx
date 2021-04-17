@@ -51,12 +51,12 @@ const Taskbar = ({
       <FrostedGlass frostId="taskbar" opacityHex="77" />
       <div className="Apps_N_Info">
         <div
-          className="Kaisen_Button"
+          className="Kaisen_Button disableOutsideClick"
           style={buttonthemes}
           onMouseEnter={() => setbuttonthemes({ backgroundColor: theme })}
           onMouseLeave={() => setbuttonthemes({ backgroundColor: 'transparent' })}
           onClick={togglemenu}>
-          <img src={k} />
+          <img className="Kaisen_Button_Image disableOutsideClick" src={k} />
         </div>
 
         <div className="Icons">

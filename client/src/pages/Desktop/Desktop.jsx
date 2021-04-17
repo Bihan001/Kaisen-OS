@@ -57,6 +57,23 @@ const Desktop = (props) => {
   const [showMenu, setshowmenu] = useState(false);
   //taskbar states==============================
 
+  //Startmenu Clicked Outside Configs===
+  const clickedOutsideRef = useRef(null);
+  const handleClickOutside = (e) => {
+    try {
+      if (!clickedOutsideRef.current.contains(e.target) && !e.target.classList.contains('disableOutsideClick')) {
+        setshowmenu(false);
+      }
+    } catch (err) {}
+  };
+
+  useEffect(() => {
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  });
+
+  //====================================
+
   /* useEffect(() => {
     // if (!user) props.history.push('/login');
     const file = new Folder('Demo', Date.now(), Date.now(), {}, 'root#a', 'folder');
@@ -280,6 +297,7 @@ const Desktop = (props) => {
         handleIcon={handleIcon}
         maxZindex={maxValue}
         theme={theme}
+        clickedOutsideRef={clickedOutsideRef}
       />
 
       {/* {showMenu && user && (
@@ -322,32 +340,59 @@ const Desktop = (props) => {
       )} */}
 
       {showcolorpalatte && (
-        <div className="Color_Palatte" style={{ backgroundColor: theme, zIndex: maxValue }}>
-          <div className="Color_Palatte__First-div">Choose a Theme</div>
-          <div className="Color_Palatte__Second-div">
-            <div className="Pink" onClick={() => ChangeTheme('#F5CFCF')}></div>
-            <div className="Purple" onClick={() => ChangeTheme('#D7BDE2')}></div>
-            <div className="Teal" onClick={() => ChangeTheme('#40e0d0')}></div>
-            <div className="Grey" onClick={() => ChangeTheme('#ABB2B9')}></div>
-            <div className="Cyan" style={{ backgroundColor: 'cyan' }} onClick={() => ChangeTheme('#00FFFF')}></div>
-            <div className="Gold" style={{ backgroundColor: 'gold' }} onClick={() => ChangeTheme('#D7BE69')}></div>
-            <div className="Teal" style={{ backgroundColor: 'teal' }} onClick={() => ChangeTheme('#008080')}></div>
-            <div className="Violet" style={{ backgroundColor: 'violet' }} onClick={() => ChangeTheme('#EE82EE')}></div>
-            <div className="Orange" style={{ backgroundColor: 'orange' }} onClick={() => ChangeTheme('orange')}></div>
-            <div className="Yellow" style={{ backgroundColor: 'yellow' }} onClick={() => ChangeTheme('yellow')}></div>
-            <div className="lime" style={{ backgroundColor: 'lime' }} onClick={() => ChangeTheme('#00FF00')}></div>
-            <div className="Brown" style={{ backgroundColor: '#DEB887' }} onClick={() => ChangeTheme('#DEB887')}></div>
-            <div className="Pink" style={{ backgroundColor: 'pink' }} onClick={() => ChangeTheme('#FFC0CB')}></div>
+        <div className="Color_Palatte disableOutsideClick" style={{ backgroundColor: theme, zIndex: maxValue }}>
+          <div className="Color_Palatte__First-div disableOutsideClick">Choose a Theme</div>
+          <div className="Color_Palatte__Second-div disableOutsideClick">
+            <div className="Pink disableOutsideClick" onClick={() => ChangeTheme('#F5CFCF')}></div>
+            <div className="Purple disableOutsideClick" onClick={() => ChangeTheme('#D7BDE2')}></div>
+            <div className="Teal disableOutsideClick" onClick={() => ChangeTheme('#40e0d0')}></div>
+            <div className="Grey disableOutsideClick" onClick={() => ChangeTheme('#ABB2B9')}></div>
             <div
-              className="CornSilk"
+              className="Cyan disableOutsideClick"
+              style={{ backgroundColor: 'cyan' }}
+              onClick={() => ChangeTheme('#00FFFF')}></div>
+            <div
+              className="Gold disableOutsideClick"
+              style={{ backgroundColor: 'gold' }}
+              onClick={() => ChangeTheme('#D7BE69')}></div>
+            <div
+              className="Teal disableOutsideClick"
+              style={{ backgroundColor: 'teal' }}
+              onClick={() => ChangeTheme('#008080')}></div>
+            <div
+              className="Violet disableOutsideClick"
+              style={{ backgroundColor: 'violet' }}
+              onClick={() => ChangeTheme('#EE82EE')}></div>
+            <div
+              className="Orange disableOutsideClick"
+              style={{ backgroundColor: 'orange' }}
+              onClick={() => ChangeTheme('orange')}></div>
+            <div
+              className="Yellow disableOutsideClick"
+              style={{ backgroundColor: 'yellow' }}
+              onClick={() => ChangeTheme('yellow')}></div>
+            <div
+              className="lime disableOutsideClick"
+              style={{ backgroundColor: 'lime' }}
+              onClick={() => ChangeTheme('#00FF00')}></div>
+            <div
+              className="Brown disableOutsideClick"
+              style={{ backgroundColor: '#DEB887' }}
+              onClick={() => ChangeTheme('#DEB887')}></div>
+            <div
+              className="Pink disableOutsideClick"
+              style={{ backgroundColor: 'pink' }}
+              onClick={() => ChangeTheme('#FFC0CB')}></div>
+            <div
+              className="CornSilk disableOutsideClick"
               style={{ backgroundColor: '#FFF8DC' }}
               onClick={() => ChangeTheme('#FFF8DC')}></div>
             <div
-              className="#FA8072"
+              className="#FA8072 disableOutsideClick"
               style={{ backgroundColor: '#FA8072' }}
               onClick={() => ChangeTheme('#FA8072')}></div>
             <div
-              className="#ECF0F1"
+              className="#ECF0F1 disableOutsideClick"
               style={{ backgroundColor: '#ECF0F1' }}
               onClick={() => ChangeTheme('#ECF0F1')}></div>
           </div>
@@ -361,6 +406,7 @@ const Desktop = (props) => {
         folderarray={openedfolders}
         updatefolderarray={updatefolderarray}
         zIndex={maxValue}
+        clickedOutsideRef={clickedOutsideRef}
       />
     </div>
   );

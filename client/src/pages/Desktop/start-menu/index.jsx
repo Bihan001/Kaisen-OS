@@ -23,6 +23,7 @@ const StartMenu = (props) => {
     handleIcon,
     maxZindex,
     theme,
+    clickedOutsideRef,
   } = props;
 
   const { addNotification } = useContext(NotificationContext);
@@ -92,7 +93,7 @@ const StartMenu = (props) => {
 
   if (!showMenu || !user) return <div>Loading</div>;
   return (
-    <div className="Start_Menu Frosted_Glass" id="start-menu" style={{ zIndex: maxZindex }}>
+    <div className="Start_Menu Frosted_Glass" id="start-menu" style={{ zIndex: maxZindex }} ref={clickedOutsideRef}>
       <FrostedGlass frostId="start-menu" opacityHex="ff" />
       <div className="Info_n_Content">
         <div className="User_Info">

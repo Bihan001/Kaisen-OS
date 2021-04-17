@@ -22,8 +22,8 @@ const Login = (props) => {
   };
 
   return (
-    <div className='Login'>
-      <button className='login__google' onClick={loginWithGoogle}>
+    <div className="login">
+      <button className="login__google" onClick={loginWithGoogle}>
         Login with google
       </button>
     </div>

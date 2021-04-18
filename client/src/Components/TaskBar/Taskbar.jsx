@@ -82,7 +82,10 @@ const Taskbar = ({
 
       <div className="Time_N_Color">
         <div className="Color_div">
-          <div className="palatte_icon" style={{ backgroundColor: theme }} onClick={togglecolorpalatte}></div>
+          <div
+            className="palatte_icon disableOutsideClick"
+            style={{ backgroundColor: theme }}
+            onClick={togglecolorpalatte}></div>
         </div>
         <div></div>
       </div>

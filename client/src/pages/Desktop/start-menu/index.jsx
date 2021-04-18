@@ -91,7 +91,7 @@ const StartMenu = (props) => {
     }
   };
 
-  if (!showMenu || !user) return <div>Loading</div>;
+  if (!showMenu || !user) return <></>;
   return (
     <div className="Start_Menu Frosted_Glass" id="start-menu" style={{ zIndex: maxZindex }} ref={clickedOutsideRef}>
       <FrostedGlass frostId="start-menu" opacityHex="ff" />

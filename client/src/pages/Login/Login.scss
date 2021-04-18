@@ -1,0 +1,25 @@
+.login {
+  display: grid;
+  justify-content: center;
+  align-content: center;
+  height: 100vh;
+  background-image: url('https://wallpaperboat.com/wp-content/uploads/2020/06/03/42361/aesthetic-anime-01.jpg');
+  background-size: cover;
+  background-position: center;
+  & > button {
+    padding: 2rem 3rem;
+    border-radius: 4px;
+    background-color: #ffffff55;
+    font-size: 2rem;
+    cursor: pointer;
+    box-shadow: 4px 4px 1rem rgba(#000, 0.2);
+    transform: translateY(0px);
+    transition: all 0.2s ease;
+    &:hover {
+      transform: translateY(-2px);
+    }
+    &:active {
+      transform: translateY(-1px);
+    }
+  }
+}

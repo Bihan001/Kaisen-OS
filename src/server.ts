@@ -25,4 +25,4 @@ if (process.env.MONGODB_URI) {
   throw new Error('MONGODB_URI not defined');
 }
 
-app.listen(PORT, () => console.log('Server is up and running at ' + PORT));
+app.listen(PORT, () => console.log('Server is running at ' + PORT));

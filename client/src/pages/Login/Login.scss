@@ -1,25 +1,54 @@
 .login {
-  display: grid;
-  justify-content: center;
-  align-content: center;
   height: 100vh;
-  background-image: url('https://wallpaperboat.com/wp-content/uploads/2020/06/03/42361/aesthetic-anime-01.jpg');
+  background: linear-gradient(0deg, rgba(#000000, 0.1), rgba(#000000, 0.1)),
+    url(https://wallpaperboat.com/wp-content/uploads/2020/06/03/42361/aesthetic-anime-01.jpg);
   background-size: cover;
   background-position: center;
-  & > button {
-    padding: 2rem 3rem;
-    border-radius: 4px;
-    background-color: #ffffff55;
-    font-size: 2rem;
+  position: relative;
+
+  &__image {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 15rem;
+    height: 15rem;
+    background-color: #00000044;
+    border-radius: 50%;
+    padding: 2rem;
     cursor: pointer;
-    box-shadow: 4px 4px 1rem rgba(#000, 0.2);
-    transform: translateY(0px);
-    transition: all 0.2s ease;
-    &:hover {
-      transform: translateY(-2px);
+  }
+
+  #login-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    & > h1 {
+      color: white;
+      width: fit-content;
+      margin: 0 auto;
+      font-size: 4rem;
+      letter-spacing: 1px;
+      word-spacing: 3px;
     }
-    &:active {
-      transform: translateY(-1px);
+  }
+
+  &__box {
+    display: flex;
+    & > button {
+      border: none;
+      outline: none;
+      margin: 1rem 2rem;
+      border-radius: 50%;
+      background-color: transparent;
+      width: fit-content;
+      height: fit-content;
+      cursor: pointer;
+      & > img {
+        width: 5rem;
+        height: 5rem;
+      }
     }
   }
 }

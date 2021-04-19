@@ -211,7 +211,7 @@ const Desktop = (props) => {
               return (
                 <div className="Icons" key={dirPaths[dir].path} onClick={() => handleOpen(dirPaths[dir])}>
                   <img src={handleIcon(dirPaths[dir])} />
-                  <div>{dirPaths[dir].name}</div>
+                  <div className="Icons__text">{dirPaths[dir].name}</div>
                 </div>
               );
           })}

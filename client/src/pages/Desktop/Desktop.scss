@@ -36,16 +36,26 @@
     position: absolute;
     margin-top: 1.7rem;
     .Icons {
-      //border:2px solid green;
-      width: fit-content;
+      width: 7rem;
+      height: 10rem;
       margin: 1rem;
-      text-align: center;
-      font-size: 2rem;
-      color: white;
-      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
       img {
         width: 6rem;
         height: 6rem;
+        object-fit: contain;
+        margin-bottom: 0;
+        margin-top: 1rem;
+      }
+      &__text {
+        color: white;
+        padding: 0;
+        margin: 0 auto;
+        margin-bottom: 0.5rem;
       }
       transition: all 0.3s ease;
       cursor: pointer;

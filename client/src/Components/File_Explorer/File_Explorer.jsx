@@ -108,9 +108,6 @@ const File_Explorer = ({
     try {
       let res = await axios.post(`${backendUrl}/api/folders/diagnoseFolder`, {
         folderPath: Folder.path,
-        folderChildrenPaths: Folder.children.map((name) => {
-          return Folder.path + '#' + name;
-        }),
       });
       if (res) {
         let dirObj = clone(dirPaths);

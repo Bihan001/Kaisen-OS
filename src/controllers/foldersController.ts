@@ -103,7 +103,14 @@ export const getFilesAndFolders = catchAsync(async (req: Request, res: Response)
 
 export const diagnoseFolder = catchAsync(async (req: Request, res: Response) => {
   const folderPath = req.body.folderPath;
-  const folderChildrenPaths: Array<String> = req.body.folderChildrenPaths;
+  const presentFolder: FolderInterface | null = await Folder.findById(folderPath);
+  if (!presentFolder) throw new CustomError('Folder Not Found !', 400);
+  let folderChildrenPaths: Array<String>;
+  if (presentFolder.children !== undefined) {
+    folderChildrenPaths = presentFolder.children.map((name: String) => {
+      return folderPath + '#' + name;
+    });
+  } else folderChildrenPaths = [];
   let sanitizedChildrenArray: Array<String> = [];
   const promise = await Promise.all(
     folderChildrenPaths.map(async (path) => {

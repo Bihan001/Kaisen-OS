@@ -81,8 +81,7 @@ export const DirectoryProvider = (props) => {
       value={{
         dirPaths: dirPaths,
         UpdatedirPaths: UpdatedirPaths,
-      }}
-    >
+      }}>
       {props.children}
     </DirectoryContext.Provider>
   );

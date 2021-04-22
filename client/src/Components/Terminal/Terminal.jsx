@@ -515,19 +515,22 @@ const ReactTerminal = ({ id, fullScreen, filearray, updatefilearray, folderarray
       } else {
         //have to make axios request to get the folder contents!!
 
-        //Diagnose requestCounter =====================
-        setRequestCounter(requestCounter + 1);
-        if (requestTimerId) clearTimeout(requestTimerId);
-        setRequestTimerId(
-          setTimeout(() => {
-            setRequestCounter(0);
-            setRequestTimerId(null);
-          }, 2000)
-        );
-        //==============================================
-        console.log('terminal_jjjjj', disableReload);
+        if (disableReload) {
+          setRequestCounter(0);
+          setRequestTimerId(null);
+        }
 
         if (!disableReload) {
+          //Diagnose requestCounter =====================
+          setRequestCounter(requestCounter + 1);
+          if (requestTimerId) clearTimeout(requestTimerId);
+          setRequestTimerId(
+            setTimeout(() => {
+              setRequestCounter(0);
+              setRequestTimerId(null);
+            }, 2000)
+          );
+          //==============================================
           axios({
             method: 'POST',
             data: {

@@ -125,10 +125,10 @@ const File_Explorer = ({
         );
 
         dirObj[newObj.path] = newObj;
-
         UpdatedirPaths(dirObj);
 
         setDisableReload(false);
+
         addNotification('success', 'Success', 'Diagnose Completed !');
       }
     } catch (err) {
@@ -329,19 +329,22 @@ const File_Explorer = ({
         setFolderContents(array);
       } else {
         //have to make axios request to get the folder contents!!
+        if (disableReload) {
+          setRequestCounter(0);
+          setRequestTimerId(null);
+        }
 
-        //Diagnose requestCounter =====================
-        setRequestCounter(requestCounter + 1);
-        if (requestTimerId) clearTimeout(requestTimerId);
-        setRequestTimerId(
-          setTimeout(() => {
-            setRequestCounter(0);
-            setRequestTimerId(null);
-          }, 2000)
-        );
-        //==============================================
-        console.log('jjjjj', disableReload);
         if (!disableReload) {
+          //Diagnose requestCounter =====================
+          setRequestCounter(requestCounter + 1);
+          if (requestTimerId) clearTimeout(requestTimerId);
+          setRequestTimerId(
+            setTimeout(() => {
+              setRequestCounter(0);
+              setRequestTimerId(null);
+            }, 2000)
+          );
+          //==============================================
           axios({
             method: 'POST',
             data: {

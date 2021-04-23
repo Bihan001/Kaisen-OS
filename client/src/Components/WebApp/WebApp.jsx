@@ -1,9 +1,16 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { ScreenContext } from '../../Contexts/ScreenContext';
 import './WebApp.scss';
 import Loader from '../Loader/Loader';
 const WebApp = ({ content, fullScreen }) => {
+  const { screenState } = useContext(ScreenContext);
+  const getLayout = () => {
+    if (fullScreen) return { width: '100vw', height: '87vh' };
+    else if (screenState.mobileView) return { width: '90vw', height: '60vh' };
+    else return {};
+  };
   return (
-    <div className="WebApp" style={fullScreen ? { width: '100vw', height: '87vh' } : {}}>
+    <div className="WebApp" style={getLayout()}>
       <Loader />
       <iframe src={content} width="100%" height="100%"></iframe>
     </div>

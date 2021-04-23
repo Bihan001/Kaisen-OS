@@ -1,4 +1,5 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useContext } from 'react';
+import { ScreenContext } from '../../Contexts/ScreenContext';
 import './Video_Player.scss';
 import Loader from '../Loader/Loader';
 import PlayLogo from './images/play-button.svg';
@@ -10,6 +11,12 @@ import MuteLogo from './images/mute.svg';
 let videoControlsTimer;
 
 const Video_Player = ({ content, id, fullScreen }) => {
+  const { screenState } = useContext(ScreenContext);
+  const getLayout = () => {
+    if (fullScreen) return { width: '100vw', height: '87vh' };
+    else if (screenState.mobileView) return { width: '90vw', height: '60vh' };
+    else return {};
+  };
   const videoPlayerRef = useRef(null);
   const videoRef = useRef(null);
   const [isMuted, setIsMuted] = useState(false);
@@ -114,7 +121,7 @@ const Video_Player = ({ content, id, fullScreen }) => {
   };
 
   return (
-    <div className="Video_Player" style={fullScreen ? { width: '100vw', height: '87vh' } : {}}>
+    <div className="Video_Player" style={getLayout()}>
       <Loader />
       {/* <iframe src={content} width="100%" height="100%"></iframe> */}
       {/* <video

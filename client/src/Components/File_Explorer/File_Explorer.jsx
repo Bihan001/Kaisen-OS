@@ -7,6 +7,7 @@ import { ThemeContext } from '../../Contexts/ThemeContext/ThemeContext';
 import { DirectoryContext } from '../../Contexts/DirectoryContext/DirectoryContext';
 import { AuthContext } from '../../Contexts/AuthContext';
 import { NotificationContext } from '../../Contexts/NotificationContext';
+import { ScreenContext } from '../../Contexts/ScreenContext';
 
 import { ClassFile, ClassFolder } from '../../Classes/Classes';
 
@@ -36,6 +37,7 @@ const File_Explorer = ({
   const { dirPaths, UpdatedirPaths } = useContext(DirectoryContext);
   const { addNotification } = useContext(NotificationContext);
   const { user } = useContext(AuthContext);
+  const { screenState } = useContext(ScreenContext);
 
   //Utility Variables
   var obj;
@@ -919,7 +921,7 @@ const File_Explorer = ({
                         </div>
                       </div>
                       <div className="Second">
-                        <div>Date Modified</div>
+                        {!screenState.mobileView && <div>Date Modified</div>}
                         <div>Type</div>
                       </div>
                     </div>
@@ -946,7 +948,7 @@ const File_Explorer = ({
                           </div>
                           <div className="content-data">
                             {/* <div>{content.dateModified.toISOString().substring(0, 10)}</div>    */}
-                            <div>{content.dateModified}</div>
+                            {!screenState.mobileView && <div>{content.dateModified}</div>}
                             <div>{content.type}</div>
                           </div>
                         </div>

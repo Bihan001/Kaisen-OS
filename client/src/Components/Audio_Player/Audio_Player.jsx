@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useContext } from 'react';
 import './Audio_Player.scss';
 import Loader from '../Loader/Loader';
 import PlayLogo from './images/play-button.svg';
@@ -7,9 +7,13 @@ import FullScreenLogo from './images/full-screen.svg';
 import VolumeLogo from './images/volume.svg';
 import MuteLogo from './images/mute.svg';
 
+import { ScreenContext } from '../../Contexts/ScreenContext';
+
 let audioControlsTimer;
 
 const Audio_Player = ({ content, id, fullScreen }) => {
+  const { screenState } = useContext(ScreenContext);
+
   const audioPlayerRef = useRef(null);
   const audioRef = useRef(null);
   const [isMuted, setIsMuted] = useState(false);
@@ -173,8 +177,14 @@ const Audio_Player = ({ content, id, fullScreen }) => {
     renderFrame();
   }, []);
 
+  const getLayout = () => {
+    if (fullScreen) return { width: '100vw', height: '87vh' };
+    else if (screenState.mobileView) return { width: '90vw', height: '60vh' };
+    else return {};
+  };
+
   return (
-    <div className="Audio_Player" style={fullScreen ? { width: '100vw', height: '87vh' } : {}}>
+    <div className="Audio_Player" style={getLayout()}>
       <Loader />
       <div
         onMouseMove={(e) => handleMouseMoveInAudio(e)}

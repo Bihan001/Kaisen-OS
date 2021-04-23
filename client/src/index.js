@@ -5,6 +5,7 @@ import App from './App';
 import AuthProvider from './Contexts/AuthContext';
 import { ThemeProvider } from './Contexts/ThemeContext/ThemeContext';
 import { DirectoryProvider } from './Contexts/DirectoryContext/DirectoryContext';
+import { ScreenProvider } from './Contexts/ScreenContext';
 import { BrowserRouter } from 'react-router-dom';
 import axios from 'axios';
 import NotificationProvider from './Contexts/NotificationContext';
@@ -15,15 +16,17 @@ axios.defaults.withCredentials = true;
 ReactDOM.render(
   <BrowserRouter>
     <AuthProvider>
-      <ThemeProvider>
-        <WallpaperProvider>
-          <DirectoryProvider>
-            <NotificationProvider>
-              <App />
-            </NotificationProvider>
-          </DirectoryProvider>
-        </WallpaperProvider>
-      </ThemeProvider>
+      <ScreenProvider>
+        <ThemeProvider>
+          <WallpaperProvider>
+            <DirectoryProvider>
+              <NotificationProvider>
+                <App />
+              </NotificationProvider>
+            </DirectoryProvider>
+          </WallpaperProvider>
+        </ThemeProvider>
+      </ScreenProvider>
     </AuthProvider>
   </BrowserRouter>,
   document.getElementById('root')

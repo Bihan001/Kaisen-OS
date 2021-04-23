@@ -65,11 +65,20 @@
       }
     }
   }
-  //   .File_Config_Window {
-  //     //  border:2px solid orange;
-  //     height: 90%;
-  //   }
+  .File_Config_Window {
+    // border: 2px solid orange;
+    height: 90%;
+  }
 }
 .reset-position {
   translate: transform3d(0, 0, 0) !important;
+}
+@media (max-width: 415px) {
+  .File_Config_Window,
+  .File {
+    width: fit-content !important;
+    top: 5rem;
+    left: 5%;
+    // border: 2px solid red;
+  }
 }

@@ -477,4 +477,14 @@ $default-box-shadow: 0 17px 60px 4px rgba(0, 0, 0, 0.56);
   }
 }
 
+@media (max-width: 415px) {
+  .File_Explorer_Config_Window {
+    width: 90vw;
+  }
+  .File_Explorer {
+    top: 5rem;
+    left: 5%;
+  }
+}
+
 //=================================

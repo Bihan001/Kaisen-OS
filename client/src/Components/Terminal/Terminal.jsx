@@ -8,6 +8,7 @@ import uuid from 'react-uuid';
 import Terminal from 'terminal-in-react';
 import './Terminal.scss';
 import { DirectoryContext } from '../../Contexts/DirectoryContext/DirectoryContext';
+import { ScreenContext } from '../../Contexts/ScreenContext';
 import { AuthContext } from '../../Contexts/AuthContext';
 import { ThemeContext } from '../../Contexts/ThemeContext/ThemeContext';
 import { NotificationContext } from '../../Contexts/NotificationContext';
@@ -23,6 +24,7 @@ const ReactTerminal = ({ id, fullScreen, filearray, updatefilearray, folderarray
   const StringRef = useRef('');
 
   const { dirPaths, UpdatedirPaths } = useContext(DirectoryContext);
+  const { screenState } = useContext(ScreenContext);
   const { user } = useContext(AuthContext);
   const { theme } = useContext(ThemeContext);
   const { addNotification } = useContext(NotificationContext);
@@ -59,14 +61,23 @@ const ReactTerminal = ({ id, fullScreen, filearray, updatefilearray, folderarray
             html.getElementsByClassName('lfnIny')[0].style.maxWidth = '100vw';
             html.getElementsByClassName('gCWpcM')[0].style.maxWidth = '100vw';
           } else {
-            html.style.width = '90rem';
-            html.getElementsByClassName('terminal-base')[0].style.width = '90rem';
-            html.getElementsByClassName('terminal-base')[0].style.height = '100%';
-            html.getElementsByClassName('terminal-base')[0].style.minHeight = '80vh';
-            html.getElementsByClassName('terminal-base')[0].style.maxWidth = '90rem';
-            html.getElementsByClassName('sc-jTzLTM')[0].style.width = '90rem';
-            html.getElementsByClassName('lfnIny')[0].style.maxWidth = '90rem';
-            html.getElementsByClassName('gCWpcM')[0].style.maxWidth = '90rem';
+            console.log('this ', screenState.mobileView);
+            html.style.width = `${screenState.mobileView ? '90vw' : '90rem'}`;
+            html.getElementsByClassName('terminal-base')[0].style.width = `${
+              screenState.mobileView ? '90vw' : '90rem'
+            }`;
+            html.getElementsByClassName('terminal-base')[0].style.height = `${
+              screenState.mobileView ? '70vh' : '60rem'
+            }`;
+            html.getElementsByClassName('terminal-base')[0].style.minHeight = `${
+              screenState.mobileView ? '60vh' : '60vh'
+            }`;
+            html.getElementsByClassName('terminal-base')[0].style.maxWidth = `${
+              screenState.mobileView ? '90vw' : '90rem'
+            }`;
+            html.getElementsByClassName('sc-jTzLTM')[0].style.width = `${screenState.mobileView ? '90vw' : '90rem'}`;
+            html.getElementsByClassName('lfnIny')[0].style.maxWidth = `${screenState.mobileView ? '90vw' : '90rem'}`;
+            html.getElementsByClassName('gCWpcM')[0].style.maxWidth = `${screenState.mobileView ? '90vw' : '90rem'}`;
           }
         } catch {}
       }, 10);
@@ -125,6 +136,49 @@ const ReactTerminal = ({ id, fullScreen, filearray, updatefilearray, folderarray
     if (dirPaths) setFolder(dirPaths['root']);
   }, []);
 
+  //Screen Configs==============================
+  // useEffect(() => {
+  //   let html;
+  //   do {
+  //     html = document.getElementById(id + 'File');
+  //   } while (!html);
+
+  //   if (fullScreen) {
+  //     fullScreenTerminal(html);
+  //   } else dualScreenTerminal(html);
+  // }, [screenState.mobileView]);
+
+  // const fullScreenTerminal = (html) => {
+  //   try {
+  //     html.style.width = '100vw';
+  //     html.getElementsByClassName('terminal-base')[0].style.width = '100vw';
+  //     html.getElementsByClassName('terminal-base')[0].style.height = '100%';
+  //     html.getElementsByClassName('terminal-base')[0].style.maxWidth = '100vw';
+  //     html.getElementsByClassName('sc-jTzLTM')[0].style.width = '100vw';
+  //     html.getElementsByClassName('lfnIny')[0].style.maxWidth = '100vw';
+  //     html.getElementsByClassName('gCWpcM')[0].style.maxWidth = '100vw';
+  //   } catch (err) {
+  //     console.log('fullScreenTerminal Fail');
+  //   }
+  // };
+
+  // const dualScreenTerminal = (html) => {
+  //   try {
+  //     html.style.width = `${screenState.mobileView ? '90vw' : '90rem'}`;
+  //     html.getElementsByClassName('terminal-base')[0].style.width = `${screenState.mobileView ? '90vw' : '90rem'}`;
+  //     html.getElementsByClassName('terminal-base')[0].style.height = `${screenState.mobileView ? '70vh' : '90rem'}`;
+  //     html.getElementsByClassName('terminal-base')[0].style.minHeight = `${screenState.mobileView ? '60vh' : '80vh'}`;
+  //     html.getElementsByClassName('terminal-base')[0].style.maxWidth = `${screenState.mobileView ? '90vw' : '90rem'}`;
+  //     html.getElementsByClassName('sc-jTzLTM')[0].style.width = `${screenState.mobileView ? '90vw' : '90rem'}`;
+  //     html.getElementsByClassName('lfnIny')[0].style.maxWidth = `${screenState.mobileView ? '90vw' : '90rem'}`;
+  //     html.getElementsByClassName('gCWpcM')[0].style.maxWidth = `${screenState.mobileView ? '90vw' : '90rem'}`;
+  //   } catch {
+  //     console.log('dualScreenTerminal Fail');
+  //   }
+  // };
+
+  //===========================================
+
   useEffect(() => {
     if (Folder) loadfoldercontents(Folder);
   }, [Folder]);
@@ -152,14 +206,14 @@ const ReactTerminal = ({ id, fullScreen, filearray, updatefilearray, folderarray
         html.getElementsByClassName('lfnIny')[0].style.maxWidth = '100vw';
         html.getElementsByClassName('gCWpcM')[0].style.maxWidth = '100vw';
       } else {
-        html.style.width = '90rem';
-        html.getElementsByClassName('terminal-base')[0].style.width = '90rem';
-        html.getElementsByClassName('terminal-base')[0].style.height = '100%';
-        html.getElementsByClassName('terminal-base')[0].style.minHeight = '80vh';
-        html.getElementsByClassName('terminal-base')[0].style.maxWidth = '90rem';
-        html.getElementsByClassName('sc-jTzLTM')[0].style.width = '90rem';
-        html.getElementsByClassName('lfnIny')[0].style.maxWidth = '90rem';
-        html.getElementsByClassName('gCWpcM')[0].style.maxWidth = '90rem';
+        html.style.width = `${screenState.mobileView ? '90vw' : '90rem'}`;
+        html.getElementsByClassName('terminal-base')[0].style.width = `${screenState.mobileView ? '90vw' : '90rem'}`;
+        html.getElementsByClassName('terminal-base')[0].style.height = `${screenState.mobileView ? '70vh' : '60rem'}`;
+        html.getElementsByClassName('terminal-base')[0].style.minHeight = `${screenState.mobileView ? '60vh' : '60vh'}`;
+        html.getElementsByClassName('terminal-base')[0].style.maxWidth = `${screenState.mobileView ? '90vw' : '90rem'}`;
+        html.getElementsByClassName('sc-jTzLTM')[0].style.width = `${screenState.mobileView ? '90vw' : '90rem'}`;
+        html.getElementsByClassName('lfnIny')[0].style.maxWidth = `${screenState.mobileView ? '90vw' : '90rem'}`;
+        html.getElementsByClassName('gCWpcM')[0].style.maxWidth = `${screenState.mobileView ? '90vw' : '90rem'}`;
       }
     } catch {
       console.log('Opps an error occured!!');
@@ -574,10 +628,11 @@ const ReactTerminal = ({ id, fullScreen, filearray, updatefilearray, folderarray
       }
     } else setFolderContents([]);
   };
+
   //===================================
 
   return (
-    <div className="Terminal" style={fullScreen ? { width: '100vw', height: '87vh' } : {}}>
+    <div className="Terminal" style={fullScreen ? { width: '100vw', height: '89vh' } : {}}>
       <Terminal
         color="#C4BFBF"
         backgroundColor="rgb(34, 34, 34)"

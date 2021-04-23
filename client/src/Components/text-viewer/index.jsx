@@ -9,10 +9,17 @@ import axios from 'axios';
 import { backendUrl } from '../../backendUrl';
 
 import { DirectoryContext } from '../../Contexts/DirectoryContext/DirectoryContext';
+import { ScreenContext } from '../../Contexts/ScreenContext';
 import { AuthContext } from '../../Contexts/AuthContext';
 import { ClassFile, ClassFolder } from '../../Classes/Classes';
 
 const TextViewer = ({ content, editableBy, path, fullScreen }) => {
+  const { screenState } = useContext(ScreenContext);
+  const getLayout = () => {
+    if (fullScreen) return { width: '100vw', height: '87vh' };
+    else if (screenState.mobileView) return { width: '90vw', height: '60vh' };
+    else return {};
+  };
   const { dirPaths, UpdatedirPaths } = useContext(DirectoryContext);
   const { user } = useContext(AuthContext);
 
@@ -75,7 +82,7 @@ const TextViewer = ({ content, editableBy, path, fullScreen }) => {
   );
 
   return (
-    <div className="text" style={fullScreen ? { width: '100vw', height: '87vh' } : {}}>
+    <div className="text" style={getLayout()}>
       {/* <Loader /> */}
       <RichTextEditor
         autoFocus

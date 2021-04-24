@@ -53,15 +53,6 @@
         height: 1.65rem;
         border-radius: 50%;
         // margin-top: 1.6rem;
-        transition: all 0.3s ease;
-        &:hover {
-          transform: scale(1.05);
-          filter: brightness(1.1);
-        }
-        &:active {
-          transform: scale(0.9);
-          filter: brightness(0.9);
-        }
       }
       .Red {
         background-color: #eb5b26;

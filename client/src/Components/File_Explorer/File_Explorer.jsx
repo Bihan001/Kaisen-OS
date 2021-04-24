@@ -11,7 +11,7 @@ import { ScreenContext } from '../../Contexts/ScreenContext';
 
 import { ClassFile, ClassFolder } from '../../Classes/Classes';
 
-import { checkFileType, findFileType, handleIcon, typeArray } from '../../Utility/functions';
+import { checkFileType, findFileType, handleIcon, typeArray, getLayout } from '../../Utility/functions';
 import { backendUrl } from '../../backendUrl';
 
 import back from '../../assets/icons/back.png';
@@ -891,7 +891,7 @@ const File_Explorer = ({
                   className="File_Explorer_Config_Window "
                   onClick={FolderhandleZindex}
                   onPointerDown={(e) => setdraggable(false)}
-                  style={fullScreen ? { width: '100vw', height: '90vh' } : {}}>
+                  style={getLayout(fullScreen, screenState)}>
                   <div className="Path">
                     <div onClick={handleback} className="back">
                       <img src={back} />

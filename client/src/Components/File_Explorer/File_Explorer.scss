@@ -58,6 +58,16 @@ $default-box-shadow: 0 17px 60px 4px rgba(0, 0, 0, 0.56);
         height: 1.65rem;
         border-radius: 50%;
         // margin-top: 1.6rem;
+        //border: 2px solid black;
+        transition: all 0.3s ease;
+        &:hover {
+          transform: scale(1.05);
+          filter: brightness(1.1);
+        }
+        &:active {
+          transform: scale(0.9);
+          filter: brightness(1.1);
+        }
       }
       .Red {
         background-color: #eb5b26;
@@ -82,10 +92,12 @@ $default-box-shadow: 0 17px 60px 4px rgba(0, 0, 0, 0.56);
     }
   }
   &_Config_Window {
-    // border: 2px solid orange;
+    //border: 2px solid orange;
     //padding:3rem;
     height: 67vh;
     width: 65vw;
+    display: flex;
+    flex-direction: column;
     .Path {
       display: flex;
       align-items: center;
@@ -130,6 +142,7 @@ $default-box-shadow: 0 17px 60px 4px rgba(0, 0, 0, 0.56);
     .Lower_Segment {
       //border: 2px solid purple;
       // overflow-y: auto;
+      flex: 1;
       display: flex;
       flex-direction: column;
       height: 88%;

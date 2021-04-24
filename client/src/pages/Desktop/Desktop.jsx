@@ -370,7 +370,7 @@ const Desktop = (props) => {
             <div
               className="Yellow disableOutsideClick"
               style={{ backgroundColor: 'yellow' }}
-              onClick={() => ChangeTheme('yellow')}></div>
+              onClick={() => ChangeTheme('#FFFF00')}></div>
             <div
               className="lime disableOutsideClick"
               style={{ backgroundColor: 'lime' }}

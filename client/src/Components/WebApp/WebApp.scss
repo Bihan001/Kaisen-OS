@@ -3,10 +3,13 @@
   width: 70vw;
   height: 70vh;
   background-color: white;
+  border-radius: 0 0 4px 4px;
+
   position: relative;
   iframe {
     position: absolute;
 
-    border: 0px solid white;
+    border: 0px solid transparent;
+    border-radius: 0 0 4px 4px;
   }
 }

@@ -194,7 +194,7 @@ const Particular_File = ({ data, updatefilearray, filearray, handleZindex, id, f
             dragConstraints={!fullScreen ? { left: -500, right: 500, top: -30, bottom: 500 } : {}}
             dragElastic={false}
             dragMomentum={false}>
-            <div className="Topbar Frosted_Glass" id={'topbar' + id} onPointerDown={(e) => startDrag(e)} tabIndex="-1">
+            <div className="Frosted_Glass Topbar" id={'topbar' + id} onPointerDown={(e) => startDrag(e)} tabIndex="-1">
               <FrostedGlass frostId={'topbar' + id} opacityHex="99" showMargin={false} />
               <div className="Topbar__Zindex_handler" onClick={FilehandleZindex}>
                 <div className="Topbar__Zindex_handler_Icon">

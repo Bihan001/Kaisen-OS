@@ -75,3 +75,17 @@ export const wallpapers = [
   'https://res.cloudinary.com/drolmjcot/image/upload/q_auto:good/v1613837593/wallpaper_goadao.jpg',
   'https://res.cloudinary.com/drolmjcot/image/upload/q_auto:good/v1617892120/ink_clots_abstraction_203059_1920x1200_tgyguh.jpg',
 ];
+
+export const getLayout = (fullScreen, screenState) => {
+  if (fullScreen)
+    return {
+      width: '100vw',
+      height:
+        screenState.screenHeight -
+        4.8 * (screenState.screenWidth > 415 ? 10 : 7) -
+        4 * (screenState.screenWidth > 415 ? 10 : 7) +
+        'px',
+    };
+  else if (screenState.mobileView) return { width: '90vw', height: '60vh' };
+  else return {};
+};

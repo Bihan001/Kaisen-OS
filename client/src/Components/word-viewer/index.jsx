@@ -1,16 +1,13 @@
 import React, { useContext } from 'react';
 import { ScreenContext } from '../../Contexts/ScreenContext';
+import { getLayout } from '../../Utility/functions';
 import './word.scss';
 import Loader from '../Loader/Loader';
 const WordViewer = ({ content, fullScreen }) => {
   const { screenState } = useContext(ScreenContext);
-  const getLayout = () => {
-    if (fullScreen) return { width: '100vw', height: '87vh' };
-    else if (screenState.mobileView) return { width: '90vw', height: '60vh' };
-    else return {};
-  };
+
   return (
-    <div className="word" style={getLayout()}>
+    <div className="word" style={getLayout(fullScreen, screenState)}>
       <Loader />
       <iframe
         src={`https://view.officeapps.live.com/op/embed.aspx?src=${content}`}

@@ -21,6 +21,7 @@ const FrostedGlass = ({ frostId, opacityHex, showMargin = true }) => {
           // `background-image: url(${wallpaper});`,
           `filter: drop-shadow(0px 0px 10px ${formatColor(theme, '11')});`,
           `margin: ${!!showMargin ? '-20px' : '0px'};`,
+          'border-radius:4px 4px 0 0',
           '}',
         ].join('\n'),
       }}></style>

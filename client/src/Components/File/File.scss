@@ -7,14 +7,14 @@
   box-shadow: 0 17px 60px 4px rgba(0, 0, 0, 0.56);
   //transform: translate3d(0, 0, 0) !important;
   .Topbar {
-    //border:2px solid green;
+    //border: 5px solid green;
     // padding:1rem;
     cursor: grab;
     height: 4rem;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    border-radius: 4px 4px 0 0;
+    border-radius: 4px 4px 0 0 !important;
     padding-right: 1rem;
     outline: none;
     &__Zindex_handler {
@@ -53,6 +53,15 @@
         height: 1.65rem;
         border-radius: 50%;
         // margin-top: 1.6rem;
+        transition: all 0.3s ease;
+        &:hover {
+          transform: scale(1.05);
+          filter: brightness(1.1);
+        }
+        &:active {
+          transform: scale(0.9);
+          filter: brightness(0.9);
+        }
       }
       .Red {
         background-color: #eb5b26;
@@ -66,7 +75,8 @@
     }
   }
   .File_Config_Window {
-    // border: 2px solid orange;
+    //border: 2px solid orange;
+    border-radius: 0 0 4px 4px;
     height: 90%;
   }
 }

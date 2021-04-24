@@ -8,6 +8,7 @@ import VolumeLogo from './images/volume.svg';
 import MuteLogo from './images/mute.svg';
 
 import { ScreenContext } from '../../Contexts/ScreenContext';
+import { getLayout } from '../../Utility/functions';
 
 let audioControlsTimer;
 
@@ -177,14 +178,8 @@ const Audio_Player = ({ content, id, fullScreen }) => {
     renderFrame();
   }, []);
 
-  const getLayout = () => {
-    if (fullScreen) return { width: '100vw', height: '87vh' };
-    else if (screenState.mobileView) return { width: '90vw', height: '60vh' };
-    else return {};
-  };
-
   return (
-    <div className="Audio_Player" style={getLayout()}>
+    <div className="Audio_Player" style={getLayout(fullScreen, screenState)}>
       <Loader />
       <div
         onMouseMove={(e) => handleMouseMoveInAudio(e)}

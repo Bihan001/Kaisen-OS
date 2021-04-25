@@ -1,4 +1,6 @@
 import React, { useContext } from 'react';
+import { motion } from 'framer-motion';
+
 import { clone } from 'ramda';
 import './text.scss';
 import Loader from '../Loader/Loader';
@@ -79,7 +81,11 @@ const TextViewer = ({ content, editableBy, path, fullScreen }) => {
   );
 
   return (
-    <div className="text" style={getLayout(fullScreen, screenState)}>
+    <motion.div
+      className="text"
+      initial={false}
+      animate={{ width: getLayout(fullScreen, screenState).width, height: getLayout(fullScreen, screenState).height }}
+      transition={{ type: 'spring', stiffness: 300, damping: 35, duration: 1 }}>
       {/* <Loader /> */}
       <RichTextEditor
         autoFocus
@@ -90,7 +96,7 @@ const TextViewer = ({ content, editableBy, path, fullScreen }) => {
         rootStyle={{ width: '100%' }}
         editorStyle={{ height: '90%' }}
       />
-    </div>
+    </motion.div>
   );
 };
 export default TextViewer;

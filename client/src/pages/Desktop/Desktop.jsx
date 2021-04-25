@@ -257,18 +257,17 @@ const Desktop = (props) => {
           {Object.keys(openedfiles).map((id) => {
             if (!openedfiles[id].closed)
               return (
-                <div className="border" style={{ zIndex: openedfiles[id].zindex, position: 'relative' }} key={id}>
-                  <Particular_File
-                    data={openedfiles[id]}
-                    filearray={openedfiles}
-                    updatefilearray={updatefilearray}
-                    folderarray={openedfolders}
-                    updatefolderarray={updatefolderarray}
-                    handleZindex={handleZindex}
-                    key={id}
-                    id={id}
-                  />
-                </div>
+                <Particular_File
+                  data={openedfiles[id]}
+                  filearray={openedfiles}
+                  updatefilearray={updatefilearray}
+                  folderarray={openedfolders}
+                  updatefolderarray={updatefolderarray}
+                  handleZindex={handleZindex}
+                  key={id}
+                  id={id}
+                  zIndex={openedfiles[id].zindex}
+                />
               );
           })}
         </div>

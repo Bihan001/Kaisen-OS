@@ -1,4 +1,6 @@
 import React, { useState, useRef, useContext } from 'react';
+import { motion } from 'framer-motion';
+
 import { ScreenContext } from '../../Contexts/ScreenContext';
 import { getLayout } from '../../Utility/functions';
 import './Video_Player.scss';
@@ -118,7 +120,11 @@ const Video_Player = ({ content, id, fullScreen }) => {
   };
 
   return (
-    <div className="Video_Player" style={getLayout(fullScreen, screenState)}>
+    <motion.div
+      className="Video_Player"
+      initial={false}
+      animate={{ width: getLayout(fullScreen, screenState).width, height: getLayout(fullScreen, screenState).height }}
+      transition={{ type: 'spring', stiffness: 300, damping: 35 }}>
       <Loader />
       {/* <iframe src={content} width="100%" height="100%"></iframe> */}
       {/* <video
@@ -195,7 +201,7 @@ const Video_Player = ({ content, id, fullScreen }) => {
           </div>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 export default Video_Player;

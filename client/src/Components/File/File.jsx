@@ -29,7 +29,16 @@ const expandObject = (obj) => {
   return obj;
 };
 
-const Particular_File = ({ data, updatefilearray, filearray, handleZindex, id, folderarray, updatefolderarray }) => {
+const Particular_File = ({
+  data,
+  updatefilearray,
+  filearray,
+  handleZindex,
+  id,
+  folderarray,
+  updatefolderarray,
+  zIndex,
+}) => {
   const { theme } = useContext(ThemeContext);
 
   const [state, setState] = useState(null);
@@ -148,7 +157,7 @@ const Particular_File = ({ data, updatefilearray, filearray, handleZindex, id, f
   };
   const getLeft = () => {
     html = document.getElementById(id + 'File');
-
+    console.log('getLeft called !');
     if (html) {
       try {
         if (html.style.transform !== undefined) {
@@ -178,17 +187,27 @@ const Particular_File = ({ data, updatefilearray, filearray, handleZindex, id, f
             id={id + 'File'}
             style={
               !fullScreen
-                ? { width: 'fit-content', height: 'fit-content', display: !data.minimized ? 'initial' : 'none' }
+                ? {
+                    width: 'fit-content',
+                    height: 'fit-content',
+                    display: !data.minimized ? 'initial' : 'none',
+                    zIndex: zIndex,
+                  }
                 : {
                     width: 'fit-content',
                     height: 'fit-content',
                     position: 'fixed',
-                    top: getTop(),
-                    left: getLeft(),
+                    // top: getTop(),
+                    // left: getLeft(),
                     boxShadow: '0 0 0 black',
                     display: !data.minimized ? 'initial' : 'none',
+                    zIndex: zIndex,
+                    transform: 'none !important',
                   }
             }
+            initial={false}
+            animate={fullScreen ? { top: getTop(), left: getLeft() } : {}}
+            transition={{ type: 'spring', stiffness: 300, damping: 35, duration: 3 }}
             drag={!fullScreen ? draggable : false}
             dragControls={dragControls}
             dragConstraints={!fullScreen ? { left: -500, right: 500, top: -30, bottom: 500 } : {}}

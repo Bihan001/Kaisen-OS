@@ -9,14 +9,10 @@ const WebApp = ({ content, fullScreen }) => {
   const { screenState } = useContext(ScreenContext);
 
   return (
-    <motion.div
-      className="WebApp"
-      initial={false}
-      animate={{ width: getLayout(fullScreen, screenState).width, height: getLayout(fullScreen, screenState).height }}
-      transition={{ type: 'spring', stiffness: 300, damping: 35, duration: 3 }}>
+    <div className="WebApp">
       <Loader />
       <iframe src={content} width="100%" height="100%"></iframe>
-    </motion.div>
+    </div>
   );
 };
 export default WebApp;

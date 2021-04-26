@@ -120,11 +120,7 @@ const Video_Player = ({ content, id, fullScreen }) => {
   };
 
   return (
-    <motion.div
-      className="Video_Player"
-      initial={false}
-      animate={{ width: getLayout(fullScreen, screenState).width, height: getLayout(fullScreen, screenState).height }}
-      transition={{ type: 'spring', stiffness: 300, damping: 35 }}>
+    <div className="Video_Player">
       <Loader />
       {/* <iframe src={content} width="100%" height="100%"></iframe> */}
       {/* <video
@@ -201,7 +197,7 @@ const Video_Player = ({ content, id, fullScreen }) => {
           </div>
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 };
 export default Video_Player;

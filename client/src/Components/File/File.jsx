@@ -147,7 +147,7 @@ const Particular_File = ({
     if (html) {
       try {
         if (html.style.transform !== undefined) {
-          var top = html.style.transform.split(',')[1].split('px')[0];
+          let top = html.style.transform.split(',')[1].split('px')[0];
           return -1 * top + 'px';
         }
       } catch {
@@ -188,26 +188,26 @@ const Particular_File = ({
             style={
               !fullScreen
                 ? {
-                    width: 'fit-content',
-                    height: 'fit-content',
+                    width: '70vw',
+                    height: '70vh',
                     display: !data.minimized ? 'initial' : 'none',
                     zIndex: zIndex,
+                    transformOrigin: '50% 50% 0px',
                   }
                 : {
-                    width: 'fit-content',
-                    height: 'fit-content',
+                    // width: 'fit-content',
+                    // height: 'fit-content',
                     position: 'fixed',
                     // top: getTop(),
                     // left: getLeft(),
-                    boxShadow: '0 0 0 black',
                     display: !data.minimized ? 'initial' : 'none',
                     zIndex: zIndex,
-                    transform: 'none !important',
+                    transformOrigin: '50% 50% 0px',
                   }
             }
-            initial={false}
-            animate={fullScreen ? { top: getTop(), left: getLeft() } : {}}
-            transition={{ type: 'spring', stiffness: 300, damping: 35, duration: 3 }}
+            initial={{ transform: 'translate(20%, 5%)' }}
+            animate={fullScreen ? { x: 0, y: 0, width: '100%', height: '100%' } : {}}
+            transition={{ type: 'spring', stiffness: 500, damping: 35 }}
             drag={!fullScreen ? draggable : false}
             dragControls={dragControls}
             dragConstraints={!fullScreen ? { left: -500, right: 500, top: -30, bottom: 500 } : {}}

@@ -1,11 +1,10 @@
 .File {
   position: absolute;
   // border:2px solid black;
-  height: fit-content;
-  top: 5%;
-  left: 20%;
-  box-shadow: 0 17px 60px 4px rgba(0, 0, 0, 0.56);
-  //transform: translate3d(0, 0, 0) !important;
+  // top: 5%;
+  // left: 20%;
+  // box-shadow: 0 17px 60px 4px rgba(0, 0, 0, 0.56);
+
   .Topbar {
     //border: 5px solid green;
     // padding:1rem;
@@ -68,7 +67,8 @@
   .File_Config_Window {
     //border: 2px solid orange;
     border-radius: 0 0 4px 4px;
-    height: 90%;
+    width: 100%;
+    height: 100%;
   }
 }
 .reset-position {

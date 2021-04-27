@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useContext, useRef } from 'react';
 import { ThemeContext } from '../../Contexts/ThemeContext/ThemeContext';
+import { ScreenContext } from '../../Contexts/ScreenContext';
 
 import { motion, useDragControls } from 'framer-motion';
 import { clone, set } from 'ramda';
 import './File.scss';
 
-import { handleIcon } from '../../Utility/functions';
+import { handleIcon, getLayout } from '../../Utility/functions';
 
 import ReactTerminal from '../Terminal/Terminal';
 import WebApp from '../WebApp/WebApp';
@@ -40,6 +41,7 @@ const Particular_File = ({
   zIndex,
 }) => {
   const { theme } = useContext(ThemeContext);
+  const { screenState } = useContext(ScreenContext);
 
   const [state, setState] = useState(null);
   const [draggable, setdraggable] = useState(false);
@@ -188,26 +190,42 @@ const Particular_File = ({
             style={
               !fullScreen
                 ? {
-                    width: 'fit-content',
-                    height: 'fit-content',
+                    width: getLayout(fullScreen, screenState).width,
+                    height: getLayout(fullScreen, screenState).height,
                     display: !data.minimized ? 'initial' : 'none',
                     zIndex: zIndex,
                   }
                 : {
-                    width: 'fit-content',
-                    height: 'fit-content',
+                    width: getLayout(fullScreen, screenState).width,
+                    height: getLayout(fullScreen, screenState).height,
                     position: 'fixed',
                     // top: getTop(),
                     // left: getLeft(),
                     boxShadow: '0 0 0 black',
                     display: !data.minimized ? 'initial' : 'none',
                     zIndex: zIndex,
-                    transform: 'none !important',
                   }
             }
-            initial={false}
-            animate={fullScreen ? { top: getTop(), left: getLeft() } : {}}
-            transition={{ type: 'spring', stiffness: 300, damping: 35, duration: 3 }}
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={
+              fullScreen
+                ? {
+                    top: getTop(),
+                    left: getLeft(),
+                    width: getLayout(fullScreen, screenState).width,
+                    height: getLayout(fullScreen, screenState).height,
+                    opacity: 1,
+                    scale: 1,
+                  }
+                : {
+                    width: getLayout(fullScreen, screenState).width,
+                    height: getLayout(fullScreen, screenState).height,
+                    opacity: 1,
+                    scale: 1,
+                  }
+            }
+            transition={{ type: 'spring', stiffness: 300, damping: 40, duration: 3 }}
+            exit={{ opacity: 0, scale: 0.8, transition: { duration: 0.15 } }}
             drag={!fullScreen ? draggable : false}
             dragControls={dragControls}
             dragConstraints={!fullScreen ? { left: -500, right: 500, top: -30, bottom: 500 } : {}}

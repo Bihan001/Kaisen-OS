@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { fadeinTop } from '../../../Utility/functions';
 import axios from 'axios';
 import { backendUrl } from '../../../backendUrl';
 import { Folder, File, ClassFolder, ClassFile } from '../../../Classes/Classes';
@@ -91,63 +93,87 @@ const StartMenu = (props) => {
     }
   };
 
-  if (!showMenu || !user) return <></>;
+  if (!user) return <></>;
   return (
-    <div className="Start_Menu Frosted_Glass" id="start-menu" style={{ zIndex: maxZindex }} ref={clickedOutsideRef}>
-      <FrostedGlass frostId="start-menu" opacityHex="ff" />
-      <div className="Info_n_Content">
-        <div className="User_Info">
-          <div className="dp_div">
-            <img src={user.displayImage} />
-          </div>
-          <div className="User_Name">{user.name}</div>
-        </div>
-        <div className="StartMenu__Content StartMenu__Content__Scrollable">
-          {startMenuContents.folders.map((content, idx) => (
-            <div key={idx} className="StartMenu__Content__Data" onClick={() => handleOpen(content)}>
-              <img src={handleIcon(content)} />
-              <div>{content.name}</div>
+    <>
+      <AnimatePresence>
+        {showMenu && (
+          <motion.div
+            className="Start_Menu Frosted_Glass"
+            id="start-menu"
+            key="start_menu"
+            style={{ zIndex: maxZindex }}
+            ref={clickedOutsideRef}
+            variants={fadeinTop}
+            initial="hidden"
+            animate="visible"
+            exit="exit">
+            <FrostedGlass frostId="start-menu" opacityHex="ff" />
+            <div className="Info_n_Content">
+              <div className="User_Info">
+                <div className="dp_div">
+                  <img src={user.displayImage} />
+                </div>
+                <div className="User_Name">{user.name}</div>
+              </div>
+              <div className="StartMenu__Content StartMenu__Content__Scrollable">
+                {startMenuContents.folders.map((content, idx) => (
+                  <motion.div
+                    key={idx}
+                    className="StartMenu__Content__Data"
+                    onClick={() => handleOpen(content)}
+                    variants={fadeinTop}>
+                    <img src={handleIcon(content)} />
+                    <div>{content.name}</div>
+                  </motion.div>
+                ))}
+                {startMenuContents.files.map((content, idx) => (
+                  <motion.div
+                    key={idx}
+                    className="StartMenu__Content__Data"
+                    onClick={() => handleOpen(content)}
+                    variants={fadeinTop}>
+                    <img src={handleIcon(content)} />
+                    <div>{content.name}</div>
+                  </motion.div>
+                ))}
+              </div>
             </div>
-          ))}
-          {startMenuContents.files.map((content, idx) => (
-            <div key={idx} className="StartMenu__Content__Data" onClick={() => handleOpen(content)}>
-              <img src={handleIcon(content)} />
-              <div>{content.name}</div>
+            <div className="Wallpaper_n_Widgets">
+              <motion.div className="Wallpaper_n_Widgets__Top" variants={fadeinTop}>
+                <div>{wallpapers.length > 0 && <img src={wallpapers[presentWallpaper].image} />}</div>
+                <div className="Left" onClick={handleWallpaperLeft}>
+                  <img src={arrow} />
+                </div>
+                <div className="Right" onClick={handleWallpaperRight}>
+                  <img src={arrow} />
+                </div>
+              </motion.div>
+              <div className="Wallpaper_n_Widgets__Bottom">
+                <Temperature />
+                <div className="Wallpaper_n_Widgets__Bottom__right-top">
+                  <Clock />
+                  <div className="Wallpaper_n_Widgets__Bottom__right-top__buttons">
+                    <motion.button className="start-button logout" onClick={() => logout()} variants={fadeinTop}>
+                      <img src={powerOff} />
+                    </motion.button>
+                    <motion.button
+                      className="start-button ai"
+                      onClick={() => {
+                        addNotification('info', 'AI', 'Feature Coming Soon !');
+                      }}
+                      variants={fadeinTop}>
+                      {' '}
+                      <img src={alan_ai_icon} />
+                    </motion.button>
+                  </div>
+                </div>
+              </div>
             </div>
-          ))}
-        </div>
-      </div>
-      <div className="Wallpaper_n_Widgets">
-        <div className="Wallpaper_n_Widgets__Top">
-          <div>{wallpapers.length > 0 && <img src={wallpapers[presentWallpaper].image} />}</div>
-          <div className="Left" onClick={handleWallpaperLeft}>
-            <img src={arrow} />
-          </div>
-          <div className="Right" onClick={handleWallpaperRight}>
-            <img src={arrow} />
-          </div>
-        </div>
-        <div className="Wallpaper_n_Widgets__Bottom">
-          <Temperature />
-          <div className="Wallpaper_n_Widgets__Bottom__right-top">
-            <Clock />
-            <div className="Wallpaper_n_Widgets__Bottom__right-top__buttons">
-              <button className="start-button logout" onClick={() => logout()}>
-                <img src={powerOff} />
-              </button>
-              <button
-                className="start-button ai"
-                onClick={() => {
-                  addNotification('info', 'AI', 'Feature Coming Soon !');
-                }}>
-                {' '}
-                <img src={alan_ai_icon} />
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
   );
 };
 

@@ -1,8 +1,6 @@
 import React, { useState, useRef, useContext } from 'react';
 import { motion } from 'framer-motion';
 
-import { ScreenContext } from '../../Contexts/ScreenContext';
-import { getLayout } from '../../Utility/functions';
 import './Video_Player.scss';
 import Loader from '../Loader/Loader';
 import PlayLogo from './images/play-button.svg';
@@ -14,8 +12,6 @@ import MuteLogo from './images/mute.svg';
 let videoControlsTimer;
 
 const Video_Player = ({ content, id, fullScreen }) => {
-  const { screenState } = useContext(ScreenContext);
-
   const videoPlayerRef = useRef(null);
   const videoRef = useRef(null);
   const [isMuted, setIsMuted] = useState(false);
@@ -120,11 +116,7 @@ const Video_Player = ({ content, id, fullScreen }) => {
   };
 
   return (
-    <motion.div
-      className="Video_Player"
-      initial={false}
-      animate={{ width: getLayout(fullScreen, screenState).width, height: getLayout(fullScreen, screenState).height }}
-      transition={{ type: 'spring', stiffness: 300, damping: 35 }}>
+    <div className="Video_Player">
       <Loader />
       {/* <iframe src={content} width="100%" height="100%"></iframe> */}
       {/* <video
@@ -201,7 +193,7 @@ const Video_Player = ({ content, id, fullScreen }) => {
           </div>
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 };
 export default Video_Player;

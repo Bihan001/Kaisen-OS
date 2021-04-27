@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { clone } from 'ramda';
 import axios from 'axios';
 import uuid from 'react-uuid';
@@ -18,7 +19,7 @@ import arrow from '../../assets/icons/arrow.png';
 
 import { Folder, File, ClassFolder, ClassFile } from '../../Classes/Classes';
 
-import { handleIcon } from '../../Utility/functions';
+import { handleIcon, fadeinTop } from '../../Utility/functions';
 
 import Notification from '../../Components/notification';
 import { NotificationContext } from '../../Contexts/NotificationContext';
@@ -113,7 +114,7 @@ const Desktop = (props) => {
   //Functions
   const handleOpen = (data) => {
     opened_dirPaths = {};
-    const fileTypes = ['exe', 'txt', 'mp3', 'mp4', 'webapp', 'pdf', 'mpeg'];
+    const fileTypes = ['exe', 'txt', 'mp3', 'mp4', 'webapp', 'pdf', 'mpeg', 'jpg', 'jpeg', 'xlsx'];
     if (data.type == 'folder') {
       //this works
       opened_dirPaths = clone(openedfolders);
@@ -220,10 +221,10 @@ const Desktop = (props) => {
 
       {openedfolders && (
         <div className="Folders_Window_div">
-          {Object.keys(openedfolders).map((id) => {
-            if (!openedfolders[id].closed)
-              return (
-                <div className="border" style={{ zIndex: openedfolders[id].zindex, position: 'relative' }} key={id}>
+          <AnimatePresence>
+            {Object.keys(openedfolders).map((id) => {
+              if (!openedfolders[id].closed)
+                return (
                   <File_Explorer
                     data={openedfolders[id]}
                     initialfolderpath={openedfolders[id].path}
@@ -234,12 +235,12 @@ const Desktop = (props) => {
                     key={id}
                     handleZindex={handleZindex}
                     id={id}
+                    zIndex={openedfolders[id].zindex}
                   />
-                </div>
-              );
-          })}
+                );
+            })}
 
-          {/* {openedfolders.map((folder,index)=>(
+            {/* {openedfolders.map((folder,index)=>(
                        <File_Explorer
                         data={folder}
                         folderarray={openedfolders}
@@ -249,27 +250,30 @@ const Desktop = (props) => {
                         key={index}
                        />
                    ))} */}
+          </AnimatePresence>
         </div>
       )}
 
       {openedfiles && (
         <div className="Files_Window_div">
-          {Object.keys(openedfiles).map((id) => {
-            if (!openedfiles[id].closed)
-              return (
-                <Particular_File
-                  data={openedfiles[id]}
-                  filearray={openedfiles}
-                  updatefilearray={updatefilearray}
-                  folderarray={openedfolders}
-                  updatefolderarray={updatefolderarray}
-                  handleZindex={handleZindex}
-                  key={id}
-                  id={id}
-                  zIndex={openedfiles[id].zindex}
-                />
-              );
-          })}
+          <AnimatePresence>
+            {Object.keys(openedfiles).map((id) => {
+              if (!openedfiles[id].closed)
+                return (
+                  <Particular_File
+                    data={openedfiles[id]}
+                    filearray={openedfiles}
+                    updatefilearray={updatefilearray}
+                    folderarray={openedfolders}
+                    updatefolderarray={updatefolderarray}
+                    handleZindex={handleZindex}
+                    key={id}
+                    id={id}
+                    zIndex={openedfiles[id].zindex}
+                  />
+                );
+            })}
+          </AnimatePresence>
         </div>
       )}
       {/* {openedfiles && (
@@ -338,65 +342,73 @@ const Desktop = (props) => {
         </div>
       )} */}
 
-      {showcolorpalatte && (
-        <div className="Color_Palatte disableOutsideClick" style={{ backgroundColor: theme, zIndex: maxValue }}>
-          <div className="Color_Palatte__First-div disableOutsideClick">Choose a Theme</div>
-          <div className="Color_Palatte__Second-div disableOutsideClick">
-            <div className="Pink disableOutsideClick" onClick={() => ChangeTheme('#F5CFCF')}></div>
-            <div className="Purple disableOutsideClick" onClick={() => ChangeTheme('#D7BDE2')}></div>
-            <div className="Teal disableOutsideClick" onClick={() => ChangeTheme('#40e0d0')}></div>
-            <div className="Grey disableOutsideClick" onClick={() => ChangeTheme('#ABB2B9')}></div>
-            <div
-              className="Cyan disableOutsideClick"
-              style={{ backgroundColor: 'cyan' }}
-              onClick={() => ChangeTheme('#00FFFF')}></div>
-            <div
-              className="Gold disableOutsideClick"
-              style={{ backgroundColor: 'gold' }}
-              onClick={() => ChangeTheme('#D7BE69')}></div>
-            <div
-              className="Teal disableOutsideClick"
-              style={{ backgroundColor: 'teal' }}
-              onClick={() => ChangeTheme('#008080')}></div>
-            <div
-              className="Violet disableOutsideClick"
-              style={{ backgroundColor: 'violet' }}
-              onClick={() => ChangeTheme('#EE82EE')}></div>
-            <div
-              className="Orange disableOutsideClick"
-              style={{ backgroundColor: 'orange' }}
-              onClick={() => ChangeTheme('orange')}></div>
-            <div
-              className="Yellow disableOutsideClick"
-              style={{ backgroundColor: 'yellow' }}
-              onClick={() => ChangeTheme('#FFFF00')}></div>
-            <div
-              className="lime disableOutsideClick"
-              style={{ backgroundColor: 'lime' }}
-              onClick={() => ChangeTheme('#00FF00')}></div>
-            <div
-              className="Brown disableOutsideClick"
-              style={{ backgroundColor: '#DEB887' }}
-              onClick={() => ChangeTheme('#DEB887')}></div>
-            <div
-              className="Pink disableOutsideClick"
-              style={{ backgroundColor: 'pink' }}
-              onClick={() => ChangeTheme('#FFC0CB')}></div>
-            <div
-              className="CornSilk disableOutsideClick"
-              style={{ backgroundColor: '#FFF8DC' }}
-              onClick={() => ChangeTheme('#FFF8DC')}></div>
-            <div
-              className="#FA8072 disableOutsideClick"
-              style={{ backgroundColor: '#FA8072' }}
-              onClick={() => ChangeTheme('#FA8072')}></div>
-            <div
-              className="#ECF0F1 disableOutsideClick"
-              style={{ backgroundColor: '#ECF0F1' }}
-              onClick={() => ChangeTheme('#ECF0F1')}></div>
-          </div>
-        </div>
-      )}
+      <AnimatePresence>
+        {showcolorpalatte && (
+          <motion.div
+            className="Color_Palatte disableOutsideClick"
+            style={{ backgroundColor: theme, zIndex: maxValue }}
+            variants={fadeinTop}
+            initial="hidden"
+            animate="visible"
+            exit="exit">
+            <div className="Color_Palatte__First-div disableOutsideClick">Choose a Theme</div>
+            <div className="Color_Palatte__Second-div disableOutsideClick">
+              <div className="Pink disableOutsideClick" onClick={() => ChangeTheme('#F5CFCF')}></div>
+              <div className="Purple disableOutsideClick" onClick={() => ChangeTheme('#D7BDE2')}></div>
+              <div className="Teal disableOutsideClick" onClick={() => ChangeTheme('#40e0d0')}></div>
+              <div className="Grey disableOutsideClick" onClick={() => ChangeTheme('#ABB2B9')}></div>
+              <div
+                className="Cyan disableOutsideClick"
+                style={{ backgroundColor: 'cyan' }}
+                onClick={() => ChangeTheme('#00FFFF')}></div>
+              <div
+                className="Gold disableOutsideClick"
+                style={{ backgroundColor: 'gold' }}
+                onClick={() => ChangeTheme('#D7BE69')}></div>
+              <div
+                className="Teal disableOutsideClick"
+                style={{ backgroundColor: 'teal' }}
+                onClick={() => ChangeTheme('#008080')}></div>
+              <div
+                className="Violet disableOutsideClick"
+                style={{ backgroundColor: 'violet' }}
+                onClick={() => ChangeTheme('#EE82EE')}></div>
+              <div
+                className="Orange disableOutsideClick"
+                style={{ backgroundColor: 'orange' }}
+                onClick={() => ChangeTheme('orange')}></div>
+              <div
+                className="Yellow disableOutsideClick"
+                style={{ backgroundColor: 'yellow' }}
+                onClick={() => ChangeTheme('#FFFF00')}></div>
+              <div
+                className="lime disableOutsideClick"
+                style={{ backgroundColor: 'lime' }}
+                onClick={() => ChangeTheme('#00FF00')}></div>
+              <div
+                className="Brown disableOutsideClick"
+                style={{ backgroundColor: '#DEB887' }}
+                onClick={() => ChangeTheme('#DEB887')}></div>
+              <div
+                className="Pink disableOutsideClick"
+                style={{ backgroundColor: 'pink' }}
+                onClick={() => ChangeTheme('#FFC0CB')}></div>
+              <div
+                className="CornSilk disableOutsideClick"
+                style={{ backgroundColor: '#FFF8DC' }}
+                onClick={() => ChangeTheme('#FFF8DC')}></div>
+              <div
+                className="#FA8072 disableOutsideClick"
+                style={{ backgroundColor: '#FA8072' }}
+                onClick={() => ChangeTheme('#FA8072')}></div>
+              <div
+                className="#ECF0F1 disableOutsideClick"
+                style={{ backgroundColor: '#ECF0F1' }}
+                onClick={() => ChangeTheme('#ECF0F1')}></div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
       <Taskbar
         togglecolorpalatte={() => setshowcolorpalatte(!showcolorpalatte)}
         togglemenu={() => setshowmenu(!showMenu)}

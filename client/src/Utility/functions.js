@@ -87,5 +87,23 @@ export const getLayout = (fullScreen, screenState) => {
         'px',
     };
   else if (screenState.mobileView) return { width: '90vw', height: '60vh' };
-  else return {};
+  else return { width: '65vw', height: '70vh' };
+};
+
+export const fadeinTop = {
+  hidden: { y: 10, opacity: 0 },
+  visible: {
+    y: 0,
+    opacity: 1,
+    transition: {
+      duration: 0.15,
+    },
+  },
+  exit: {
+    y: 10,
+    opacity: 0,
+    transition: {
+      duration: 0.15,
+    },
+  },
 };

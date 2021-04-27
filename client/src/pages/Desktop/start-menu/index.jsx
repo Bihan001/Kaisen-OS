@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { fadeinTop } from '../../../Utility/functions';
+import { fadeinTop, slideOutLeft } from '../../../Utility/functions';
 import axios from 'axios';
 import { backendUrl } from '../../../backendUrl';
 import { Folder, File, ClassFolder, ClassFile } from '../../../Classes/Classes';
@@ -141,7 +141,20 @@ const StartMenu = (props) => {
             </div>
             <div className="Wallpaper_n_Widgets">
               <motion.div className="Wallpaper_n_Widgets__Top" variants={fadeinTop}>
-                <div>{wallpapers.length > 0 && <img src={wallpapers[presentWallpaper].image} />}</div>
+                <div>
+                  {wallpapers.length > 0 && (
+                    <AnimatePresence exitBeforeEnter>
+                      <motion.img
+                        src={wallpapers[presentWallpaper].image}
+                        variants={slideOutLeft}
+                        initial="hidden"
+                        animate="visible"
+                        exit="exit"
+                        key={wallpapers[presentWallpaper].image}
+                      />
+                    </AnimatePresence>
+                  )}
+                </div>
                 <div className="Left" onClick={handleWallpaperLeft}>
                   <img src={arrow} />
                 </div>

@@ -107,3 +107,9 @@ export const fadeinTop = {
     },
   },
 };
+
+export const slideOutLeft = {
+  initial: { x: 100, opacity: 0, scale: 0.97 },
+  visible: { x: 0, opacity: 1, scale: 1, transition: { duration: 0.15 } },
+  exit: { opacity: 0, scale: 0.97, transition: { duration: 0.15 } },
+};

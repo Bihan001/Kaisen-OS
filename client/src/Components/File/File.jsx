@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useContext, useRef } from 'react';
 import { ThemeContext } from '../../Contexts/ThemeContext/ThemeContext';
+import { ScreenContext } from '../../Contexts/ScreenContext';
 
 import { motion, useDragControls } from 'framer-motion';
 import { clone, set } from 'ramda';
 import './File.scss';
 
-import { handleIcon } from '../../Utility/functions';
+import { handleIcon, getLayout } from '../../Utility/functions';
 
 import ReactTerminal from '../Terminal/Terminal';
 import WebApp from '../WebApp/WebApp';
@@ -40,6 +41,7 @@ const Particular_File = ({
   zIndex,
 }) => {
   const { theme } = useContext(ThemeContext);
+  const { screenState } = useContext(ScreenContext);
 
   const [state, setState] = useState(null);
   const [draggable, setdraggable] = useState(false);
@@ -188,26 +190,42 @@ const Particular_File = ({
             style={
               !fullScreen
                 ? {
-                    width: '70vw',
-                    height: '70vh',
+                    width: getLayout(fullScreen, screenState).width,
+                    height: getLayout(fullScreen, screenState).height,
                     display: !data.minimized ? 'initial' : 'none',
                     zIndex: zIndex,
                     transformOrigin: '50% 50% 0px',
                   }
                 : {
-                    // width: 'fit-content',
-                    // height: 'fit-content',
+                    width: getLayout(fullScreen, screenState).width,
+                    height: getLayout(fullScreen, screenState).height,
                     position: 'fixed',
                     // top: getTop(),
                     // left: getLeft(),
                     display: !data.minimized ? 'initial' : 'none',
                     zIndex: zIndex,
-                    transformOrigin: '50% 50% 0px',
                   }
             }
-            initial={{ transform: 'translate(20%, 5%)' }}
-            animate={fullScreen ? { x: 0, y: 0, width: '100%', height: '100%' } : {}}
-            transition={{ type: 'spring', stiffness: 500, damping: 35 }}
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={
+              fullScreen
+                ? {
+                    top: getTop(),
+                    left: getLeft(),
+                    width: getLayout(fullScreen, screenState).width,
+                    height: getLayout(fullScreen, screenState).height,
+                    opacity: 1,
+                    scale: 1,
+                  }
+                : {
+                    width: getLayout(fullScreen, screenState).width,
+                    height: getLayout(fullScreen, screenState).height,
+                    opacity: 1,
+                    scale: 1,
+                  }
+            }
+            transition={{ type: 'spring', stiffness: 300, damping: 40, duration: 3 }}
+            exit={{ opacity: 0, scale: 0.8, transition: { duration: 0.15 } }}
             drag={!fullScreen ? draggable : false}
             dragControls={dragControls}
             dragConstraints={!fullScreen ? { left: -500, right: 500, top: -30, bottom: 500 } : {}}

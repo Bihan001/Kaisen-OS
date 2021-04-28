@@ -1,5 +1,4 @@
 import React, { useContext } from 'react';
-import { motion } from 'framer-motion';
 
 import { clone } from 'ramda';
 import './text.scss';
@@ -11,14 +10,10 @@ import axios from 'axios';
 import { backendUrl } from '../../backendUrl';
 
 import { DirectoryContext } from '../../Contexts/DirectoryContext/DirectoryContext';
-import { ScreenContext } from '../../Contexts/ScreenContext';
-import { getLayout } from '../../Utility/functions';
 import { AuthContext } from '../../Contexts/AuthContext';
 import { ClassFile, ClassFolder } from '../../Classes/Classes';
 
 const TextViewer = ({ content, editableBy, path, fullScreen }) => {
-  const { screenState } = useContext(ScreenContext);
-
   const { dirPaths, UpdatedirPaths } = useContext(DirectoryContext);
   const { user } = useContext(AuthContext);
 
@@ -81,11 +76,7 @@ const TextViewer = ({ content, editableBy, path, fullScreen }) => {
   );
 
   return (
-    <motion.div
-      className="text"
-      initial={false}
-      animate={{ width: getLayout(fullScreen, screenState).width, height: getLayout(fullScreen, screenState).height }}
-      transition={{ type: 'spring', stiffness: 300, damping: 35, duration: 1 }}>
+    <div className="text">
       {/* <Loader /> */}
       <RichTextEditor
         autoFocus
@@ -96,7 +87,7 @@ const TextViewer = ({ content, editableBy, path, fullScreen }) => {
         rootStyle={{ width: '100%' }}
         editorStyle={{ height: '90%' }}
       />
-    </motion.div>
+    </div>
   );
 };
 export default TextViewer;

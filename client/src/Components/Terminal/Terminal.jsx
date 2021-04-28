@@ -53,31 +53,28 @@ const ReactTerminal = ({ id, fullScreen, filearray, updatefilearray, folderarray
           html.getElementsByClassName('sc-dnqmqq')[0].innerHTML = Folder.path.split('#').join('/') + ' > ';
           html.getElementsByClassName('sc-dnqmqq')[0].style.color = theme;
           if (fullScreen) {
-            html.style.width = '100vw';
-            html.getElementsByClassName('terminal-base')[0].style.width = '100vw';
+            html.getElementsByClassName('terminal-base')[0].style.width = '100%';
             html.getElementsByClassName('terminal-base')[0].style.height = '100%';
-            html.getElementsByClassName('terminal-base')[0].style.maxWidth = '100vw';
-            html.getElementsByClassName('sc-jTzLTM')[0].style.width = '100vw';
-            html.getElementsByClassName('lfnIny')[0].style.maxWidth = '100vw';
-            html.getElementsByClassName('gCWpcM')[0].style.maxWidth = '100vw';
+            html.getElementsByClassName('terminal-base')[0].style.maxWidth = '100%';
+            html.getElementsByClassName('sc-jTzLTM')[0].style.width = '100%';
+            html.getElementsByClassName('lfnIny')[0].style.maxWidth = '100%';
+            html.getElementsByClassName('gCWpcM')[0].style.maxWidth = '100%';
           } else {
             console.log('this ', screenState.mobileView);
-            html.style.width = `${screenState.mobileView ? '90vw' : '90rem'}`;
-            html.getElementsByClassName('terminal-base')[0].style.width = `${
-              screenState.mobileView ? '90vw' : '90rem'
-            }`;
+
+            html.getElementsByClassName('terminal-base')[0].style.width = `${screenState.mobileView ? '100%' : '100%'}`;
             html.getElementsByClassName('terminal-base')[0].style.height = `${
-              screenState.mobileView ? '70vh' : '60rem'
+              screenState.mobileView ? '100%' : '100%'
             }`;
             html.getElementsByClassName('terminal-base')[0].style.minHeight = `${
-              screenState.mobileView ? '60vh' : '60vh'
+              screenState.mobileView ? '100%' : '100%'
             }`;
             html.getElementsByClassName('terminal-base')[0].style.maxWidth = `${
-              screenState.mobileView ? '90vw' : '90rem'
+              screenState.mobileView ? '100%' : '100%'
             }`;
-            html.getElementsByClassName('sc-jTzLTM')[0].style.width = `${screenState.mobileView ? '90vw' : '90rem'}`;
-            html.getElementsByClassName('lfnIny')[0].style.maxWidth = `${screenState.mobileView ? '90vw' : '90rem'}`;
-            html.getElementsByClassName('gCWpcM')[0].style.maxWidth = `${screenState.mobileView ? '90vw' : '90rem'}`;
+            html.getElementsByClassName('sc-jTzLTM')[0].style.width = `${screenState.mobileView ? '100%' : '100%'}`;
+            html.getElementsByClassName('lfnIny')[0].style.maxWidth = `${screenState.mobileView ? '100%' : '100%'}`;
+            html.getElementsByClassName('gCWpcM')[0].style.maxWidth = `${screenState.mobileView ? '100%' : '100%'}`;
           }
         } catch {}
       }, 10);
@@ -198,22 +195,20 @@ const ReactTerminal = ({ id, fullScreen, filearray, updatefilearray, folderarray
     let html = document.getElementById(id + 'File');
     try {
       if (fullScreen) {
-        html.style.width = '100vw';
-        html.getElementsByClassName('terminal-base')[0].style.width = '100vw';
+        html.getElementsByClassName('terminal-base')[0].style.width = '100%';
         html.getElementsByClassName('terminal-base')[0].style.height = '100%';
-        html.getElementsByClassName('terminal-base')[0].style.maxWidth = '100vw';
-        html.getElementsByClassName('sc-jTzLTM')[0].style.width = '100vw';
-        html.getElementsByClassName('lfnIny')[0].style.maxWidth = '100vw';
-        html.getElementsByClassName('gCWpcM')[0].style.maxWidth = '100vw';
+        html.getElementsByClassName('terminal-base')[0].style.maxWidth = '100%';
+        html.getElementsByClassName('sc-jTzLTM')[0].style.width = '100%';
+        html.getElementsByClassName('lfnIny')[0].style.maxWidth = '100%';
+        html.getElementsByClassName('gCWpcM')[0].style.maxWidth = '100%';
       } else {
-        html.style.width = `${screenState.mobileView ? '90vw' : '90rem'}`;
-        html.getElementsByClassName('terminal-base')[0].style.width = `${screenState.mobileView ? '90vw' : '90rem'}`;
-        html.getElementsByClassName('terminal-base')[0].style.height = `${screenState.mobileView ? '70vh' : '60rem'}`;
-        html.getElementsByClassName('terminal-base')[0].style.minHeight = `${screenState.mobileView ? '60vh' : '60vh'}`;
-        html.getElementsByClassName('terminal-base')[0].style.maxWidth = `${screenState.mobileView ? '90vw' : '90rem'}`;
-        html.getElementsByClassName('sc-jTzLTM')[0].style.width = `${screenState.mobileView ? '90vw' : '90rem'}`;
-        html.getElementsByClassName('lfnIny')[0].style.maxWidth = `${screenState.mobileView ? '90vw' : '90rem'}`;
-        html.getElementsByClassName('gCWpcM')[0].style.maxWidth = `${screenState.mobileView ? '90vw' : '90rem'}`;
+        html.getElementsByClassName('terminal-base')[0].style.width = `${screenState.mobileView ? '100%' : '100%'}`;
+        html.getElementsByClassName('terminal-base')[0].style.height = `${screenState.mobileView ? '100%' : '100%'}`;
+        html.getElementsByClassName('terminal-base')[0].style.minHeight = `${screenState.mobileView ? '100%' : '100%'}`;
+        html.getElementsByClassName('terminal-base')[0].style.maxWidth = `${screenState.mobileView ? '100%' : '100%'}`;
+        html.getElementsByClassName('sc-jTzLTM')[0].style.width = `${screenState.mobileView ? '100%' : '100%'}`;
+        html.getElementsByClassName('lfnIny')[0].style.maxWidth = `${screenState.mobileView ? '100%' : '100%'}`;
+        html.getElementsByClassName('gCWpcM')[0].style.maxWidth = `${screenState.mobileView ? '100%' : '100%'}`;
       }
     } catch {
       console.log('Opps an error occured!!');
@@ -632,7 +627,7 @@ const ReactTerminal = ({ id, fullScreen, filearray, updatefilearray, folderarray
   //===================================
 
   return (
-    <div className="Terminal" style={fullScreen ? { width: '100vw', height: '89vh' } : {}}>
+    <div className="Terminal">
       <Terminal
         color="#C4BFBF"
         backgroundColor="rgb(34, 34, 34)"

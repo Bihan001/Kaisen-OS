@@ -32,6 +32,7 @@ const File_Explorer = ({
   updatefilearray,
   handleZindex,
   id,
+  zIndex,
 }) => {
   const { theme } = useContext(ThemeContext);
   const { dirPaths, UpdatedirPaths } = useContext(DirectoryContext);
@@ -839,229 +840,252 @@ const File_Explorer = ({
     <>
       {Folder && (
         <>
-          {!Folder.minimized && (
-            <motion.div
-              className="File_Explorer"
-              id={id + 'File_Explorer'}
-              style={
-                !fullScreen
-                  ? { width: 'fit-content', height: 'fit-content' }
-                  : {
-                      width: 'fit-content',
-                      height: 'fit-content',
-                      position: 'fixed',
-                      top: getTop(),
-                      left: getLeft(),
-                      boxShadow: '0 0 0 black',
-                    }
-              }
-              drag={!fullScreen ? draggable : false}
-              dragControls={dragControls}
-              dragConstraints={!fullScreen ? { left: -500, right: 500, top: -30, bottom: 500 } : {}}
-              dragElastic={false}
-              dragMomentum={false}>
+          <motion.div
+            className="File_Explorer"
+            id={id + 'File_Explorer'}
+            style={
+              !fullScreen
+                ? {
+                    width: getLayout(fullScreen, screenState).width,
+                    height: getLayout(fullScreen, screenState).height,
+                    zIndex: zIndex,
+                    display: !Folder.minimized ? 'initial' : 'none',
+                  }
+                : {
+                    width: getLayout(fullScreen, screenState).width,
+                    height: getLayout(fullScreen, screenState).height,
+                    position: 'fixed',
+
+                    boxShadow: '0 0 0 black',
+                    zIndex: zIndex,
+                    display: !Folder.minimized ? 'initial' : 'none',
+                  }
+            }
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={
+              fullScreen
+                ? {
+                    top: getTop(),
+                    left: getLeft(),
+                    width: getLayout(fullScreen, screenState).width,
+                    height: getLayout(fullScreen, screenState).height,
+                    opacity: 1,
+                    scale: 1,
+                  }
+                : {
+                    width: getLayout(fullScreen, screenState).width,
+                    height: getLayout(fullScreen, screenState).height,
+                    opacity: 1,
+                    scale: 1,
+                  }
+            }
+            transition={{ type: 'spring', stiffness: 300, damping: 35, duration: 3 }}
+            exit={{ opacity: 0, scale: 0.8, transition: { duration: 0.15 } }}
+            drag={!fullScreen ? draggable : false}
+            dragControls={dragControls}
+            dragConstraints={!fullScreen ? { left: -500, right: 500, top: -30, bottom: 500 } : {}}
+            dragElastic={false}
+            dragMomentum={false}>
+            <div
+              className="Topbar Frosted_Glass"
+              // onMouseEnter={() => setdraggable(true)}
+              // onFocus={() => setdraggable(true)}
+              // onBlur={() => setdraggable(false)}
+              onPointerDown={(e) => startDrag(e)}
+              id={'topbar' + id}
+              tabIndex="-1">
+              <FrostedGlass frostId={'topbar' + id} opacityHex="99" showMargin={false} />
+              <div className="Topbar__Zindex_handler" onClick={FolderhandleZindex}>
+                <div className="Topbar__Zindex_handler_Icon">
+                  <img src={handleIcon(data)} />
+                </div>
+                <div className="Topbar__Zindex_handler_Name">File Explorer</div>
+              </div>
+              <div className="Window_Buttons">
+                <div className="Green" onClick={handleminizestatus}></div>
+                <div className="Yellow" onClick={() => setfullScreen(!fullScreen)}>
+                  {' '}
+                </div>
+                <div className="Red" onClick={handlecloseapp}></div>
+              </div>
+            </div>
+            <div className="Progress_Bar">
+              <div className="Progress" id={id + 'Progress'}></div>
+            </div>
+            {Folder && (
               <div
-                className="Topbar Frosted_Glass"
-                // onMouseEnter={() => setdraggable(true)}
-                // onFocus={() => setdraggable(true)}
-                // onBlur={() => setdraggable(false)}
-                onPointerDown={(e) => startDrag(e)}
-                id={'topbar' + id}
-                tabIndex="-1">
-                <FrostedGlass frostId={'topbar' + id} opacityHex="99" showMargin={false} />
-                <div className="Topbar__Zindex_handler" onClick={FolderhandleZindex}>
-                  <div className="Topbar__Zindex_handler_Icon">
-                    <img src={handleIcon(data)} />
+                className="File_Explorer_Config_Window "
+                onClick={FolderhandleZindex}
+                onPointerDown={(e) => setdraggable(false)}>
+                <div className="Path">
+                  <div onClick={handleback} className="back">
+                    <img src={back} />
                   </div>
-                  <div className="Topbar__Zindex_handler_Name">File Explorer</div>
+                  <div
+                    className={reloadClass}
+                    onClick={() => {
+                      if (!disableReload) handelReload();
+                    }}>
+                    <img src={reload} />
+                  </div>
+                  <div>{Folder.path.split('#').join('/')}</div>
                 </div>
-                <div className="Window_Buttons">
-                  <div className="Green" onClick={handleminizestatus}></div>
-                  <div className="Yellow" onClick={() => setfullScreen(!fullScreen)}>
-                    {' '}
-                  </div>
-                  <div className="Red" onClick={handlecloseapp}></div>
-                </div>
-              </div>
-              <div className="Progress_Bar">
-                <div className="Progress" id={id + 'Progress'}></div>
-              </div>
-              {Folder && (
-                <div
-                  className="File_Explorer_Config_Window "
-                  onClick={FolderhandleZindex}
-                  onPointerDown={(e) => setdraggable(false)}
-                  style={getLayout(fullScreen, screenState)}>
-                  <div className="Path">
-                    <div onClick={handleback} className="back">
-                      <img src={back} />
+                <div className="Lower_Segment ">
+                  <div className="Row headings">
+                    <div className="First">
+                      <div className="form-group">
+                        <input
+                          type="checkbox"
+                          id={`${id}Select_All`}
+                          onClick={(e) => {
+                            handleSelectAll(e);
+                            toggleDeleteIcon();
+                          }}
+                        />
+                        <label htmlFor={`${id}Select_All`}>Select all</label>
+                      </div>
                     </div>
-                    <div
-                      className={reloadClass}
-                      onClick={() => {
-                        if (!disableReload) handelReload();
-                      }}>
-                      <img src={reload} />
+                    <div className="Second">
+                      {!screenState.mobileView && <div>Date Modified</div>}
+                      <div>Type</div>
                     </div>
-                    <div>{Folder.path.split('#').join('/')}</div>
                   </div>
-                  <div className="Lower_Segment ">
-                    <div className="Row headings">
-                      <div className="First">
+                  <div className="Scrollable">
+                    {FolderContents.map((content, index) => (
+                      <div
+                        className={index % 2 == 0 ? 'Row Content grey' : 'Row Content white'}
+                        onDoubleClick={() => {
+                          if (!disableReload) handlecontentclicked(content);
+                        }}
+                        key={id + content.path}>
                         <div className="form-group">
                           <input
                             type="checkbox"
-                            id={`${id}Select_All`}
-                            onClick={(e) => {
-                              handleSelectAll(e);
-                              toggleDeleteIcon();
-                            }}
+                            id={id + content.path}
+                            value={content.path}
+                            onClick={() => toggleDeleteIcon()}
                           />
-                          <label htmlFor={`${id}Select_All`}>Select all</label>
+                          <label htmlFor={id + content.path}></label>
+                        </div>
+                        <div className="file-folder-name">
+                          <img src={handleIcon(content)} />
+                          <div>{content.name}</div>
+                        </div>
+                        <div className="content-data">
+                          {/* <div>{content.dateModified.toISOString().substring(0, 10)}</div>    */}
+                          {!screenState.mobileView && <div>{content.dateModified}</div>}
+                          <div>{content.type}</div>
                         </div>
                       </div>
-                      <div className="Second">
-                        {!screenState.mobileView && <div>Date Modified</div>}
-                        <div>Type</div>
-                      </div>
-                    </div>
-                    <div className="Scrollable">
-                      {FolderContents.map((content, index) => (
-                        <div
-                          className={index % 2 == 0 ? 'Row Content grey' : 'Row Content white'}
-                          onDoubleClick={() => {
-                            if (!disableReload) handlecontentclicked(content);
-                          }}
-                          key={id + content.path}>
-                          <div className="form-group">
-                            <input
-                              type="checkbox"
-                              id={id + content.path}
-                              value={content.path}
-                              onClick={() => toggleDeleteIcon()}
-                            />
-                            <label htmlFor={id + content.path}></label>
-                          </div>
-                          <div className="file-folder-name">
-                            <img src={handleIcon(content)} />
-                            <div>{content.name}</div>
-                          </div>
-                          <div className="content-data">
-                            {/* <div>{content.dateModified.toISOString().substring(0, 10)}</div>    */}
-                            {!screenState.mobileView && <div>{content.dateModified}</div>}
-                            <div>{content.type}</div>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
+                    ))}
                   </div>
-
-                  {CreateWindow.shown && !showDeleteIcon && (
-                    <>
-                      {(CreateWindow.data.type == 'folder' || CreateWindow.data.type == 'txt') && (
-                        <div className="CreateWindow type-uni" style={{ backgroundColor: theme }}>
-                          <div className="Input_div">
-                            <div>Name : </div>
-                            <input type="text" value={name} onChange={(e) => setname(e.target.value)} />
-                          </div>
-                          <div className="Type">Type : {CreateWindow.data.type}</div>
-                          <div className="Create">
-                            <div className="button" onClick={handleCreateType1}>
-                              Create
-                            </div>
-                          </div>
-                        </div>
-                      )}
-
-                      {CreateWindow.data.type == 'webapp' && (
-                        <div className="CreateWindow type-uni" style={{ backgroundColor: theme }}>
-                          <div className="Input_div">
-                            <div>Name : </div>
-                            <input type="text" value={name} onChange={(e) => setname(e.target.value)} />
-                          </div>
-                          <div className="Input_div">
-                            <div>Url : </div>
-                            <input type="text" value={content} onChange={(e) => setcontent(e.target.value)} />
-                          </div>
-
-                          <div className="Type">Type : {CreateWindow.data.type}</div>
-                          <div className="Create">
-                            <div className="button" onClick={handleCreateType2}>
-                              Create
-                            </div>
-                          </div>
-                        </div>
-                      )}
-
-                      {CreateWindow.data.type == 'other' && (
-                        <div className="CreateWindow type-uni" style={{ backgroundColor: theme }}>
-                          <div className="Input_div">
-                            <div>Name : </div>
-                            <input type="text" value={name} onChange={(e) => setname(e.target.value)} />
-                          </div>
-                          <div className="Input_div file-input">
-                            <input type="file" id="file-input" hidden onChange={(e) => setFile(e.target.files[0])} />
-                            <label className="button" htmlFor="file-input">
-                              Choose File
-                            </label>
-                            <span id="file-chosen">{file ? file.name : 'No file chosen'}</span>
-                          </div>
-
-                          {/* <div className="Type">Type : {CreateWindow.data.type}</div> */}
-                          <div className="Create">
-                            <div className="button" onClick={handleCreateType3}>
-                              Create
-                            </div>
-                          </div>
-                        </div>
-                      )}
-                    </>
-                  )}
-
-                  {showTypeList && !showDeleteIcon && (
-                    <div className="TypeList" style={{ backgroundColor: 'rgba(41, 45, 48 ,.5)' }}>
-                      {typeArray.map((data) => (
-                        <img src={data.icon} onClick={() => handleCreateWindow(data)} />
-                      ))}
-                    </div>
-                  )}
-
-                  {!showDeleteIcon && (
-                    <div
-                      className={`Function_Button ${id}config`}
-                      style={{ backgroundColor: theme }}
-                      onClick={() => {
-                        setshowTypeList(!showTypeList);
-                        handleRotate(id + 'config');
-                        if (CreateWindow.shown)
-                          setCreateWindow({
-                            shown: false,
-                            data: {},
-                          });
-                      }}>
-                      <img src={plus} />
-                    </div>
-                  )}
-                  {showDeleteIcon && (
-                    <div
-                      className={`Function_Button ${id}_delete_icon`}
-                      style={{ backgroundColor: theme }}
-                      onClick={(e) => {
-                        handleDelete();
-                        htmlelements = e.currentTarget;
-                        htmlelements.classList.add('wobble');
-                        setTimeout(() => {
-                          htmlelements.classList.remove('wobble');
-                        }, 700);
-                      }}>
-                      <img src={delete_icon} />
-                    </div>
-                  )}
-                  <div className="Settings_Config_Button"></div>
                 </div>
-              )}
-            </motion.div>
-          )}
+
+                {CreateWindow.shown && !showDeleteIcon && (
+                  <>
+                    {(CreateWindow.data.type == 'folder' || CreateWindow.data.type == 'txt') && (
+                      <div className="CreateWindow type-uni" style={{ backgroundColor: theme }}>
+                        <div className="Input_div">
+                          <div>Name : </div>
+                          <input type="text" value={name} onChange={(e) => setname(e.target.value)} />
+                        </div>
+                        <div className="Type">Type : {CreateWindow.data.type}</div>
+                        <div className="Create">
+                          <div className="button" onClick={handleCreateType1}>
+                            Create
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
+                    {CreateWindow.data.type == 'webapp' && (
+                      <div className="CreateWindow type-uni" style={{ backgroundColor: theme }}>
+                        <div className="Input_div">
+                          <div>Name : </div>
+                          <input type="text" value={name} onChange={(e) => setname(e.target.value)} />
+                        </div>
+                        <div className="Input_div">
+                          <div>Url : </div>
+                          <input type="text" value={content} onChange={(e) => setcontent(e.target.value)} />
+                        </div>
+
+                        <div className="Type">Type : {CreateWindow.data.type}</div>
+                        <div className="Create">
+                          <div className="button" onClick={handleCreateType2}>
+                            Create
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
+                    {CreateWindow.data.type == 'other' && (
+                      <div className="CreateWindow type-uni" style={{ backgroundColor: theme }}>
+                        <div className="Input_div">
+                          <div>Name : </div>
+                          <input type="text" value={name} onChange={(e) => setname(e.target.value)} />
+                        </div>
+                        <div className="Input_div file-input">
+                          <input type="file" id="file-input" hidden onChange={(e) => setFile(e.target.files[0])} />
+                          <label className="button" htmlFor="file-input">
+                            Choose File
+                          </label>
+                          <span id="file-chosen">{file ? file.name : 'No file chosen'}</span>
+                        </div>
+
+                        {/* <div className="Type">Type : {CreateWindow.data.type}</div> */}
+                        <div className="Create">
+                          <div className="button" onClick={handleCreateType3}>
+                            Create
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </>
+                )}
+
+                {showTypeList && !showDeleteIcon && (
+                  <div className="TypeList" style={{ backgroundColor: 'rgba(41, 45, 48 ,.5)' }}>
+                    {typeArray.map((data) => (
+                      <img src={data.icon} onClick={() => handleCreateWindow(data)} />
+                    ))}
+                  </div>
+                )}
+
+                {!showDeleteIcon && (
+                  <div
+                    className={`Function_Button ${id}config`}
+                    style={{ backgroundColor: theme }}
+                    onClick={() => {
+                      setshowTypeList(!showTypeList);
+                      handleRotate(id + 'config');
+                      if (CreateWindow.shown)
+                        setCreateWindow({
+                          shown: false,
+                          data: {},
+                        });
+                    }}>
+                    <img src={plus} />
+                  </div>
+                )}
+                {showDeleteIcon && (
+                  <div
+                    className={`Function_Button ${id}_delete_icon`}
+                    style={{ backgroundColor: theme }}
+                    onClick={(e) => {
+                      handleDelete();
+                      htmlelements = e.currentTarget;
+                      htmlelements.classList.add('wobble');
+                      setTimeout(() => {
+                        htmlelements.classList.remove('wobble');
+                      }, 700);
+                    }}>
+                    <img src={delete_icon} />
+                  </div>
+                )}
+                <div className="Settings_Config_Button"></div>
+              </div>
+            )}
+          </motion.div>
         </>
       )}
     </>

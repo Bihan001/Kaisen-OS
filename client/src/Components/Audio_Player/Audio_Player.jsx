@@ -7,14 +7,9 @@ import FullScreenLogo from './images/full-screen.svg';
 import VolumeLogo from './images/volume.svg';
 import MuteLogo from './images/mute.svg';
 
-import { ScreenContext } from '../../Contexts/ScreenContext';
-import { getLayout } from '../../Utility/functions';
-
 let audioControlsTimer;
 
 const Audio_Player = ({ content, id, fullScreen }) => {
-  const { screenState } = useContext(ScreenContext);
-
   const audioPlayerRef = useRef(null);
   const audioRef = useRef(null);
   const [isMuted, setIsMuted] = useState(false);
@@ -179,7 +174,7 @@ const Audio_Player = ({ content, id, fullScreen }) => {
   }, []);
 
   return (
-    <div className="Audio_Player" style={getLayout(fullScreen, screenState)}>
+    <div className="Audio_Player">
       <Loader />
       <div
         onMouseMove={(e) => handleMouseMoveInAudio(e)}

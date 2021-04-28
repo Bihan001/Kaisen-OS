@@ -4,11 +4,11 @@ $default-box-shadow: 0 17px 60px 4px rgba(0, 0, 0, 0.56);
 .File_Explorer {
   position: absolute;
   //border: 2px solid black;
-  height: fit-content;
-  top: 7%;
-  left: 19%;
+
+  top: 5%;
+  left: 20%;
   box-shadow: 0 17px 60px 4px rgba(0, 0, 0, 0.56);
-  width: 75%;
+
   .Topbar {
     //border:2px solid green;
     // padding:1rem;
@@ -94,8 +94,8 @@ $default-box-shadow: 0 17px 60px 4px rgba(0, 0, 0, 0.56);
   &_Config_Window {
     //border: 2px solid orange;
     //padding:3rem;
-    height: 67vh;
-    width: 65vw;
+    height: 100%;
+    width: 100%;
     display: flex;
     flex-direction: column;
     .Path {
@@ -140,7 +140,7 @@ $default-box-shadow: 0 17px 60px 4px rgba(0, 0, 0, 0.56);
       }
     }
     .Lower_Segment {
-      //border: 2px solid purple;
+      // border: 2px solid purple;
       // overflow-y: auto;
       flex: 1;
       display: flex;
@@ -224,8 +224,8 @@ $default-box-shadow: 0 17px 60px 4px rgba(0, 0, 0, 0.56);
     .CreateWindow {
       // background-color:red;
       position: absolute;
-      top: 50%;
-      right: 35%;
+      bottom: 6rem;
+      right: 40rem;
       width: 30rem;
       height: 20rem;
       border-radius: 1px;
@@ -240,7 +240,7 @@ $default-box-shadow: 0 17px 60px 4px rgba(0, 0, 0, 0.56);
 
     .type-uni {
       padding: 1rem;
-      // border:2px solid red;
+      // border: 2px solid black;
       display: flex;
       flex-direction: column;
       justify-content: space-around;
@@ -281,14 +281,16 @@ $default-box-shadow: 0 17px 60px 4px rgba(0, 0, 0, 0.56);
     }
 
     .TypeList {
-      // border:2px solid red;
-      background-color: red;
+      // border: 2px solid red;
+      // background-color: red;
       position: absolute;
       border-radius: 3px;
       box-shadow: rgba(17, 17, 26, 0.1) 0px 1px 0px, rgba(17, 17, 26, 0.1) 0px 8px 24px,
         rgba(17, 17, 26, 0.1) 0px 16px 48px;
-      top: 50%;
-      right: 13%;
+
+      bottom: 6rem;
+      right: 15rem;
+
       width: 20rem;
       height: 20rem;
       display: flex;
@@ -306,10 +308,10 @@ $default-box-shadow: 0 17px 60px 4px rgba(0, 0, 0, 0.56);
       animation-fill-mode: forwards;
     }
     .Function_Button {
-      // border:2px solid red;
+      //border: 2px solid red;
       position: absolute;
-      top: 82%;
-      right: 5%;
+      bottom: 0rem;
+      right: 5rem;
       border-radius: 50%;
       padding: 1.2rem;
 
@@ -491,12 +493,31 @@ $default-box-shadow: 0 17px 60px 4px rgba(0, 0, 0, 0.56);
 }
 
 @media (max-width: 415px) {
-  .File_Explorer_Config_Window {
-    width: 90vw;
-  }
+  // .File_Explorer_Config_Window {
+  //   width: 90vw;
+  // }
   .File_Explorer {
     top: 5rem;
     left: 5%;
+    &_Config_Window {
+      .CreateWindow {
+        //border: 2px solid green;
+        bottom: 23rem;
+        right: 5rem;
+      }
+      .TypeList {
+        // border: 2px solid red;
+        bottom: 0rem;
+        width: 20rem;
+        right: 25%;
+        transform: scale(0.7);
+      }
+      .Function_Button {
+        // border: 2px solid blue;
+        bottom: -1.5rem;
+        right: 2rem;
+      }
+    }
   }
 }
 

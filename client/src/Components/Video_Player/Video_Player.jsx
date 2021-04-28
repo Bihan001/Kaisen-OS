@@ -1,8 +1,6 @@
 import React, { useState, useRef, useContext } from 'react';
 import { motion } from 'framer-motion';
 
-import { ScreenContext } from '../../Contexts/ScreenContext';
-import { getLayout } from '../../Utility/functions';
 import './Video_Player.scss';
 import Loader from '../Loader/Loader';
 import PlayLogo from './images/play-button.svg';
@@ -14,8 +12,6 @@ import MuteLogo from './images/mute.svg';
 let videoControlsTimer;
 
 const Video_Player = ({ content, id, fullScreen }) => {
-  const { screenState } = useContext(ScreenContext);
-
   const videoPlayerRef = useRef(null);
   const videoRef = useRef(null);
   const [isMuted, setIsMuted] = useState(false);

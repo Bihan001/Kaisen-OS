@@ -1,13 +1,9 @@
 import React, { useContext } from 'react';
-import { ScreenContext } from '../../Contexts/ScreenContext';
-import { getLayout } from '../../Utility/functions';
 import './word.scss';
 import Loader from '../Loader/Loader';
 const WordViewer = ({ content, fullScreen }) => {
-  const { screenState } = useContext(ScreenContext);
-
   return (
-    <div className="word" style={getLayout(fullScreen, screenState)}>
+    <div className="word">
       <Loader />
       <iframe
         src={`https://view.officeapps.live.com/op/embed.aspx?src=${content}`}

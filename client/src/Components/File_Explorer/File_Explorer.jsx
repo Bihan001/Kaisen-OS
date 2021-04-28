@@ -846,10 +846,14 @@ const File_Explorer = ({
             style={
               !fullScreen
                 ? {
+                    width: getLayout(fullScreen, screenState).width,
+                    height: getLayout(fullScreen, screenState).height,
                     zIndex: zIndex,
                     display: !Folder.minimized ? 'initial' : 'none',
                   }
                 : {
+                    width: getLayout(fullScreen, screenState).width,
+                    height: getLayout(fullScreen, screenState).height,
                     position: 'fixed',
 
                     boxShadow: '0 0 0 black',
@@ -857,7 +861,7 @@ const File_Explorer = ({
                     display: !Folder.minimized ? 'initial' : 'none',
                   }
             }
-            initial={false}
+            initial={{ opacity: 0, scale: 0.95 }}
             animate={
               fullScreen
                 ? {
@@ -865,8 +869,15 @@ const File_Explorer = ({
                     left: getLeft(),
                     width: getLayout(fullScreen, screenState).width,
                     height: getLayout(fullScreen, screenState).height,
+                    opacity: 1,
+                    scale: 1,
                   }
-                : { width: getLayout(fullScreen, screenState).width, height: getLayout(fullScreen, screenState).height }
+                : {
+                    width: getLayout(fullScreen, screenState).width,
+                    height: getLayout(fullScreen, screenState).height,
+                    opacity: 1,
+                    scale: 1,
+                  }
             }
             transition={{ type: 'spring', stiffness: 300, damping: 35, duration: 3 }}
             exit={{ opacity: 0, scale: 0.8, transition: { duration: 0.15 } }}

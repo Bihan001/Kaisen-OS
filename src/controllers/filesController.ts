@@ -5,6 +5,7 @@ import Folder from '../models/folder';
 import catchAsync from '../utils/catch-async';
 import { SuccessResponse } from '../utils/response-handler';
 import CustomError from '../errors/custom-error';
+import admin from '../firebase-admin';
 
 interface FolderInterface extends Document {
   children?: Array<string>;
@@ -76,6 +77,7 @@ export const deleteFilesAndFolders = catchAsync(async (req: Request, res: Respon
   const paths: Array<string> = req.body.paths;
   const names: Array<string> = req.body.names;
   if (!paths || !names) throw new CustomError('Paths and names array should be present', 400);
+  if (paths.length === 0) throw new CustomError('Paths array cannot be empty', 400);
   const tmpArr = paths[0].split('#');
   if (tmpArr.length === 0) throw new CustomError('Paths array should be valid', 400);
   tmpArr.pop();
@@ -86,6 +88,8 @@ export const deleteFilesAndFolders = catchAsync(async (req: Request, res: Respon
   await parentFolder.save();
   const pathsRegex = paths.map((path) => new RegExp(path, 'i'));
   await Folder.deleteMany({ _id: { $in: pathsRegex } });
+  const files: Array<FileInterface> = await File.find({ _id: { $in: pathsRegex } });
+  const fileUrls = files.map((file) => file.content);
   await File.deleteMany({ _id: { $in: pathsRegex } });
   res.status(200).json(SuccessResponse({}, 'Deletion successfull'));
 });

@@ -210,7 +210,11 @@ const Desktop = (props) => {
             newdir.join('#');
             if (newdir == 'root')
               return (
-                <div className="Icons" key={dirPaths[dir].path} onClick={() => handleOpen(dirPaths[dir])}>
+                <div
+                  className="Icons"
+                  key={dirPaths[dir].path}
+                  onTouchStart={() => handleOpen(dirPaths[dir])}
+                  onDoubleClick={() => handleOpen(dirPaths[dir])}>
                   <img src={handleIcon(dirPaths[dir])} />
                   <div className="Icons__text">{dirPaths[dir].name}</div>
                 </div>

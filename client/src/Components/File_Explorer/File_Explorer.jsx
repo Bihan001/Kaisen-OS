@@ -23,7 +23,7 @@ import { motion, useDragControls } from 'framer-motion';
 import { clone } from 'ramda';
 import FrostedGlass from '../../Utility/frosted-glass';
 
-let tooltipTimer;
+import Tooltip from '../Tooltip/Tooltip';
 
 const File_Explorer = ({
   data,
@@ -90,6 +90,8 @@ const File_Explorer = ({
   const [reloadClass, setreloadClass] = useState('reload');
   const [showDeleteIcon, setshowDeleteIcon] = useState(false);
   //==========================
+
+  const [tooltipTimerId, setTooltipTimerId] = useState(null);
 
   const [showTooltip, setShowTooltip] = useState(false);
 
@@ -929,18 +931,8 @@ const File_Explorer = ({
                 className="File_Explorer_Config_Window "
                 onClick={FolderhandleZindex}
                 onPointerDown={(e) => setdraggable(false)}>
-                <div
-                  className="tooltip-box"
-                  style={{
-                    display: showTooltip ? 'flex' : 'none',
-                    transform: `translate(${tooltipPosition.x - 300}px, ${tooltipPosition.y - 100}px)`,
-                  }}>
-                  Name: {tooltipData.name}
-                  <br />
-                  Created by: {tooltipData.createdBy}
-                  <br />
-                  Date Modified: {tooltipData.dateModified}
-                </div>
+                <Tooltip showTooltip={showTooltip} tooltipPosition={tooltipPosition} tooltipData={tooltipData} />
+
                 <div className="Path">
                   <div onClick={handleback} className="back">
                     <img src={back} />
@@ -979,29 +971,31 @@ const File_Explorer = ({
                       <div
                         className={index % 2 == 0 ? 'Row Content grey' : 'Row Content white'}
                         onMouseOver={(e) => {
-                          clearTimeout(tooltipTimer);
-                          tooltipTimer = setTimeout(() => {
-                            setShowTooltip(true);
-                            setTooltipData({
-                              name: content.name,
-                              createdBy: content.editableBy.name,
-                              dateModified: content.dateModified,
-                            });
-                            setTooltipPosition({ x: e.clientX, y: e.clientY });
-                          }, 500);
+                          clearTimeout(tooltipTimerId);
+                          setTooltipTimerId(
+                            setTimeout(() => {
+                              setShowTooltip(true);
+                              setTooltipData({
+                                name: content.name,
+                                createdBy: content.editableBy.name,
+                                dateModified: content.dateModified,
+                              });
+                              setTooltipPosition({ x: e.clientX, y: e.clientY });
+                            }, 500)
+                          );
                         }}
                         onMouseOut={(e) => {
                           setShowTooltip(false);
-                          clearTimeout(tooltipTimer);
+                          clearTimeout(tooltipTimerId);
                         }}
                         onDoubleClick={() => {
                           setShowTooltip(false);
-                          clearTimeout(tooltipTimer);
+                          clearTimeout(tooltipTimerId);
                           if (!disableReload) handlecontentclicked(content);
                         }}
                         onTouchStart={() => {
                           setShowTooltip(false);
-                          clearTimeout(tooltipTimer);
+                          clearTimeout(tooltipTimerId);
                           if (!disableReload) handlecontentclicked(content);
                         }}
                         key={id + content.path}>

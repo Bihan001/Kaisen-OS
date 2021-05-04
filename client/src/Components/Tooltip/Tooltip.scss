@@ -1,0 +1,16 @@
+.tooltip-box {
+  position: absolute;
+  transition: opacity 0.2s ease;
+  top: 0px;
+  left: 0px;
+  width: 350px;
+  height: 100px;
+  z-index: 999;
+  background-color: white;
+  border: 1px solid rgb(206, 206, 206);
+  color: black;
+  border-radius: 4px;
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+}

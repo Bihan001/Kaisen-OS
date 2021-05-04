@@ -13,6 +13,7 @@ import { DirectoryContext } from '../../Contexts/DirectoryContext/DirectoryConte
 import Taskbar from '../../Components/TaskBar/Taskbar';
 import Particular_File from '../../Components/File/File';
 import File_Explorer from '../../Components/File_Explorer/File_Explorer';
+import Tooltip from '../../Components/Tooltip/Tooltip';
 import { backendUrl } from '../../backendUrl';
 
 import arrow from '../../assets/icons/arrow.png';
@@ -38,6 +39,19 @@ const Desktop = (props) => {
 
   /*const [folderZindex,setfolderZindex]=useState(0);
   const [fileZindex,setfileZindex]=useState(0);*/
+
+  //tooltip============================
+  const [tooltipTimerId, setTooltipTimerId] = useState(null);
+  const [showTooltip, setShowTooltip] = useState(false);
+
+  const [tooltipData, setTooltipData] = useState({
+    name: '',
+    dateModified: '',
+    createdBy: '',
+  });
+
+  const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
+  //===================================
 
   const [maxValue, setMaxValue] = useState(1);
 
@@ -194,6 +208,9 @@ const Desktop = (props) => {
           />
         ))}
       </div>
+
+      <Tooltip isDesktopIcon showTooltip={showTooltip} tooltipPosition={tooltipPosition} tooltipData={tooltipData} />
+
       {/* <div className="bg-video">
                  <video className="bg-video-content" autoPlay muted loop>
                     <source src={bgvideo} type="video/mp4"/>
@@ -214,7 +231,25 @@ const Desktop = (props) => {
                   className="Icons"
                   key={dirPaths[dir].path}
                   onTouchStart={() => handleOpen(dirPaths[dir])}
-                  onDoubleClick={() => handleOpen(dirPaths[dir])}>
+                  onDoubleClick={() => handleOpen(dirPaths[dir])}
+                  onMouseOver={(e) => {
+                    clearTimeout(tooltipTimerId);
+                    setTooltipTimerId(
+                      setTimeout(() => {
+                        setShowTooltip(true);
+                        setTooltipData({
+                          name: dirPaths[dir].name,
+                          createdBy: dirPaths[dir].editableBy.name,
+                          dateModified: dirPaths[dir].dateModified,
+                        });
+                        setTooltipPosition({ x: e.clientX, y: e.clientY });
+                      }, 500)
+                    );
+                  }}
+                  onMouseOut={(e) => {
+                    setShowTooltip(false);
+                    clearTimeout(tooltipTimerId);
+                  }}>
                   <img src={handleIcon(dirPaths[dir])} />
                   <div className="Icons__text">{dirPaths[dir].name}</div>
                 </div>

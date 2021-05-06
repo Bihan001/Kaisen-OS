@@ -977,6 +977,7 @@ const File_Explorer = ({
                               setShowTooltip(true);
                               setTooltipData({
                                 name: content.name,
+                                type: content.type,
                                 createdBy: content.editableBy.name,
                                 dateModified: content.dateModified,
                               });

@@ -13,6 +13,8 @@ const Tooltip = ({ isDesktopIcon, showTooltip, tooltipPosition, tooltipData }) =
           }}>
           Name: {tooltipData.name}
           <br />
+          Type : {tooltipData.type}
+          <br />
           Created by: {tooltipData.createdBy}
           <br />
           Date Modified: {tooltipData.dateModified}

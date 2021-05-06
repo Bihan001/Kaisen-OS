@@ -239,6 +239,7 @@ const Desktop = (props) => {
                         setShowTooltip(true);
                         setTooltipData({
                           name: dirPaths[dir].name,
+                          type: dirPaths[dir].type,
                           createdBy: dirPaths[dir].editableBy.name,
                           dateModified: dirPaths[dir].dateModified,
                         });

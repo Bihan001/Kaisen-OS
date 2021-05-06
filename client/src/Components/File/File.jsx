@@ -19,6 +19,9 @@ import PptViewer from '../ppt-viewer';
 import WordViewer from '../word-viewer';
 import ExcelViewer from '../excel-viewer';
 import TextViewer from '../text-viewer';
+import VsCode from '../VsCode/VsCode';
+import Spotify from '../Spotify/Spotify';
+import Todoist from '../Todoist/Todoist';
 import FrostedGlass from '../../Utility/frosted-glass';
 
 const expandObject = (obj) => {
@@ -100,6 +103,9 @@ const Particular_File = ({
             updatefolderarray={updatefolderarray}
           />
         ),
+        VsCode: <VsCode content={data.content} fullScreen={fullScreen} />,
+        Spotify: <Spotify content={data.content} fullScreen={fullScreen} />,
+        Todoist: <Todoist content={data.content} fullScreen={fullScreen} />,
       },
     ],
     webapp: <WebApp content={data.content} fullScreen={fullScreen} />,

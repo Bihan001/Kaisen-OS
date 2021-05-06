@@ -2,7 +2,6 @@ import React, { useState, useEffect, useContext } from 'react';
 import { clone } from 'ramda';
 import './Taskbar.scss';
 
-import k from '../../assets/icons/k.png';
 import { handleIcon } from '../../Utility/functions';
 
 import { ThemeContext } from '../../Contexts/ThemeContext/ThemeContext';
@@ -26,7 +25,7 @@ const Taskbar = ({
 
   const { theme, ChangeTheme } = useContext(ThemeContext);
   const [buttonthemes, setbuttonthemes] = useState({
-    backgroundColor: 'transparent',
+    color: 'black',
   });
 
   const handlerestoresize = (data, id) => {
@@ -53,10 +52,11 @@ const Taskbar = ({
         <div
           className="Kaisen_Button disableOutsideClick"
           style={buttonthemes}
-          onMouseEnter={() => setbuttonthemes({ backgroundColor: theme })}
-          onMouseLeave={() => setbuttonthemes({ backgroundColor: 'transparent' })}
+          onMouseEnter={() => setbuttonthemes({ color: theme })}
+          onMouseLeave={() => setbuttonthemes({ color: 'black' })}
           onClick={togglemenu}>
-          <img className="Kaisen_Button_Image disableOutsideClick" src={k} />
+          {/* <img className="Kaisen_Button_Image disableOutsideClick" src={k_svg} style={{ fill: 'red' }} /> */}
+          <Start_Button color={buttonthemes} />
         </div>
 
         <div className="Icons">
@@ -90,6 +90,24 @@ const Taskbar = ({
         <div></div>
       </div>
     </div>
+  );
+};
+export const Start_Button = ({ color }) => {
+  return (
+    <svg
+      id="Capa_1"
+      className="Kaisen_Button_Image disableOutsideClick"
+      enable-background="new 0 0 512 512"
+      viewBox="0 0 512 512"
+      xmlns="http://www.w3.org/2000/svg"
+      fill={color.color}>
+      <g id="K" className="disableOutsideClick">
+        <path
+          className="disableOutsideClick"
+          d="m485.006 0h-167.812l-168.252 189.774v-189.774h-124.043v512h124.043v-155.058l58.198-61.215 122.344 216.273h157.617l-193.227-307.24z"
+        />
+      </g>
+    </svg>
   );
 };
 export default Taskbar;

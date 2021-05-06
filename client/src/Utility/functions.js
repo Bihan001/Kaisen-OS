@@ -7,6 +7,13 @@ export const handleIcon = (data) => {
       return 'https://res.cloudinary.com/drolmjcot/image/upload/q_auto:good/v1614061685/terminal-icon_ac2sdv.png';
     if (data.name == 'MagicBall' && data.type == 'webapp')
       return 'https://res.cloudinary.com/drolmjcot/image/upload/v1616249934/magicball_coq09r.png';
+    if (data.name == 'VsCode' && data.type == 'exe')
+      return 'https://res.cloudinary.com/drolmjcot/image/upload/v1620290109/icons8-visual-studio-code-2019-48_ibprxf.png';
+
+    if (data.name == 'Spotify' && data.type == 'exe')
+      return 'https://res.cloudinary.com/drolmjcot/image/upload/v1620291916/spotify-logo-png-7053_vfxytw.png';
+    if (data.name == 'Todoist' && data.type == 'exe')
+      return 'https://res.cloudinary.com/drolmjcot/image/upload/v1620292427/todoist_logo_icon_144800_ohrjnz.png';
 
     if (data.type == 'txt')
       return 'https://res.cloudinary.com/drolmjcot/image/upload/q_auto:good/v1614060786/ba31ac1ab88b5c17cc84283621a6e702_m4cirp.png';

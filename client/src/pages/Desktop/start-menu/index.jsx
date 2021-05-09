@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { fadeinTop, slideOutLeft } from '../../../Utility/functions';
+import Carousel from 'react-multi-carousel';
+import 'react-multi-carousel/lib/styles.css';
 import axios from 'axios';
 import { backendUrl } from '../../../backendUrl';
 import { Folder, File, ClassFolder, ClassFile } from '../../../Classes/Classes';
@@ -12,6 +14,7 @@ import './start-menu.scss';
 import Clock from '../widgets/clock';
 import FrostedGlass from '../../../Utility/frosted-glass';
 import { NotificationContext } from '../../../Contexts/NotificationContext';
+import { ScreenContext } from '../../../Contexts/ScreenContext';
 
 const StartMenu = (props) => {
   const {
@@ -29,11 +32,34 @@ const StartMenu = (props) => {
   } = props;
 
   const { addNotification } = useContext(NotificationContext);
+  const { screenState } = useContext(ScreenContext);
 
   const [startMenuContents, setStartMenuContents] = useState({
     folders: [],
     files: [],
   });
+
+  //Carousal config============
+  const responsive = {
+    superLargeDesktop: {
+      // the naming can be any, depends on you.
+      breakpoint: { max: 4000, min: 3000 },
+      items: 5,
+    },
+    desktop: {
+      breakpoint: { max: 3000, min: 1024 },
+      items: 3,
+    },
+    tablet: {
+      breakpoint: { max: 1024, min: 464 },
+      items: 2,
+    },
+    mobile: {
+      breakpoint: { max: 464, min: 0 },
+      items: 1,
+    },
+  };
+  //===========================
 
   useEffect(() => {
     getStartMenuContents();
@@ -96,96 +122,169 @@ const StartMenu = (props) => {
   if (!user) return <></>;
   return (
     <>
-      <AnimatePresence>
-        {showMenu && (
-          <motion.div
-            className="Start_Menu Frosted_Glass"
-            id="start-menu"
-            key="start_menu"
-            style={{ zIndex: maxZindex }}
-            ref={clickedOutsideRef}
-            variants={fadeinTop}
-            initial="hidden"
-            animate="visible"
-            exit="exit">
-            <FrostedGlass frostId="start-menu" opacityHex="ff" />
-            <div className="Info_n_Content">
-              <div className="User_Info">
-                <div className="dp_div">
-                  <img src={user.displayImage} />
+      {!screenState.mobileView && (
+        <AnimatePresence>
+          {showMenu && (
+            <motion.div
+              className="Start_Menu Frosted_Glass"
+              id="start-menu"
+              key="start_menu"
+              style={{ zIndex: maxZindex }}
+              ref={clickedOutsideRef}
+              variants={fadeinTop}
+              initial="hidden"
+              animate="visible"
+              exit="exit">
+              <FrostedGlass frostId="start-menu" opacityHex="ff" />
+              <div className="Info_n_Content">
+                <div className="User_Info">
+                  <div className="dp_div">
+                    <img src={user.displayImage} />
+                  </div>
+                  <div className="User_Name">{user.name}</div>
                 </div>
-                <div className="User_Name">{user.name}</div>
-              </div>
-              <div className="StartMenu__Content StartMenu__Content__Scrollable">
-                {startMenuContents.folders.map((content, idx) => (
-                  <motion.div
-                    key={idx}
-                    className="StartMenu__Content__Data"
-                    onClick={() => handleOpen(content)}
-                    variants={fadeinTop}>
-                    <img src={handleIcon(content)} />
-                    <div>{content.name}</div>
-                  </motion.div>
-                ))}
-                {startMenuContents.files.map((content, idx) => (
-                  <motion.div
-                    key={idx}
-                    className="StartMenu__Content__Data"
-                    onClick={() => handleOpen(content)}
-                    variants={fadeinTop}>
-                    <img src={handleIcon(content)} />
-                    <div>{content.name}</div>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
-            <div className="Wallpaper_n_Widgets">
-              <motion.div className="Wallpaper_n_Widgets__Top" variants={fadeinTop}>
-                <div>
-                  {wallpapers.length > 0 && (
-                    <AnimatePresence exitBeforeEnter>
-                      <motion.img
-                        src={wallpapers[presentWallpaper].image}
-                        variants={slideOutLeft}
-                        initial="hidden"
-                        animate="visible"
-                        exit="exit"
-                        key={wallpapers[presentWallpaper].image}
-                      />
-                    </AnimatePresence>
-                  )}
-                </div>
-                <div className="Left" onClick={handleWallpaperLeft}>
-                  <img src={arrow} />
-                </div>
-                <div className="Right" onClick={handleWallpaperRight}>
-                  <img src={arrow} />
-                </div>
-              </motion.div>
-              <div className="Wallpaper_n_Widgets__Bottom">
-                <Temperature />
-                <div className="Wallpaper_n_Widgets__Bottom__right-top">
-                  <Clock />
-                  <div className="Wallpaper_n_Widgets__Bottom__right-top__buttons">
-                    <motion.button className="start-button logout" onClick={() => logout()} variants={fadeinTop}>
-                      <img src={powerOff} />
-                    </motion.button>
-                    <motion.button
-                      className="start-button ai"
-                      onClick={() => {
-                        addNotification('info', 'AI', 'Feature Coming Soon !');
-                      }}
+                <div className="StartMenu__Content StartMenu__Content__Scrollable">
+                  {startMenuContents.folders.map((content, idx) => (
+                    <motion.div
+                      key={idx}
+                      className="StartMenu__Content__Data"
+                      onClick={() => handleOpen(content)}
                       variants={fadeinTop}>
-                      {' '}
-                      <img src={alan_ai_icon} />
-                    </motion.button>
+                      <img src={handleIcon(content)} />
+                      <div>{content.name}</div>
+                    </motion.div>
+                  ))}
+                  {startMenuContents.files.map((content, idx) => (
+                    <motion.div
+                      key={idx}
+                      className="StartMenu__Content__Data"
+                      onClick={() => handleOpen(content)}
+                      variants={fadeinTop}>
+                      <img src={handleIcon(content)} />
+                      <div>{content.name}</div>
+                    </motion.div>
+                  ))}
+                </div>
+              </div>
+              <div className="Wallpaper_n_Widgets">
+                <motion.div className="Wallpaper_n_Widgets__Top" variants={fadeinTop}>
+                  <div>
+                    {wallpapers.length > 0 && (
+                      <AnimatePresence exitBeforeEnter>
+                        <motion.img
+                          src={wallpapers[presentWallpaper].image}
+                          variants={slideOutLeft}
+                          initial="hidden"
+                          animate="visible"
+                          exit="exit"
+                          key={wallpapers[presentWallpaper].image}
+                        />
+                      </AnimatePresence>
+                    )}
+                  </div>
+                  <div className="Left" onClick={handleWallpaperLeft}>
+                    <img src={arrow} />
+                  </div>
+                  <div className="Right" onClick={handleWallpaperRight}>
+                    <img src={arrow} />
+                  </div>
+                </motion.div>
+                <div className="Wallpaper_n_Widgets__Bottom">
+                  <Temperature />
+                  <div className="Wallpaper_n_Widgets__Bottom__right-top">
+                    <Clock />
+                    <div className="Wallpaper_n_Widgets__Bottom__right-top__buttons">
+                      <motion.button className="start-button logout" onClick={() => logout()} variants={fadeinTop}>
+                        <img src={powerOff} />
+                      </motion.button>
+                      <motion.button
+                        className="start-button ai"
+                        onClick={() => {
+                          addNotification('info', 'AI', 'Feature Coming Soon !');
+                        }}
+                        variants={fadeinTop}>
+                        {' '}
+                        <img src={alan_ai_icon} />
+                      </motion.button>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      )}
+      {screenState.mobileView && (
+        <AnimatePresence>
+          {showMenu && (
+            <motion.div
+              className="Mobile_Start_Menu Frosted_Glass"
+              id="start-menu-mobile"
+              key="start-menu-mobile"
+              style={{
+                zIndex: maxZindex,
+                width: '100vw',
+                height: screenState.screenHeight - 4.8 * (screenState.screenWidth > 415 ? 10 : 7) + 'px',
+              }}
+              ref={clickedOutsideRef}
+              variants={fadeinTop}
+              initial="hidden"
+              animate="visible"
+              exit="exit">
+              <FrostedGlass frostId="start-menu-mobile" opacityHex="ff" />
+              <div className="Mobile_Start_Menu__Info">
+                <div className="User_Info">
+                  <div className="dp_div">
+                    <img src={user.displayImage} />
+                  </div>
+                  <div className="User_Name">{user.name}</div>
+                </div>
+                <motion.div className="Wallpaper" variants={fadeinTop}>
+                  <div>
+                    {wallpapers.length > 0 && (
+                      <AnimatePresence exitBeforeEnter>
+                        <motion.img
+                          src={wallpapers[presentWallpaper].image}
+                          variants={slideOutLeft}
+                          initial="hidden"
+                          animate="visible"
+                          exit="exit"
+                          key={wallpapers[presentWallpaper].image}
+                        />
+                      </AnimatePresence>
+                    )}
+                  </div>
+                  <div className="Left" onClick={handleWallpaperLeft}>
+                    <img src={arrow} />
+                  </div>
+                  <div className="Right" onClick={handleWallpaperRight}>
+                    <img src={arrow} />
+                  </div>
+                </motion.div>
+              </div>
+              <div className="Mobile_Start_Menu__Widgets_n_Content">
+                <Carousel responsive={responsive} showDots={true} removeArrowOnDeviceType={['tablet', 'mobile']}>
+                  <div className="Mobile_Start_Menu__Widgets_n_Content__Content StartMenu__Content__Scrollable">
+                    {startMenuContents.folders.map((content, idx) => (
+                      <motion.div key={idx} className="Data" onClick={() => handleOpen(content)} variants={fadeinTop}>
+                        <img src={handleIcon(content)} />
+                        <div>{content.name}</div>
+                      </motion.div>
+                    ))}
+                    {startMenuContents.files.map((content, idx) => (
+                      <motion.div key={idx} className="Data" onClick={() => handleOpen(content)} variants={fadeinTop}>
+                        <img src={handleIcon(content)} />
+                        <div>{content.name}</div>
+                      </motion.div>
+                    ))}
+                  </div>
+                  <div className="x">Item 2</div>
+                </Carousel>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      )}
     </>
   );
 };

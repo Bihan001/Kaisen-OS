@@ -6,7 +6,7 @@ const weatherApiKey = 'e4e40b8ea4e6a131dddcdadd76d89036';
 
 // Not working, should work: dd96ec894ec655442a773e09c19b9b34
 
-const Temperature = () => {
+const Temperature = ({ ...rest }) => {
   const [weather, setWeather] = useState(null);
 
   useEffect(() => {
@@ -35,7 +35,7 @@ const Temperature = () => {
   };
 
   return (
-    <div className="thermometer">
+    <div className="thermometer" {...rest}>
       <div>
         <span className="glass">
           <span className="amount" style={{ height: weather ? `${weather.main.temp}%` : '0%' }} />

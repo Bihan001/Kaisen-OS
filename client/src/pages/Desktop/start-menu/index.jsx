@@ -278,7 +278,29 @@ const StartMenu = (props) => {
                       </motion.div>
                     ))}
                   </div>
-                  <div className="x">Item 2</div>
+                  <div className="x" style={{ display: 'flex' }}>
+                    <Temperature style={{ width: 'fit-content' }} />
+                    <div style={{ marginLeft: '1rem' }}>
+                      <Clock />
+                      <div className="mobile-start-btns">
+                        <motion.button
+                          className="start-button start-button-mobile logout"
+                          onClick={() => logout()}
+                          variants={fadeinTop}>
+                          <img src={powerOff} />
+                        </motion.button>
+                        <motion.button
+                          className="start-button start-button-mobile ai"
+                          onClick={() => {
+                            addNotification('info', 'AI', 'Feature Coming Soon !');
+                          }}
+                          variants={fadeinTop}>
+                          {' '}
+                          <img src={alan_ai_icon} />
+                        </motion.button>
+                      </div>
+                    </div>
+                  </div>
                 </Carousel>
               </div>
             </motion.div>

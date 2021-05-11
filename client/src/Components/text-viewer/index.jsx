@@ -11,11 +11,13 @@ import { backendUrl } from '../../backendUrl';
 
 import { DirectoryContext } from '../../Contexts/DirectoryContext/DirectoryContext';
 import { AuthContext } from '../../Contexts/AuthContext';
+import { ScreenContext } from '../../Contexts/ScreenContext/index';
 import { ClassFile, ClassFolder } from '../../Classes/Classes';
 
 const TextViewer = ({ content, editableBy, path, fullScreen }) => {
   const { dirPaths, UpdatedirPaths } = useContext(DirectoryContext);
   const { user } = useContext(AuthContext);
+  const { screenState } = useContext(ScreenContext);
 
   const [editorState, setEditorState] = React.useState(() => RichTextEditor.createEmptyValue());
   const [storageRef] = React.useState(firebase.storage().ref());
@@ -85,7 +87,7 @@ const TextViewer = ({ content, editableBy, path, fullScreen }) => {
         value={editorState}
         onChange={setEditorState}
         rootStyle={{ width: '100%' }}
-        editorStyle={{ height: '90%' }}
+        editorStyle={{ height: screenState.mobileView ? '70%' : '90%' }}
       />
     </div>
   );

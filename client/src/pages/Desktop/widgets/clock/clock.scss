@@ -7,10 +7,16 @@
     font-size: 4rem;
     letter-spacing: 3px;
     margin-top: -0.3rem;
+    @media (max-width: 768px) {
+      font-size: 5rem;
+    }
   }
   .date {
     color: black;
     letter-spacing: 0.1em;
     font-size: 1.5rem;
+    @media (max-width: 768px) {
+      font-size: 3rem;
+    }
   }
 }

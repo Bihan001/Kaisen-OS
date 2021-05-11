@@ -9877,6 +9877,11 @@ react-live-clock@^5.0.16:
   resolved "https://registry.yarnpkg.com/react-live-clock/-/react-live-clock-5.1.0.tgz#d86de6ecb3d5b09f7088dac4228b96037c1b8bbf"
   integrity sha512-sGbsJJIgkcPuJrRMvcUQiVSz5ZYtcedm5KD5dnNMksCxdA825O+SgH53x1gyMNl7LvGzFRWaqA7Y9dRNM4H+4A==
 
+react-multi-carousel@^2.6.2:
+  version "2.6.2"
+  resolved "https://registry.yarnpkg.com/react-multi-carousel/-/react-multi-carousel-2.6.2.tgz#c78d38fbfab704394a72f26ffa161b8963138a1f"
+  integrity sha512-qSrupBGazqYS/LVQAUCWiEAPhCrO0QufP5PcpDCA6Klig3egdNMwIdkkoU6Xlm9zEQ/hFp57bNr7F4sd0ANLyA==
+
 react-object-inspector@^0.2.1:
   version "0.2.1"
   resolved "https://registry.yarnpkg.com/react-object-inspector/-/react-object-inspector-0.2.1.tgz#8ec32951bde8c76b072ef084a74e7a9d2d0aeb72"

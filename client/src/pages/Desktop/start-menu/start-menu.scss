@@ -346,14 +346,15 @@
         }
       }
     }
+    &__Widgets {
+      // border: 2px solid black;
+      height: 100%;
+      flex-direction: row;
+      justify-content: space-around;
+    }
   }
 }
 .react-multi-carousel-list,
 .react-multi-carousel-track {
   height: 100% !important;
-}
-
-.x {
-  //border: 2px solid red;
-  height: 100%;
 }

@@ -11,8 +11,8 @@ export const ScreenProvider = (props) => {
   const handleResize = () => {
     setScreenState({
       mobileView:
-        (window.innerWidth <= 414 && window.innerHeight <= 812) ||
-        (window.innerHeight <= 414 && window.innerWidth <= 812)
+        (window.innerWidth <= 414 && window.innerHeight <= 823) ||
+        (window.innerHeight <= 414 && window.innerWidth <= 823)
           ? true
           : false,
       screenWidth: window.innerWidth,
@@ -22,8 +22,8 @@ export const ScreenProvider = (props) => {
   useEffect(() => {
     setScreenState({
       mobileView:
-        (window.innerWidth <= 414 && window.innerHeight <= 812) ||
-        (window.innerHeight <= 414 && window.innerWidth <= 812)
+        (window.innerWidth <= 414 && window.innerHeight <= 823) ||
+        (window.innerHeight <= 414 && window.innerWidth <= 823)
           ? true
           : false,
       screenWidth: window.innerWidth,

@@ -36,7 +36,7 @@ const Temperature = ({ ...rest }) => {
 
   return (
     <div className="thermometer" {...rest}>
-      <div>
+      <div className="thermo_div">
         <span className="glass">
           <span className="amount" style={{ height: weather ? `${weather.main.temp}%` : '0%' }} />
         </span>

@@ -278,9 +278,16 @@ const StartMenu = (props) => {
                       </motion.div>
                     ))}
                   </div>
-                  <div className="x" style={{ display: 'flex' }}>
-                    <Temperature style={{ width: 'fit-content' }} />
-                    <div style={{ marginLeft: '1rem' }}>
+                  <div
+                    className="Mobile_Start_Menu__Widgets_n_Content__Widgets"
+                    style={{ display: 'flex', alignItems: 'center' }}>
+                    <Temperature style={{ width: 'fit-content', margin: 0 }} />
+                    <div
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'center',
+                      }}>
                       <Clock />
                       <div className="mobile-start-btns">
                         <motion.button

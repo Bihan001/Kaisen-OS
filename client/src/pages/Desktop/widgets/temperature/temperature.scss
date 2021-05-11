@@ -4,6 +4,8 @@
   margin-top: 4.3rem;
   width: 50%;
   height: fit-content;
+  // border: 2px solid lime;
+
   & .glass {
     background: #e5e5e5;
     border-radius: 100px 100px 0 0;
@@ -72,5 +74,18 @@
     top: -30px;
     right: -8px;
     z-index: 30;
+  }
+}
+@media (max-width: 415px) {
+  .thermometer {
+    margin: 0;
+    & .thermo_div {
+      padding-top: 4rem;
+    }
+    & .total-temp {
+      margin: 0;
+      //border: 3px solid black;
+      margin-bottom: 3rem;
+    }
   }
 }

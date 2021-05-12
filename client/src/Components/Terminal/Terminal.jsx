@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect, useContext } from 'react';
+import firebase from '../../firebase';
 import { clone, forEach } from 'ramda';
 import axios from 'axios';
 import { backendUrl } from '../../backendUrl';
@@ -477,9 +478,16 @@ const ReactTerminal = ({ id, fullScreen, filearray, updatefilearray, folderarray
     else return false;
   };
 
-  const recursiveDelete = (path, type, object) => {
-    console.log('path for :', path, 'lets see', object);
+  const recursiveDelete = async (path, type, object) => {
+    // console.log('path for :', path, 'lets see', object);
     if (type == 'file') {
+      const file = object[path];
+      if (file) {
+        if (file.type !== 'webapp' && file.type !== 'exe') {
+          const oldFileRef = firebase.storage().refFromURL(file.content);
+          await oldFileRef.delete();
+        }
+      }
       delete object[path];
     } else {
       var childType = '';

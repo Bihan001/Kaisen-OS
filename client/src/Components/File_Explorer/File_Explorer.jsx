@@ -733,8 +733,15 @@ const File_Explorer = ({
     }
   };
 
-  const recursiveDelete = (path, type, object) => {
+  const recursiveDelete = async (path, type, object) => {
     if (type == 'file') {
+      const file = object[path];
+      if (file) {
+        if (file.type !== 'webapp' && file.type !== 'exe') {
+          const oldFileRef = firebase.storage().refFromURL(file.content);
+          await oldFileRef.delete();
+        }
+      }
       delete object[path];
     } else {
       var childType = '';

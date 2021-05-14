@@ -14,19 +14,35 @@ const Login = (props) => {
 
   const [inView, setInView] = useState(false);
 
-  const loginWithGoogle = async () => {
+  const handleLogin = async (provider) => {
     try {
-      const provider = new firebase.auth.GoogleAuthProvider();
       const res = await firebase.auth().signInWithPopup(provider);
       const idToken = await res.user.getIdToken();
       const userRes = await axios.post('http://localhost:5000/api/auth/sessionLogin', { idToken });
       setUser(userRes.data.data);
-      firebase.auth().signOut();
+      firebase.auth().signOut(); 
       props.history.push('/');
     } catch (err) {
       console.log(err);
     }
   };
+
+  const loginWithGoogle = () => {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    handleLogin(provider);
+  };
+
+  const loginWithFacebook = () => {
+    const provider = new firebase.auth.FacebookAuthProvider();
+    handleLogin(provider);
+  };
+
+  const loginWithGithub = () => {
+    const provider = new firebase.auth.GithubAuthProvider();
+    handleLogin(provider);
+  };
+
+  const loginWithLinkedin = () => {};
 
   return (
     <div className="login">
@@ -58,13 +74,13 @@ const Login = (props) => {
               <button onClick={loginWithGoogle}>
                 <img src={GoogleIcon} />
               </button>
-              <button>
+              <button onClick={loginWithFacebook}>
                 <img src={FacebookIcon} />
               </button>
-              <button>
+              <button onClick={loginWithGithub}>
                 <img src={GithubIcon} />
               </button>
-              <button>
+              <button onClick={loginWithLinkedin}>
                 <img src={LinkedinIcon} />
               </button>
             </div>

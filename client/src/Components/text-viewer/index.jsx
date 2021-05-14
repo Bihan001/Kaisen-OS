@@ -13,11 +13,13 @@ import { DirectoryContext } from '../../Contexts/DirectoryContext/DirectoryConte
 import { AuthContext } from '../../Contexts/AuthContext';
 import { ScreenContext } from '../../Contexts/ScreenContext/index';
 import { ClassFile, ClassFolder } from '../../Classes/Classes';
+import { ThemeContext } from '../../Contexts/ThemeContext/ThemeContext';
 
 const TextViewer = ({ content, editableBy, path, fullScreen }) => {
   const { dirPaths, UpdatedirPaths } = useContext(DirectoryContext);
   const { user } = useContext(AuthContext);
   const { screenState } = useContext(ScreenContext);
+  const { theme } = useContext(ThemeContext);
 
   const [editorState, setEditorState] = React.useState(() => RichTextEditor.createEmptyValue());
   const [storageRef] = React.useState(firebase.storage().ref());
@@ -29,6 +31,25 @@ const TextViewer = ({ content, editableBy, path, fullScreen }) => {
         setEditorState(RichTextEditor.createValueFromString(text, 'html'));
       });
   }, []);
+
+  React.useEffect(() => {
+    let res = document.querySelectorAll('.IconButton__root___3tqZW.Button__root___1gz0c');
+    let boldRes = document.querySelectorAll('.IconButton__isActive___2Ey8p');
+    res.forEach((btn) => {
+      btn.style.border = 'none';
+      btn.style.background = theme + '33';
+      btn.style.paddingLeft = '5px';
+      btn.style.paddingRight = '5px';
+    });
+    boldRes.forEach((btn) => {
+      btn.style.background = theme + '66';
+    });
+    let dropdownRes = document.querySelectorAll('.Dropdown__value___34Py9');
+    dropdownRes.forEach((select) => {
+      select.style.border = 'none';
+      select.style.background = theme + '33';
+    });
+  });
 
   const handleUpdateAuthorized = () => {
     if (user.isAdmin) return true;

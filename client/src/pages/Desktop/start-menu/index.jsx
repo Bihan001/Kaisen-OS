@@ -15,6 +15,7 @@ import Clock from '../widgets/clock';
 import FrostedGlass from '../../../Utility/frosted-glass';
 import { NotificationContext } from '../../../Contexts/NotificationContext';
 import { ScreenContext } from '../../../Contexts/ScreenContext';
+import WallpaperGridIcon from '../../../assets/icons/036-photo.svg';
 
 const StartMenu = (props) => {
   const {
@@ -38,6 +39,8 @@ const StartMenu = (props) => {
     folders: [],
     files: [],
   });
+
+  const [showWallpaperGrid, setShowWallpaperGrid] = useState(false);
 
   //Carousal config============
   const responsive = {
@@ -169,25 +172,51 @@ const StartMenu = (props) => {
               <div className="Wallpaper_n_Widgets">
                 <motion.div className="Wallpaper_n_Widgets__Top" variants={fadeinTop}>
                   <div>
+                    <button className="wallpapers-grid-button" onClick={(e) => setShowWallpaperGrid((s) => !s)}>
+                      <img src={WallpaperGridIcon} style={{ width: '100%', height: '100%' }} />
+                    </button>
                     {wallpapers.length > 0 && (
                       <AnimatePresence exitBeforeEnter>
-                        <motion.img
-                          src={wallpapers[presentWallpaper].image}
-                          variants={slideOutLeft}
-                          initial="hidden"
-                          animate="visible"
-                          exit="exit"
-                          key={wallpapers[presentWallpaper].image}
-                        />
+                        {showWallpaperGrid && (
+                          <motion.div
+                            className="wallpapers-grid"
+                            variants={slideOutLeft}
+                            initial="hidden"
+                            animate="visible"
+                            exit="exit">
+                            {wallpapers.map((wallpaper, idx) => (
+                              <img
+                                loading="lazy"
+                                className="wallpapers-grid-img"
+                                src={wallpaper.image}
+                                onClick={(e) => setPresentWallpaper(idx)}
+                              />
+                            ))}
+                          </motion.div>
+                        )}
+                        {!showWallpaperGrid && (
+                          <motion.img
+                            src={wallpapers[presentWallpaper].image}
+                            variants={slideOutLeft}
+                            initial="hidden"
+                            animate="visible"
+                            exit="exit"
+                            key={wallpapers[presentWallpaper].image}
+                          />
+                        )}
                       </AnimatePresence>
                     )}
                   </div>
-                  <div className="Left" onClick={handleWallpaperLeft}>
-                    <img src={arrow} />
-                  </div>
-                  <div className="Right" onClick={handleWallpaperRight}>
-                    <img src={arrow} />
-                  </div>
+                  {!showWallpaperGrid && (
+                    <div className="Left" onClick={handleWallpaperLeft}>
+                      <img src={arrow} />
+                    </div>
+                  )}
+                  {!showWallpaperGrid && (
+                    <div className="Right" onClick={handleWallpaperRight}>
+                      <img src={arrow} />
+                    </div>
+                  )}
                 </motion.div>
                 <div className="Wallpaper_n_Widgets__Bottom">
                   <Temperature />
@@ -241,25 +270,51 @@ const StartMenu = (props) => {
                 </div>
                 <motion.div className="Wallpaper" variants={fadeinTop}>
                   <div>
+                    <button className="wallpapers-grid-button" onClick={(e) => setShowWallpaperGrid((s) => !s)}>
+                      <img src={WallpaperGridIcon} style={{ width: '100%', height: '100%' }} />
+                    </button>
                     {wallpapers.length > 0 && (
                       <AnimatePresence exitBeforeEnter>
-                        <motion.img
-                          src={wallpapers[presentWallpaper].image}
-                          variants={slideOutLeft}
-                          initial="hidden"
-                          animate="visible"
-                          exit="exit"
-                          key={wallpapers[presentWallpaper].image}
-                        />
+                        {showWallpaperGrid && (
+                          <motion.div
+                            className="wallpapers-grid"
+                            variants={slideOutLeft}
+                            initial="hidden"
+                            animate="visible"
+                            exit="exit">
+                            {wallpapers.map((wallpaper, idx) => (
+                              <img
+                                loading="lazy"
+                                className="wallpapers-grid-img"
+                                src={wallpaper.image}
+                                onClick={(e) => setPresentWallpaper(idx)}
+                              />
+                            ))}
+                          </motion.div>
+                        )}
+                        {!showWallpaperGrid && (
+                          <motion.img
+                            src={wallpapers[presentWallpaper].image}
+                            variants={slideOutLeft}
+                            initial="hidden"
+                            animate="visible"
+                            exit="exit"
+                            key={wallpapers[presentWallpaper].image}
+                          />
+                        )}
                       </AnimatePresence>
                     )}
                   </div>
-                  <div className="Left" onClick={handleWallpaperLeft}>
-                    <img src={arrow} />
-                  </div>
-                  <div className="Right" onClick={handleWallpaperRight}>
-                    <img src={arrow} />
-                  </div>
+                  {!showWallpaperGrid && (
+                    <div className="Left" onClick={handleWallpaperLeft}>
+                      <img src={arrow} />
+                    </div>
+                  )}
+                  {!showWallpaperGrid && (
+                    <div className="Right" onClick={handleWallpaperRight}>
+                      <img src={arrow} />
+                    </div>
+                  )}
                 </motion.div>
               </div>
               <div className="Mobile_Start_Menu__Widgets_n_Content">

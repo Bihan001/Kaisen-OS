@@ -20,7 +20,7 @@ import arrow from '../../assets/icons/arrow.png';
 
 import { Folder, File, ClassFolder, ClassFile } from '../../Classes/Classes';
 
-import { handleIcon, fadeinTop } from '../../Utility/functions';
+import { handleIcon, fadeinTop, textTruncate } from '../../Utility/functions';
 
 import Notification from '../../Components/notification';
 import { NotificationContext } from '../../Contexts/NotificationContext';
@@ -252,7 +252,7 @@ const Desktop = (props) => {
                     clearTimeout(tooltipTimerId);
                   }}>
                   <img src={handleIcon(dirPaths[dir])} />
-                  <div className="Icons__text">{dirPaths[dir].name}</div>
+                  <div className="Icons__text">{textTruncate(dirPaths[dir].name, 9)}</div>
                 </div>
               );
           })}

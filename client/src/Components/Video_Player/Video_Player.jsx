@@ -3,10 +3,10 @@ import { motion } from 'framer-motion';
 
 import Loader from '../Loader/Loader';
 import PlayLogo from '../../assets/icons/player-icons/013-play.svg';
-import PauseLogo from './images/pause.svg';
-import FullScreenLogo from './images/full-screen.svg';
-import VolumeLogo from './images/volume.svg';
-import MuteLogo from './images/mute.svg';
+import PauseLogo from '../../assets/icons/player-icons/021-pause.svg';
+import FullScreenLogo from '../../assets/icons/player-icons/008-maximize.svg';
+import VolumeLogo from '../../assets/icons/player-icons/034-volume-adjustment.svg';
+import MuteLogo from '../../assets/icons/player-icons/030-mute.svg';
 import './Video_Player.scss';
 
 let videoControlsTimer;
@@ -146,7 +146,7 @@ const Video_Player = ({ content, id, fullScreen }) => {
 
         <div
           id={convertToUniqueId('player_controls')}
-          className="player_controls"
+          className="video_player_controls"
           onMouseOver={(e) => (e.target.style.opacity = 1)}>
           <div
             id={convertToUniqueId('custom-seekbar')}
@@ -179,7 +179,7 @@ const Video_Player = ({ content, id, fullScreen }) => {
               <input
                 type="range"
                 name="volume"
-                className="player_volume_slider"
+                className="video_player_volume_slider"
                 min="0"
                 max="1"
                 step="0.05"
@@ -202,9 +202,10 @@ const styles = {
   customSeekbar: {
     margin: '10px auto',
     cursor: 'pointer',
-    height: '7px',
-    outline: 'thin solid #606669',
+    height: '5px',
+    border: 'thin solid #606669',
     overflow: 'hidden',
+    borderRadius: '4px',
     position: 'relative',
     width: '100%',
   },
@@ -213,7 +214,7 @@ const styles = {
     position: 'absolute',
     top: 0,
     left: 0,
-    height: '7px',
+    height: '5px',
     width: '0px',
   },
 };

@@ -61,8 +61,7 @@ export const findFileType = (fileType) => {
 export const typeArray = [
   {
     type: 'txt',
-    icon:
-      'https://res.cloudinary.com/drolmjcot/image/upload/q_auto:good/v1614060786/ba31ac1ab88b5c17cc84283621a6e702_m4cirp.png',
+    icon: 'https://res.cloudinary.com/drolmjcot/image/upload/q_auto:good/v1614060786/ba31ac1ab88b5c17cc84283621a6e702_m4cirp.png',
   },
   {
     type: 'folder',
@@ -119,4 +118,9 @@ export const slideOutLeft = {
   initial: { x: 100, opacity: 0, scale: 0.97 },
   visible: { x: 0, opacity: 1, scale: 1, transition: { duration: 0.15 } },
   exit: { opacity: 0, scale: 0.97, transition: { duration: 0.15 } },
+};
+
+export const textTruncate = (str, targetLength) => {
+  if (str.length <= targetLength) return str;
+  return str.slice(0, targetLength - 3) + '...';
 };

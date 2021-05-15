@@ -6,9 +6,6 @@
   // background: url(https://res.cloudinary.com/drolmjcot/image/upload/q_auto:good/v1613837593/wallpaper_goadao.jpg);
   background-position: center;
   background-size: cover;
-  .Files_Window_div {
-    // border: 2px solid black;
-  }
   /*.bg-video
     {
         position:absolute;
@@ -58,6 +55,8 @@
         padding: 0;
         margin: 0 auto;
         margin-bottom: 0.5rem;
+        overflow: hidden;
+        white-space: nowrap;
       }
       transition: all 0.3s ease;
       cursor: pointer;

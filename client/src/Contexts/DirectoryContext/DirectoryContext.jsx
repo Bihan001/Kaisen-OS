@@ -1,12 +1,14 @@
-import React, { useState, useEffect, createContext } from 'react';
+import React, { useState, useEffect, createContext, useContext } from 'react';
 import { ClassFolder, ClassFile } from '../../Classes/Classes';
 import axios from 'axios';
 import { clone } from 'ramda';
 import { backendUrl } from '../../backendUrl';
+import { AuthContext } from '../AuthContext';
 
 export const DirectoryContext = createContext();
 
 export const DirectoryProvider = (props) => {
+  const { user } = useContext(AuthContext);
   const [dirPaths, setdirPaths] = useState({
     /*"root":new ClassFolder("root",new Date(),new Date(),{name:'Ankur'},"root","folder",["root#a","root#terminal.exe","root#x"]),
         "root#a":new ClassFolder("a",new Date(),new Date(),{name:'Ankur'},"root#a","folder",["root#a#b.txt","root#a#c"]),
@@ -74,7 +76,7 @@ export const DirectoryProvider = (props) => {
         //console.log(dirObj);
       })
       .catch((err) => console.log(err));
-  }, []);
+  }, [user]);
 
   return (
     <DirectoryContext.Provider

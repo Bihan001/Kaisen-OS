@@ -1,11 +1,11 @@
 import React, { useState, useRef, useEffect, useContext } from 'react';
-import './Audio_Player.scss';
 import Loader from '../Loader/Loader';
-import PlayLogo from './images/play-button.svg';
-import PauseLogo from './images/pause.svg';
-import FullScreenLogo from './images/full-screen.svg';
-import VolumeLogo from './images/volume.svg';
-import MuteLogo from './images/mute.svg';
+import PlayLogo from '../../assets/icons/player-icons/013-play.svg';
+import PauseLogo from '../../assets/icons/player-icons/021-pause.svg';
+import FullScreenLogo from '../../assets/icons/player-icons/008-maximize.svg';
+import VolumeLogo from '../../assets/icons/player-icons/034-volume-adjustment.svg';
+import MuteLogo from '../../assets/icons/player-icons/030-mute.svg';
+import './Audio_Player.scss';
 
 let audioControlsTimer;
 
@@ -261,9 +261,10 @@ const styles = {
   customSeekbar: {
     margin: '10px auto',
     cursor: 'pointer',
-    height: '8px',
-    outline: 'thin solid #606669',
+    height: '5px',
+    border: 'thin solid #606669',
     overflow: 'hidden',
+    borderRadius: '4px',
     position: 'relative',
     width: '100%',
   },
@@ -272,7 +273,7 @@ const styles = {
     position: 'absolute',
     top: 0,
     left: 0,
-    height: '10px',
+    height: '5px',
     width: '0px',
   },
 };

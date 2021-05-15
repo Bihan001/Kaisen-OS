@@ -1,13 +1,13 @@
 import React, { useState, useRef, useContext } from 'react';
 import { motion } from 'framer-motion';
 
-import './Video_Player.scss';
 import Loader from '../Loader/Loader';
-import PlayLogo from './images/play-button.svg';
+import PlayLogo from '../../assets/icons/player-icons/013-play.svg';
 import PauseLogo from './images/pause.svg';
 import FullScreenLogo from './images/full-screen.svg';
 import VolumeLogo from './images/volume.svg';
 import MuteLogo from './images/mute.svg';
+import './Video_Player.scss';
 
 let videoControlsTimer;
 
@@ -202,7 +202,7 @@ const styles = {
   customSeekbar: {
     margin: '10px auto',
     cursor: 'pointer',
-    height: '8px',
+    height: '7px',
     outline: 'thin solid #606669',
     overflow: 'hidden',
     position: 'relative',
@@ -213,7 +213,7 @@ const styles = {
     position: 'absolute',
     top: 0,
     left: 0,
-    height: '10px',
+    height: '7px',
     width: '0px',
   },
 };

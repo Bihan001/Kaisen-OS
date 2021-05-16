@@ -48,6 +48,14 @@ const TextViewer = ({ content, editableBy, path, fullScreen }) => {
     dropdownRes.forEach((select) => {
       select.style.border = 'none';
       select.style.background = theme + '33';
+      select.style.outline = 'none';
+    });
+    document.querySelectorAll('.Dropdown__root___3ALmx select').forEach((select) => {
+      select.style.outline = 'none';
+    });
+    let dropdownResOptions = document.querySelectorAll('.Dropdown__root___3ALmx select option');
+    dropdownResOptions.forEach((option) => {
+      option.style.fontSize = '1.5rem';
     });
   });
 

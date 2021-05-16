@@ -110,12 +110,46 @@
       div:first-child {
         display: flex;
         justify-content: center;
-        width: 100%;
+        width: fit-content;
+        margin: 0 auto;
+        position: relative;
         img {
           width: 46rem;
           height: 28rem;
           border-radius: 4px;
           opacity: 0.9;
+        }
+        .wallpapers-grid {
+          width: 46rem;
+          height: 28rem;
+          border-radius: 4px;
+          opacity: 0.9;
+          overflow-x: hidden;
+          overflow-y: scroll;
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: center;
+          &-img {
+            width: 9rem;
+            height: auto;
+            object-fit: cover;
+            border-radius: 0;
+            cursor: pointer;
+          }
+        }
+        & .wallpapers-grid-button {
+          position: absolute;
+          top: 7px;
+          right: 7px;
+          border: none;
+          outline: none;
+          background: #00000055;
+          border-radius: 50%;
+          width: 40px;
+          height: 40px;
+          padding: 8px;
+          z-index: 999999;
+          cursor: pointer;
         }
       }
       .Left {
@@ -264,12 +298,46 @@
       div:first-child {
         display: flex;
         justify-content: center;
-        width: 100%;
+        width: fit-content;
+        margin: 0 auto;
+        position: relative;
         img {
           width: 46rem;
           height: 28rem;
           border-radius: 4px;
           opacity: 0.9;
+        }
+        .wallpapers-grid {
+          width: 46rem;
+          height: 28rem;
+          border-radius: 4px;
+          opacity: 0.9;
+          overflow-x: hidden;
+          overflow-y: scroll;
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: center;
+          &-img {
+            width: 9rem;
+            height: auto;
+            object-fit: cover;
+            border-radius: 0;
+            cursor: pointer;
+          }
+        }
+        & .wallpapers-grid-button {
+          position: absolute;
+          top: 7px;
+          right: 7px;
+          border: none;
+          outline: none;
+          background: #00000055;
+          border-radius: 50%;
+          width: 35px;
+          height: 35px;
+          padding: 8px;
+          z-index: 999999;
+          cursor: pointer;
         }
       }
       .Left {

@@ -22,6 +22,7 @@ import TextViewer from '../text-viewer';
 import VsCode from '../VsCode/VsCode';
 import Spotify from '../Spotify/Spotify';
 import Todoist from '../Todoist/Todoist';
+import Calculator from '../calculator';
 import FrostedGlass from '../../Utility/frosted-glass';
 
 const expandObject = (obj) => {
@@ -106,6 +107,7 @@ const Particular_File = ({
         VsCode: <VsCode content={data.content} fullScreen={fullScreen} />,
         Spotify: <Spotify content={data.content} fullScreen={fullScreen} />,
         Todoist: <Todoist content={data.content} fullScreen={fullScreen} />,
+        Calculator: <Calculator />,
       },
     ],
     webapp: <WebApp content={data.content} fullScreen={fullScreen} />,

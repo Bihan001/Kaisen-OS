@@ -33,10 +33,13 @@
     display: flex;
     flex-wrap: wrap;
     position: absolute;
-    margin-top: 1.7rem;
+    // margin-top: 1.7rem;
     .Icons {
       width: 7rem;
       height: 10rem;
+      @media (max-width: 990px) {
+        height: 11rem;
+      }
       margin: 1rem;
       display: flex;
       flex-direction: column;

@@ -7,6 +7,11 @@ const wallpaperSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
+    thumbnail: {
+      type: String,
+      required: true,
+      trim: true,
+    },
   },
   {
     toJSON: {

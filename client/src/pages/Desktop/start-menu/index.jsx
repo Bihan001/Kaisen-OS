@@ -180,15 +180,14 @@ const StartMenu = (props) => {
                         {showWallpaperGrid && (
                           <motion.div
                             className="wallpapers-grid"
-                            variants={slideOutLeft}
-                            initial="hidden"
-                            animate="visible"
-                            exit="exit">
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1, transition: { duration: 0.15 } }}
+                            exit={{ opacity: 0, transition: { duration: 0.15 } }}>
                             {wallpapers.map((wallpaper, idx) => (
                               <img
-                                loading="lazy"
                                 className="wallpapers-grid-img"
-                                src={wallpaper.image}
+                                style={{ border: presentWallpaper === idx ? '5px solid #00000066' : 'none' }}
+                                src={wallpaper.thumbnail}
                                 onClick={(e) => setPresentWallpaper(idx)}
                               />
                             ))}
@@ -197,10 +196,9 @@ const StartMenu = (props) => {
                         {!showWallpaperGrid && (
                           <motion.img
                             src={wallpapers[presentWallpaper].image}
-                            variants={slideOutLeft}
-                            initial="hidden"
-                            animate="visible"
-                            exit="exit"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1, transition: { duration: 0.15 } }}
+                            exit={{ opacity: 0, transition: { duration: 0.15 } }}
                             key={wallpapers[presentWallpaper].image}
                           />
                         )}
@@ -278,15 +276,15 @@ const StartMenu = (props) => {
                         {showWallpaperGrid && (
                           <motion.div
                             className="wallpapers-grid"
-                            variants={slideOutLeft}
-                            initial="hidden"
-                            animate="visible"
-                            exit="exit">
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1, transition: { duration: 0.15 } }}
+                            exit={{ opacity: 0, transition: { duration: 0.15 } }}>
                             {wallpapers.map((wallpaper, idx) => (
                               <img
                                 loading="lazy"
                                 className="wallpapers-grid-img"
-                                src={wallpaper.image}
+                                style={{ border: presentWallpaper === idx ? '5px solid #00000066' : 'none' }}
+                                src={wallpaper.thumbnail}
                                 onClick={(e) => setPresentWallpaper(idx)}
                               />
                             ))}
@@ -295,10 +293,9 @@ const StartMenu = (props) => {
                         {!showWallpaperGrid && (
                           <motion.img
                             src={wallpapers[presentWallpaper].image}
-                            variants={slideOutLeft}
-                            initial="hidden"
-                            animate="visible"
-                            exit="exit"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1, transition: { duration: 0.15 } }}
+                            exit={{ opacity: 0, transition: { duration: 0.15 } }}
                             key={wallpapers[presentWallpaper].image}
                           />
                         )}

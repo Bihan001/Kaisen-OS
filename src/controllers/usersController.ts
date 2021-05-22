@@ -6,6 +6,36 @@ import catchAsync from '../utils/catch-async';
 import CustomError from '../errors/custom-error';
 import Wallpaper from '../models/wallpaper';
 import Theme from '../models/theme';
+import fs from 'fs';
+import { uuid } from 'uuidv4';
+import sharp from 'sharp';
+
+const bucket = admin.storage().bucket();
+
+const firebaseUpload = async (localFile: string, remoteFile: string) => {
+  const randId = uuid();
+  return bucket
+    .upload(localFile, {
+      destination: remoteFile,
+      public: true,
+      metadata: {
+        metadata: {
+          firebaseStorageDownloadTokens: randId,
+        },
+      },
+    })
+    .then((data) => {
+      let file = data[0];
+      return Promise.resolve(
+        'https://firebasestorage.googleapis.com/v0/b/' +
+          bucket.name +
+          '/o/' +
+          encodeURIComponent(file.name) +
+          '?alt=media&token=' +
+          randId
+      );
+    });
+};
 
 export const rootUserCheck = catchAsync(async (req: Request, res: Response) => {
   res.status(200).json(SuccessResponse({}, 'Users Route is up and running!'));
@@ -49,11 +79,45 @@ export const sessionLogout = catchAsync(async (req: Request, res: Response) => {
 });
 
 export const addWallpaper = catchAsync(async (req: Request, res: Response) => {
-  const wallpaper: string = req.body.wallpaper;
-  if (!wallpaper) throw new CustomError('Wallpaper field required', 400);
-  const newWallpaper = new Wallpaper({ image: wallpaper });
-  await newWallpaper.save();
-  return res.status(200).json(SuccessResponse(newWallpaper, 'Wallpaper added'));
+  const wallpapers = req.files;
+  // @ts-ignore
+  wallpapers.map(async (wallpaper) => {
+    const { path, filename, destination } = wallpaper;
+
+    const imageUrl = destination + '/' + 'webp-' + filename;
+    const compressedImageUrl = destination + '/' + 'compressed-webp-' + filename;
+
+    let tmpArr = filename.split('.');
+    tmpArr.pop();
+    const fileNameWebp = tmpArr.join('.') + '.webp';
+
+    await sharp(path).resize(1920, 1080, { fit: 'cover' }).webp({ quality: 90 }).toFile(imageUrl);
+    await sharp(path).resize(200, 200, { fit: 'cover' }).webp({ quality: 2 }).toFile(compressedImageUrl);
+
+    const imgDownloadUrl = await firebaseUpload(imageUrl, `wallpapers/webp-${fileNameWebp}`);
+    const compressedImgDownloadUrl = await firebaseUpload(
+      compressedImageUrl,
+      `wallpapers/compressed-webp-${fileNameWebp}`
+    );
+
+    const newWallpaper = new Wallpaper({
+      image: imgDownloadUrl,
+      thumbnail: compressedImgDownloadUrl,
+    });
+
+    await newWallpaper.save();
+
+    fs.unlink(imageUrl, () => {
+      fs.unlink(compressedImageUrl, () => {
+        fs.unlink(path, () => {
+          console.log('Added', fileNameWebp);
+        });
+      });
+    });
+  });
+  // const newWallpaper = new Wallpaper({ image: wallpaper });
+  // await newWallpaper.save();
+  return res.status(200).json(SuccessResponse({}, 'Adding wallpapers, check console'));
 });
 
 export const getAllWallpapers = catchAsync(async (req: Request, res: Response) => {

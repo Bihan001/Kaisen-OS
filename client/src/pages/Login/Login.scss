@@ -1,9 +1,8 @@
 .login {
   height: 100vh;
-  background: linear-gradient(0deg, rgba(#000000, 0.1), rgba(#000000, 0.1)),
-    url(https://wallpaperboat.com/wp-content/uploads/2020/06/03/42361/aesthetic-anime-01.jpg);
+  width: 100vw;
+  background-position: center center;
   background-size: cover;
-  background-position: center;
   position: relative;
 
   &__image {

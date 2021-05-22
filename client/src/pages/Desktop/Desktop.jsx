@@ -176,6 +176,7 @@ const Desktop = (props) => {
       if (presentWallpaper !== -1 && wallpapers.length > 0) {
         const res = await axios.put(`${backendUrl}/api/auth/saveWallpaper/${wallpapers[presentWallpaper].id}`);
         console.log(res);
+        localStorage.setItem('wallpaper', wallpapers[presentWallpaper].image);
       }
     }, 1500);
 

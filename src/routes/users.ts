@@ -1,5 +1,5 @@
 import express, { Request, Response } from 'express';
-
+import upload from '../utils/multer';
 import * as usersController from '../controllers/usersController';
 import requireAuth from '../middlewares/require-auth';
 
@@ -17,7 +17,7 @@ router.get('/getAllWallpapers', usersController.getAllWallpapers);
 
 router.get('/getAllThemes', usersController.getAllThemes);
 
-router.post('/addWallpaper', usersController.addWallpaper);
+router.post('/addWallpaper', upload.array('wallpapers'), usersController.addWallpaper);
 
 router.post('/addTheme', usersController.addTheme);
 

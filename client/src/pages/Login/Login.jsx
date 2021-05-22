@@ -20,7 +20,7 @@ const Login = (props) => {
       const idToken = await res.user.getIdToken();
       const userRes = await axios.post('http://localhost:5000/api/auth/sessionLogin', { idToken });
       setUser(userRes.data.data);
-      firebase.auth().signOut(); 
+      firebase.auth().signOut();
       props.history.push('/');
     } catch (err) {
       console.log(err);
@@ -44,8 +44,16 @@ const Login = (props) => {
 
   const loginWithLinkedin = () => {};
 
+  const getWallpaperUrl = () => {
+    const defaultImg = 'https://wallpaperboat.com/wp-content/uploads/2020/06/03/42361/aesthetic-anime-01.jpg';
+    const savedImg = localStorage.getItem('wallpaper');
+    return savedImg || defaultImg;
+  };
+
+  const backgroundStyle = `url(${getWallpaperUrl()})`;
+  console.log(backgroundStyle);
   return (
-    <div className="login">
+    <div className="login" style={{ backgroundImage: backgroundStyle }}>
       <AnimatePresence>
         {!inView ? (
           <motion.img

@@ -1,12 +1,16 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { ThemeContext } from '../../Contexts/ThemeContext/ThemeContext';
+
 import './style.scss';
 import ButtonComponent from './button';
 
-export default function App() {
+export default function App({ content, fullScreen }) {
   const [calculation, setCalculation] = React.useState([0]);
   const [result, setResult] = React.useState(0);
   const [opera, setOpera] = React.useState(null);
   const [prevResult, setPrevResult] = React.useState(null);
+
+  const { theme } = useContext(ThemeContext);
 
   React.useEffect(() => {
     setCalculation([0]);
@@ -157,33 +161,35 @@ export default function App() {
   };
 
   return (
-    <div className="calculator">
-      <div className="show-calculation">
-        <span className="result-calculation">{showCalculation()}</span>
-        <span className="dashed-line" />
-        <span className="final-result">{result === 0 ? 'Start Calculating' : result}</span>
-      </div>
-      <div className="button-layout">
-        <ButtonComponent handleClick={(value) => spcl_handle(value)}>C</ButtonComponent>
-        <ButtonComponent handleClick={(value) => spcl_handle(value)}>≠</ButtonComponent>
-        <ButtonComponent handleClick={(value) => spcl_handle(value)}>%</ButtonComponent>
-        <ButtonComponent handleClick={(value) => spcl_handle(value)}>/</ButtonComponent>
-        <ButtonComponent handleClick={(value) => num_handle(value)}>7</ButtonComponent>
-        <ButtonComponent handleClick={(value) => num_handle(value)}>8</ButtonComponent>
-        <ButtonComponent handleClick={(value) => num_handle(value)}>9</ButtonComponent>
-        <ButtonComponent handleClick={(value) => spcl_handle(value)}>*</ButtonComponent>
-        <ButtonComponent handleClick={(value) => num_handle(value)}>4</ButtonComponent>
-        <ButtonComponent handleClick={(value) => num_handle(value)}>5</ButtonComponent>
-        <ButtonComponent handleClick={(value) => num_handle(value)}>6</ButtonComponent>
-        <ButtonComponent handleClick={(value) => spcl_handle(value)}>-</ButtonComponent>
-        <ButtonComponent handleClick={(value) => num_handle(value)}>1</ButtonComponent>
-        <ButtonComponent handleClick={(value) => num_handle(value)}>2</ButtonComponent>
-        <ButtonComponent handleClick={(value) => num_handle(value)}>3</ButtonComponent>
-        <ButtonComponent handleClick={(value) => spcl_handle(value)}>+</ButtonComponent>
-        <ButtonComponent handleClick={(value) => spcl_handle(value)}>.</ButtonComponent>
-        <ButtonComponent handleClick={(value) => num_handle(value)}>0</ButtonComponent>
-        <ButtonComponent handleClick={(value) => spcl_handle(value)}>del</ButtonComponent>
-        <ButtonComponent handleClick={(value) => spcl_handle(value)}>=</ButtonComponent>
+    <div className="Calculator_main_div">
+      <div className="calculator">
+        <div className="show-calculation">
+          <span className="result-calculation">{showCalculation()}</span>
+          <span className="dashed-line" />
+          <span className="final-result">{result === 0 ? 'Start Calculating' : result}</span>
+        </div>
+        <div className="button-layout">
+          <ButtonComponent handleClick={(value) => spcl_handle(value)}>C</ButtonComponent>
+          <ButtonComponent handleClick={(value) => spcl_handle(value)}>≠</ButtonComponent>
+          <ButtonComponent handleClick={(value) => spcl_handle(value)}>%</ButtonComponent>
+          <ButtonComponent handleClick={(value) => spcl_handle(value)}>/</ButtonComponent>
+          <ButtonComponent handleClick={(value) => num_handle(value)}>7</ButtonComponent>
+          <ButtonComponent handleClick={(value) => num_handle(value)}>8</ButtonComponent>
+          <ButtonComponent handleClick={(value) => num_handle(value)}>9</ButtonComponent>
+          <ButtonComponent handleClick={(value) => spcl_handle(value)}>*</ButtonComponent>
+          <ButtonComponent handleClick={(value) => num_handle(value)}>4</ButtonComponent>
+          <ButtonComponent handleClick={(value) => num_handle(value)}>5</ButtonComponent>
+          <ButtonComponent handleClick={(value) => num_handle(value)}>6</ButtonComponent>
+          <ButtonComponent handleClick={(value) => spcl_handle(value)}>-</ButtonComponent>
+          <ButtonComponent handleClick={(value) => num_handle(value)}>1</ButtonComponent>
+          <ButtonComponent handleClick={(value) => num_handle(value)}>2</ButtonComponent>
+          <ButtonComponent handleClick={(value) => num_handle(value)}>3</ButtonComponent>
+          <ButtonComponent handleClick={(value) => spcl_handle(value)}>+</ButtonComponent>
+          <ButtonComponent handleClick={(value) => spcl_handle(value)}>.</ButtonComponent>
+          <ButtonComponent handleClick={(value) => num_handle(value)}>0</ButtonComponent>
+          <ButtonComponent handleClick={(value) => spcl_handle(value)}>del</ButtonComponent>
+          <ButtonComponent handleClick={(value) => spcl_handle(value)}>=</ButtonComponent>
+        </div>
       </div>
     </div>
   );

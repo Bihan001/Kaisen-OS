@@ -70,7 +70,13 @@ const StartMenu = (props) => {
 
   const getStartMenuContents = async () => {
     const body = {
-      filePaths: ['root#terminal.exe', 'root#public#rock#newTextFile.txt', 'root#demo.txt', 'root#demo2.txt'],
+      filePaths: [
+        'root#terminal.exe',
+        'root#Calculator.exe',
+        'root#public#rock#newTextFile.txt',
+        'root#demo.txt',
+        'root#demo2.txt',
+      ],
       folderPaths: ['root#public', 'root#ankur', 'root#bihan'],
     };
 

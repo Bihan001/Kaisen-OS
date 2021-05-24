@@ -128,17 +128,21 @@ const Desktop = (props) => {
   //Functions
   const handleOpen = (data) => {
     opened_dirPaths = {};
-    const fileTypes = ['exe', 'txt', 'mp3', 'mp4', 'webapp', 'pdf', 'mpeg', 'jpg', 'jpeg', 'xlsx'];
+    const fileTypes = ['exe', 'txt', 'mp3', 'mp4', 'webapp', 'pdf', 'mpeg', 'jpg', 'jpeg', 'xlsx', 'png'];
     if (data.type == 'folder') {
       //this works
       opened_dirPaths = clone(openedfolders);
       newId = uuid();
       opened_dirPaths[newId] = data;
+      opened_dirPaths[newId].zindex = maxValue;
+      setMaxValue(maxValue + 1);
       setopenedfolders(opened_dirPaths);
     } else if (fileTypes.includes(data.type)) {
       opened_dirPaths = clone(openedfiles);
       newId = uuid();
       opened_dirPaths[newId] = data;
+      opened_dirPaths[newId].zindex = maxValue;
+      setMaxValue(maxValue + 1);
       setopenedfiles(opened_dirPaths);
     }
   };
@@ -277,6 +281,8 @@ const Desktop = (props) => {
                     handleZindex={handleZindex}
                     id={id}
                     zIndex={openedfolders[id].zindex}
+                    maxZindex={maxValue}
+                    updateOnlyZindex={() => setMaxValue(maxValue + 1)}
                   />
                 );
             })}
@@ -311,6 +317,8 @@ const Desktop = (props) => {
                     key={id}
                     id={id}
                     zIndex={openedfiles[id].zindex}
+                    maxZindex={maxValue}
+                    updateOnlyZindex={() => setMaxValue(maxValue + 1)}
                   />
                 );
             })}

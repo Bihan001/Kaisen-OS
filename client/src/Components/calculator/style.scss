@@ -1,3 +1,14 @@
+$background-gradient-1: #b6b2ab;
+$background-gradient-2: #b3afa7;
+
+$background-gradient-3: #b8b5af;
+$background-gradient-4: #78736b;
+
+$background-gradient-5: #6f6862;
+$background-gradient-6: #58504b;
+$background-gradient-7: #5f574e;
+$background-gradient-8: #625a51;
+
 .button-style {
   flex-basis: 25%;
   background: #425062;
@@ -8,10 +19,36 @@
   border: none;
   border-right: solid 2px #3c4857;
   border-bottom: solid 2px #3c4857;
-  &hover {
-    background-color: white;
-    color: #425062;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  &:hover {
+    //background-color: white;
+    opacity: 0.8;
   }
+  &:active {
+    color: #7a7e85 !important;
+  }
+}
+.Calculator_main_div {
+  width: 100%;
+  height: 100% !important;
+  //background-color: white;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background: linear-gradient(
+    135deg,
+    $background-gradient-1 0%,
+    $background-gradient-2 25%,
+    $background-gradient-3 25%,
+    $background-gradient-4 50%,
+    $background-gradient-5 50%,
+    $background-gradient-6 75%,
+    $background-gradient-7 75%,
+    $background-gradient-8 100%
+  );
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .calculator {
@@ -23,6 +60,7 @@
   margin: 0 auto;
   background: #3a4655;
   box-shadow: 0 8px 50px -7px black;
+  border-radius: 4px;
 }
 
 .show-calculation {
@@ -58,4 +96,10 @@
   display: flex;
   justify-content: space-around;
   flex-wrap: wrap;
+}
+@media (max-width: 415px) {
+  .calculator {
+    width: 100%;
+    height: 100%;
+  }
 }

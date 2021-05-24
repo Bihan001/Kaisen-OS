@@ -11,7 +11,14 @@ import { ScreenContext } from '../../Contexts/ScreenContext';
 
 import { ClassFile, ClassFolder } from '../../Classes/Classes';
 
-import { checkFileType, findFileType, handleIcon, typeArray, getLayout } from '../../Utility/functions';
+import {
+  checkFileType,
+  findFileType,
+  handleIcon,
+  typeArray,
+  getLayout,
+  getPureLayoutValues,
+} from '../../Utility/functions';
 import { backendUrl } from '../../backendUrl';
 
 import back from '../../assets/icons/back.png';
@@ -35,6 +42,8 @@ const File_Explorer = ({
   handleZindex,
   id,
   zIndex,
+  maxZindex,
+  updateOnlyZindex,
 }) => {
   const { theme } = useContext(ThemeContext);
   const { dirPaths, UpdatedirPaths } = useContext(DirectoryContext);
@@ -75,6 +84,10 @@ const File_Explorer = ({
   const [requestTimerId, setRequestTimerId] = useState(null);
   const [disableReload, setDisableReload] = useState(false);
 
+  const [dragConstrains, setDragConstrains] = useState({});
+  const [initialTop, setInitialTop] = useState(0);
+  const [initialLeft, setInitialLeft] = useState(0);
+
   //New File and Folder States====
   const [name, setname] = useState('');
   const [content, setcontent] = useState('');
@@ -110,7 +123,43 @@ const File_Explorer = ({
   useEffect(() => {
     setFolder(data);
     //setinitialfolderpath(data.path);
+
+    setTimeout(() => {
+      handleRandomPosition();
+    }, 10);
   }, []);
+
+  useEffect(() => {
+    if (screenState.screenWidth && screenState.screenHeight) {
+      let layout = getPureLayoutValues(fullScreen, screenState);
+      setDragConstrains({
+        left: initialLeft * (screenState.screenWidth / 100) * -1,
+        top: initialTop * (screenState.screenHeight / 100) * -1,
+        right: screenState.screenWidth - initialLeft * (screenState.screenWidth / 100) - layout.width,
+        bottom: screenState.screenHeight - initialTop * (screenState.screenHeight / 100) - layout.height,
+      });
+    }
+  }, [screenState, initialLeft, initialTop]);
+
+  const handleRandomPosition = () => {
+    let element = document.getElementById(id + 'File_Explorer');
+    let top, left;
+    if (element) {
+      if (!screenState.mobileView) {
+        top = Math.random() * (10 - 5) + 5;
+        left = Math.random() * (30 - 10) + 10;
+        element.style.top = `${top}%`;
+        element.style.left = `${left}%`;
+      } else {
+        top = Math.random() * (20 - 10) + 10;
+        left = Math.random() * (5 - 2) + 2;
+        element.style.top = `${top}%`;
+        element.style.left = `${left}%`;
+      }
+      setInitialTop(top);
+      setInitialLeft(left);
+    } else console.log('element not found', id);
+  };
 
   //Auto Diagnose useEffects and Functions
   useEffect(() => {
@@ -242,6 +291,8 @@ const File_Explorer = ({
       opened_dirPaths = clone(filearray);
       newId = uuid();
       opened_dirPaths[newId] = data;
+      opened_dirPaths[newId].zindex = maxZindex;
+      updateOnlyZindex();
       updatefilearray(opened_dirPaths);
     }
   };
@@ -904,7 +955,7 @@ const File_Explorer = ({
             exit={{ opacity: 0, scale: 0.8, transition: { duration: 0.15 } }}
             drag={!fullScreen ? draggable : false}
             dragControls={dragControls}
-            dragConstraints={!fullScreen ? { left: -500, right: 500, top: -30, bottom: 500 } : {}}
+            dragConstraints={!fullScreen ? dragConstrains : {}}
             dragElastic={false}
             dragMomentum={false}>
             <div

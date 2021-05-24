@@ -16,7 +16,16 @@ import { NotificationContext } from '../../Contexts/NotificationContext';
 
 //import fullscreen_icon from "../assets/fullscreen.svg";
 
-const ReactTerminal = ({ id, fullScreen, filearray, updatefilearray, folderarray, updatefolderarray }) => {
+const ReactTerminal = ({
+  id,
+  fullScreen,
+  filearray,
+  updatefilearray,
+  folderarray,
+  updatefolderarray,
+  maxZindex,
+  updateOnlyZindex,
+}) => {
   //variables
   var obj;
   //=========
@@ -224,8 +233,10 @@ const ReactTerminal = ({ id, fullScreen, filearray, updatefilearray, folderarray
       user: user,
       filearray: filearray,
       folderarray: folderarray,
+      maxZindex: maxZindex,
+      updateOnlyZindex: updateOnlyZindex,
     };
-  }, [FolderContents, dirPaths, user]);
+  }, [FolderContents, dirPaths, user, maxZindex, updateOnlyZindex]);
 
   useEffect(() => {
     newRef.current = {
@@ -235,6 +246,8 @@ const ReactTerminal = ({ id, fullScreen, filearray, updatefilearray, folderarray
       user: user,
       filearray: filearray,
       folderarray: folderarray,
+      maxZindex: maxZindex,
+      updateOnlyZindex: updateOnlyZindex,
     };
   }, [filearray, folderarray]);
 
@@ -373,14 +386,21 @@ const ReactTerminal = ({ id, fullScreen, filearray, updatefilearray, folderarray
     console.log(name);
     if (newRef.current.Folder && newRef.current.dirPaths) {
       let data = newRef.current.dirPaths[newRef.current.Folder.path + '#' + name];
+      let newId;
       if (data) {
         if (data.type !== 'folder') {
           let opened_dirPaths = clone(newRef.current.filearray);
-          opened_dirPaths[uuid()] = data;
+          newId = uuid();
+          opened_dirPaths[newId] = data;
+          opened_dirPaths[newId].zindex = newRef.current.maxZindex;
+          newRef.current.updateOnlyZindex();
           updatefilearray(opened_dirPaths);
         } else {
           let opened_folderPaths = clone(newRef.current.folderarray);
-          opened_folderPaths[uuid()] = data;
+          newId = uuid();
+          opened_folderPaths[newId] = data;
+          opened_folderPaths[newId].zindex = newRef.current.maxZindex;
+          newRef.current.updateOnlyZindex();
           updatefolderarray(opened_folderPaths);
         }
       } else addNotification('error', 'Error', 'File Not Found !');

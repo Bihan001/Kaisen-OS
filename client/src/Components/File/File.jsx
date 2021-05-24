@@ -6,7 +6,7 @@ import { motion, useDragControls } from 'framer-motion';
 import { clone, set } from 'ramda';
 import './File.scss';
 
-import { handleIcon, getLayout } from '../../Utility/functions';
+import { handleIcon, getLayout, getPureLayoutValues } from '../../Utility/functions';
 
 import ReactTerminal from '../Terminal/Terminal';
 import WebApp from '../WebApp/WebApp';
@@ -43,6 +43,8 @@ const Particular_File = ({
   folderarray,
   updatefolderarray,
   zIndex,
+  maxZindex,
+  updateOnlyZindex,
 }) => {
   const { theme } = useContext(ThemeContext);
   const { screenState } = useContext(ScreenContext);
@@ -54,6 +56,10 @@ const Particular_File = ({
 
   const [fullScreen, setfullScreen] = useState(false);
 
+  const [dragConstrains, setDragConstrains] = useState({});
+  const [initialTop, setInitialTop] = useState(0);
+  const [initialLeft, setInitialLeft] = useState(0);
+
   //Utility Variables
   var tempfile;
   var opened_dirPaths;
@@ -64,7 +70,43 @@ const Particular_File = ({
     setState(data);
     configureComponent(data);
     // console.log(Component);
+
+    setTimeout(() => {
+      handleRandomPosition();
+    }, 10);
   }, []);
+
+  useEffect(() => {
+    if (screenState.screenWidth && screenState.screenHeight) {
+      let layout = getPureLayoutValues(fullScreen, screenState);
+      setDragConstrains({
+        left: initialLeft * (screenState.screenWidth / 100) * -1,
+        top: initialTop * (screenState.screenHeight / 100) * -1,
+        right: screenState.screenWidth - initialLeft * (screenState.screenWidth / 100) - layout.width - 1.5,
+        bottom: screenState.screenHeight - initialTop * (screenState.screenHeight / 100) - layout.height - 1.5,
+      });
+    }
+  }, [screenState, initialLeft, initialTop]);
+
+  const handleRandomPosition = () => {
+    let element = document.getElementById(id + 'File');
+    let top, left;
+    if (element) {
+      if (!screenState.mobileView) {
+        top = Math.random() * (10 - 5) + 5;
+        left = Math.random() * (30 - 10) + 10;
+        element.style.top = `${top}%`;
+        element.style.left = `${left}%`;
+      } else {
+        top = Math.random() * (20 - 10) + 10;
+        left = Math.random() * (5 - 2) + 2;
+        element.style.top = `${top}%`;
+        element.style.left = `${left}%`;
+      }
+      setInitialTop(top);
+      setInitialLeft(left);
+    } else console.log('element not found', id);
+  };
 
   useEffect(() => {
     if (Component !== <></>) setState(data);
@@ -102,12 +144,14 @@ const Particular_File = ({
             updatefilearray={updatefilearray}
             folderarray={folderarray}
             updatefolderarray={updatefolderarray}
+            maxZindex={maxZindex}
+            updateOnlyZindex={updateOnlyZindex}
           />
         ),
         VsCode: <VsCode content={data.content} fullScreen={fullScreen} />,
         Spotify: <Spotify content={data.content} fullScreen={fullScreen} />,
         Todoist: <Todoist content={data.content} fullScreen={fullScreen} />,
-        Calculator: <Calculator />,
+        Calculator: <Calculator content={data.content} fullScreen={fullScreen} />,
       },
     ],
     webapp: <WebApp content={data.content} fullScreen={fullScreen} />,
@@ -236,7 +280,7 @@ const Particular_File = ({
             exit={{ opacity: 0, scale: 0.8, transition: { duration: 0.15 } }}
             drag={!fullScreen ? draggable : false}
             dragControls={dragControls}
-            dragConstraints={!fullScreen ? { left: -500, right: 500, top: -30, bottom: 500 } : {}}
+            dragConstraints={!fullScreen ? dragConstrains : {}}
             dragElastic={false}
             dragMomentum={false}>
             <div className="Frosted_Glass Topbar" id={'topbar' + id} onPointerDown={(e) => startDrag(e)} tabIndex="-1">

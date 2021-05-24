@@ -14,6 +14,8 @@ export const handleIcon = (data) => {
       return 'https://res.cloudinary.com/drolmjcot/image/upload/v1620291916/spotify-logo-png-7053_vfxytw.png';
     if (data.name == 'Todoist' && data.type == 'exe')
       return 'https://res.cloudinary.com/drolmjcot/image/upload/v1620292427/todoist_logo_icon_144800_ohrjnz.png';
+    if (data.name == 'Calculator' && data.type == 'exe')
+      return 'https://res.cloudinary.com/drolmjcot/image/upload/v1621702479/calculator_ie8sln.png';
 
     if (data.type == 'txt')
       return 'https://res.cloudinary.com/drolmjcot/image/upload/q_auto:good/v1614060786/ba31ac1ab88b5c17cc84283621a6e702_m4cirp.png';
@@ -94,6 +96,20 @@ export const getLayout = (fullScreen, screenState) => {
     };
   else if (screenState.mobileView) return { width: '90vw', height: '60vh' };
   else return { width: '65vw', height: '70vh' };
+};
+
+export const getPureLayoutValues = (fullScreen, screenState) => {
+  if (fullScreen)
+    return {
+      width: screenState.screenWidth,
+      height:
+        screenState.screenHeight -
+        4.8 * (screenState.screenWidth > 415 ? 10 : 7) -
+        4 * (screenState.screenWidth > 415 ? 10 : 7),
+    };
+  else if (screenState.mobileView)
+    return { width: 90 * (screenState.screenWidth / 100), height: 60 * (screenState.screenHeight / 100) };
+  else return { width: 65 * (screenState.screenWidth / 100), height: 70 * (screenState.screenHeight / 100) };
 };
 
 export const fadeinTop = {

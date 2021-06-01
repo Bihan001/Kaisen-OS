@@ -126,7 +126,7 @@ export default function App({ content, fullScreen }) {
           }
         }
         const newCalculation = calculation.pop();
-        if (newCalculation.length) {
+        if (newCalculation && newCalculation.length) {
           setResult(prevResult);
           setCalculation([...calculation]);
         } else {
@@ -166,7 +166,7 @@ export default function App({ content, fullScreen }) {
         <div className="show-calculation">
           <span className="result-calculation">{showCalculation()}</span>
           <span className="dashed-line" />
-          <span className="final-result">{result === 0 ? 'Start Calculating' : result}</span>
+          <span className="final-result">{result === undefined || result === null ? 'Start Calculating' : result}</span>
         </div>
         <div className="button-layout">
           <ButtonComponent handleClick={(value) => spcl_handle(value)}>C</ButtonComponent>

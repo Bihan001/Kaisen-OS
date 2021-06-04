@@ -6,6 +6,7 @@ import { AuthContext } from './Contexts/AuthContext';
 
 import Login from './pages/Login/Login';
 import Desktop from './pages/Desktop/Desktop';
+import { backendUrl } from './backendUrl';
 
 import './App.css';
 
@@ -13,7 +14,7 @@ const App = () => {
   const { user, setUser } = useContext(AuthContext);
   useEffect(() => {
     axios
-      .get('http://localhost:5000/api/auth/profile')
+      .get(`${backendUrl}/api/auth/profile`)
       .then((res) => setUser(res.data.data.user))
       .catch((err) => setUser(null));
   }, []);

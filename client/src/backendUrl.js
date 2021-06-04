@@ -1,1 +1,1 @@
-export const backendUrl = 'https://kaisen-os.herokuapp.com/';
+export const backendUrl = 'https://kaisen-os.herokuapp.com';

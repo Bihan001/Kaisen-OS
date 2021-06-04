@@ -8,6 +8,7 @@ import GoogleIcon from '../../assets/icons/035-google-plus.svg';
 import FacebookIcon from '../../assets/icons/045-facebook.svg';
 import GithubIcon from '../../assets/icons/039-github.svg';
 import LinkedinIcon from '../../assets/icons/031-linkedin.svg';
+import { backendUrl } from '../../backendUrl';
 
 const Login = (props) => {
   const { setUser } = useContext(AuthContext);
@@ -18,7 +19,7 @@ const Login = (props) => {
     try {
       const res = await firebase.auth().signInWithPopup(provider);
       const idToken = await res.user.getIdToken();
-      const userRes = await axios.post('http://localhost:5000/api/auth/sessionLogin', { idToken });
+      const userRes = await axios.post(`${backendUrl}/api/auth/sessionLogin`, { idToken });
       setUser(userRes.data.data);
       firebase.auth().signOut();
       props.history.push('/');

@@ -2,7 +2,7 @@ require('dotenv').config({ path: process.env.NODE_ENV === 'production' ? 'prod.e
 import mongoose, { Document } from 'mongoose';
 import app from './app';
 // Variables
-const PORT = process.env.BACKEND_PORT || 5000;
+const PORT = process.env.PORT || 5000;
 
 declare global {
   namespace Express {

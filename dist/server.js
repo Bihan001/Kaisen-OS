@@ -7,7 +7,7 @@ require('dotenv').config({ path: process.env.NODE_ENV === 'production' ? 'prod.e
 const mongoose_1 = __importDefault(require("mongoose"));
 const app_1 = __importDefault(require("./app"));
 // Variables
-const PORT = process.env.BACKEND_PORT || 5000;
+const PORT = process.env.PORT || 5000;
 //Connection
 if (process.env.MONGODB_URI) {
     mongoose_1.default

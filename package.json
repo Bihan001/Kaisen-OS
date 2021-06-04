@@ -9,7 +9,8 @@
     "dev": "nodemon src/server.ts",
     "build": "tsc -p .",
     "client": "npm start --prefix client",
-    "dev-full": "concurrently \"npm run dev\" \"npm run client\""
+    "dev-full": "concurrently \"npm run dev\" \"npm run client\"",
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install && npm install --prefix client && npm run build --prefix client"
   },
   "author": "Bihan & Ankur",
   "license": "ISC",

@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import { ScreenContext } from '../../Contexts/ScreenContext';
 import './Tooltip.scss';
 const Tooltip = ({ isDesktopIcon, showTooltip, tooltipPosition, tooltipData }) => {
+  const { screenState } = useContext(ScreenContext);
   return (
     <>
-      {showTooltip && (
+      {showTooltip && !screenState.mobileView && (
         <div
           className="tooltip-box"
           style={{

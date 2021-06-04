@@ -2,7 +2,7 @@ import multer from 'multer';
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, '/home/bihan/codes/MERN/Kaisen-OS/uploads');
+    cb(null, process.env.UPLOADS_FOLDER_LOCAL as string);
   },
   filename: (req, file, cb) => {
     cb(null, Date.now().toString() + '-' + file.originalname);

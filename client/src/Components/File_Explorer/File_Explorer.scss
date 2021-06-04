@@ -137,6 +137,9 @@ $default-box-shadow: 0 17px 60px 4px rgba(0, 0, 0, 0.56);
         width: 100%;
         margin-left: 1rem;
         margin-right: 1rem;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
       }
     }
     .Lower_Segment {

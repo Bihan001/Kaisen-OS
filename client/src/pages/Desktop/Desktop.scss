@@ -1,6 +1,7 @@
 .Desktop {
   width: 100vw;
   height: 100vh;
+  height: calc(var(--vh, 1vh) * 100);
   // border:2px solid red;
   position: relative;
   // background: url(https://res.cloudinary.com/drolmjcot/image/upload/q_auto:good/v1613837593/wallpaper_goadao.jpg);

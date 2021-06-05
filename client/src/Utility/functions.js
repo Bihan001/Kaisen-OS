@@ -9,6 +9,8 @@ export const handleIcon = (data) => {
       return 'https://res.cloudinary.com/drolmjcot/image/upload/v1616249934/magicball_coq09r.png';
     if (data.name == 'SuperVerse' && data.type == 'webapp')
       return 'https://res.cloudinary.com/drolmjcot/image/upload/v1622882865/logo192_fbxm5y.jpg';
+    if (data.name == 'OrionCloud' && data.type == 'webapp')
+      return 'https://res.cloudinary.com/drolmjcot/image/upload/v1622915797/o_ry6zet.png';
 
     if (data.name == 'WatchAnimeTogether' && data.type == 'webapp')
       return 'https://res.cloudinary.com/kaitomedia/image/upload/v1622883261/kaisen-images/watchanimetogether_cvzdei.png';

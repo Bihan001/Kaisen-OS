@@ -15,7 +15,7 @@ import Clock from '../widgets/clock';
 import FrostedGlass from '../../../Utility/frosted-glass';
 import { NotificationContext } from '../../../Contexts/NotificationContext';
 import { ScreenContext } from '../../../Contexts/ScreenContext';
-import WallpaperGridIcon from '../../../assets/icons/036-photo.svg';
+import WallpaperGridIcon from '../../../assets/icons/grid.svg';
 
 const StartMenu = (props) => {
   const {

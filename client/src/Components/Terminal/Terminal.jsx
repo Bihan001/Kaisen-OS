@@ -318,16 +318,16 @@ const ReactTerminal = ({
 
   //Descriptions
   const descriptions = {
-    'open-google': '........opens Google in new tab',
-    showmsg: '........shows a message',
-    alert: '........alert',
-    popup: '........alert',
-    cd: '........Enters the Directory',
-    mkdir: '........Creates a Folder',
-    dir: '.............Shows current Directory',
-    ls: '.............Shows current files and folders',
-    rm: '.............Remove a file or directory',
-    open: '............Opens a File or Folder',
+    'open-google': 'opens Google in new tab',
+    showmsg: 'shows a message',
+    alert: 'alert',
+    popup: 'alert',
+    cd: 'Enters the Directory',
+    mkdir: 'Creates a Folder',
+    dir: 'Shows current Directory',
+    ls: '.Shows files and folders in this directory',
+    rm: 'Remove a file or directory',
+    open: 'Opens a File or Folder',
   };
   //===========
 
@@ -665,7 +665,7 @@ const ReactTerminal = ({
         descriptions={descriptions}
         startState={['open', 'maximised', 'minimised']}
         hideTopBar={true}
-        msg="You can write anything here. Example - Hello! My name is Ankur !!."
+        msg="Type help for command list"
       />
     </div>
   );

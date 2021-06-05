@@ -26,6 +26,17 @@ button {
   border: 0;
   outline: 0;
 }
+
+@media (max-width: 920px) {
+  body {
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
+  }
+  html {
+    height: -webkit-fill-available;
+  }
+}
+
 @media (max-width: 415px) {
   html {
     font-size: 7px;

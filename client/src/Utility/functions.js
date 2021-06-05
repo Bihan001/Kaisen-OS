@@ -7,6 +7,25 @@ export const handleIcon = (data) => {
       return 'https://res.cloudinary.com/drolmjcot/image/upload/q_auto:good/v1614061685/terminal-icon_ac2sdv.png';
     if (data.name == 'MagicBall' && data.type == 'webapp')
       return 'https://res.cloudinary.com/drolmjcot/image/upload/v1616249934/magicball_coq09r.png';
+    if (data.name == 'SuperVerse' && data.type == 'webapp')
+      return 'https://res.cloudinary.com/drolmjcot/image/upload/v1622882865/logo192_fbxm5y.jpg';
+
+    if (data.name == 'WatchAnimeTogether' && data.type == 'webapp')
+      return 'https://res.cloudinary.com/kaitomedia/image/upload/v1622883261/kaisen-images/watchanimetogether_cvzdei.png';
+    if (data.name == 'WeatherLookup' && data.type == 'webapp')
+      return 'https://res.cloudinary.com/kaitomedia/image/upload/v1622883260/kaisen-images/weatherlookup_hkxgxj.png';
+
+    if (data.name == 'WebCoder' && data.type == 'webapp')
+      return 'https://res.cloudinary.com/kaitomedia/image/upload/v1622883290/kaisen-images/codepenclone_wqeae2.png';
+    if (data.name == 'BihanChakraborty' && data.type == 'webapp')
+      return 'https://res.cloudinary.com/kaitomedia/image/upload/v1622883278/kaisen-images/portfolio_cfl1ce.png';
+    if (data.name == 'TicTacToe' && data.type == 'webapp')
+      return 'https://res.cloudinary.com/kaitomedia/image/upload/v1622883275/kaisen-images/tictactoe_rfuhyj.png';
+    if (data.name == 'Memories' && data.type == 'webapp')
+      return 'https://res.cloudinary.com/kaitomedia/image/upload/v1622883263/kaisen-images/memories_rhvprp.png';
+    if (data.name == 'Discuss' && data.type == 'webapp')
+      return 'https://res.cloudinary.com/kaitomedia/image/upload/v1622883534/kaisen-images/chatapp_rz8ntm.png';
+
     if (data.name == 'VsCode' && data.type == 'exe')
       return 'https://res.cloudinary.com/drolmjcot/image/upload/v1620290109/icons8-visual-studio-code-2019-48_ibprxf.png';
 

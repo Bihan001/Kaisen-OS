@@ -1047,15 +1047,19 @@ const File_Explorer = ({
                           setShowTooltip(false);
                           clearTimeout(tooltipTimerId);
                         }}
-                        onDoubleClick={() => {
-                          setShowTooltip(false);
-                          clearTimeout(tooltipTimerId);
-                          if (!disableReload) handlecontentclicked(content);
+                        onClick={() => {
+                          if (screenState.mobileView) {
+                            setShowTooltip(false);
+                            clearTimeout(tooltipTimerId);
+                            if (!disableReload) handlecontentclicked(content);
+                          }
                         }}
-                        onTouchStart={() => {
-                          setShowTooltip(false);
-                          clearTimeout(tooltipTimerId);
-                          if (!disableReload) handlecontentclicked(content);
+                        onDoubleClick={() => {
+                          if (!screenState.mobileView) {
+                            setShowTooltip(false);
+                            clearTimeout(tooltipTimerId);
+                            if (!disableReload) handlecontentclicked(content);
+                          }
                         }}
                         key={id + content.path}>
                         <div className="form-group">

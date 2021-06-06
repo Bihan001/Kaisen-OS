@@ -201,6 +201,17 @@ const Desktop = (props) => {
             }
           : {}
       }>
+      {/* FOR WALLPAPERS LOADING TIME OPTIMIZATION -> START */}
+      <div style={{ display: 'none' }}>
+        {wallpapers.map((item) => (
+          <>
+            <img src={item.thumbnail} />
+            <img src={item.image} />
+          </>
+        ))}
+      </div>
+      {/* FOR WALLPAPERS LOADING TIME OPTIMIZATION -> END */}
+
       <div style={{ position: 'absolute', right: 5, bottom: 60, zIndex: maxValue }}>
         {Object.keys(notifications).map((key) => (
           <Notification

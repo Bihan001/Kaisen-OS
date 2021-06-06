@@ -12,16 +12,16 @@ export const handleIcon = (data) => {
     if (data.name == 'OrionCloud' && data.type == 'webapp')
       return 'https://res.cloudinary.com/drolmjcot/image/upload/v1622915797/o_ry6zet.png';
 
-    if (data.name == 'WatchAnimeTogether' && data.type == 'webapp')
+    if (data.name == 'Watch Anime Together' && data.type == 'webapp')
       return 'https://res.cloudinary.com/kaitomedia/image/upload/v1622883261/kaisen-images/watchanimetogether_cvzdei.png';
-    if (data.name == 'WeatherLookup' && data.type == 'webapp')
+    if (data.name == 'Weather Lookup' && data.type == 'webapp')
       return 'https://res.cloudinary.com/kaitomedia/image/upload/v1622883260/kaisen-images/weatherlookup_hkxgxj.png';
 
-    if (data.name == 'WebCoder' && data.type == 'webapp')
+    if (data.name == 'Web Coder' && data.type == 'webapp')
       return 'https://res.cloudinary.com/kaitomedia/image/upload/v1622883290/kaisen-images/codepenclone_wqeae2.png';
-    if (data.name == 'BihanChakraborty' && data.type == 'webapp')
+    if (data.name == 'Bihan Chakraborty' && data.type == 'webapp')
       return 'https://res.cloudinary.com/kaitomedia/image/upload/v1622883278/kaisen-images/portfolio_cfl1ce.png';
-    if (data.name == 'TicTacToe' && data.type == 'webapp')
+    if (data.name == 'Tic Tac Toe' && data.type == 'webapp')
       return 'https://res.cloudinary.com/kaitomedia/image/upload/v1622883275/kaisen-images/tictactoe_rfuhyj.png';
     if (data.name == 'Memories' && data.type == 'webapp')
       return 'https://res.cloudinary.com/kaitomedia/image/upload/v1622883263/kaisen-images/memories_rhvprp.png';
@@ -33,7 +33,7 @@ export const handleIcon = (data) => {
 
     if (data.name == 'Spotify' && data.type == 'exe')
       return 'https://res.cloudinary.com/drolmjcot/image/upload/v1620291916/spotify-logo-png-7053_vfxytw.png';
-    if (data.name == 'Todoist' && data.type == 'exe')
+    if (data.name == 'Todolist' && data.type == 'exe')
       return 'https://res.cloudinary.com/drolmjcot/image/upload/v1620292427/todoist_logo_icon_144800_ohrjnz.png';
     if (data.name == 'Calculator' && data.type == 'exe')
       return 'https://res.cloudinary.com/drolmjcot/image/upload/v1621702479/calculator_ie8sln.png';

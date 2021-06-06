@@ -3,7 +3,7 @@ import firebase from 'firebase';
 let firebaseConfig = {};
 
 if (process.env.NODE_ENV === 'production') {
-  firebase = {
+  firebaseConfig = {
     apiKey: 'AIzaSyBjfXxAlh8GbtSdPb9C0blSWP70mp0EM3g',
     authDomain: 'https://kaisen-os.herokuapp.com',
     projectId: 'kaisen-os',

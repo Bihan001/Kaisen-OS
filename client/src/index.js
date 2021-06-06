@@ -10,6 +10,8 @@ import { BrowserRouter } from 'react-router-dom';
 import axios from 'axios';
 import NotificationProvider from './Contexts/NotificationContext';
 import { WallpaperProvider } from './Contexts/WallpaperContext';
+import * as serviceWorkerRegistration from './serviceWorkerRegistration';
+import reportWebVitals from './reportWebVitals';
 
 axios.defaults.withCredentials = true;
 
@@ -31,3 +33,6 @@ ReactDOM.render(
   </BrowserRouter>,
   document.getElementById('root')
 );
+
+serviceWorkerRegistration.register();
+reportWebVitals();

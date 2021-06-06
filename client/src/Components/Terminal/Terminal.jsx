@@ -295,7 +295,7 @@ const ReactTerminal = ({
         //     else print('Not Authorized!');
       }
     },
-    dir: (args, print, runcommand) => {
+    pwd: (args, print, runcommand) => {
       print(newRef.current.Folder.path.split('#').join('/'));
     },
     ls: (args, print, runcommand) => {
@@ -318,13 +318,9 @@ const ReactTerminal = ({
 
   //Descriptions
   const descriptions = {
-    'open-google': 'opens Google in new tab',
-    showmsg: 'shows a message',
-    alert: 'alert',
-    popup: 'alert',
     cd: 'Enters the Directory',
     mkdir: 'Creates a Folder',
-    dir: 'Shows current Directory',
+    pwd: 'Shows current Directory',
     ls: '.Shows files and folders in this directory',
     rm: 'Remove a file or directory',
     open: 'Opens a File or Folder',

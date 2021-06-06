@@ -5,7 +5,7 @@ let firebaseConfig = {};
 if (process.env.NODE_ENV === 'production') {
   firebaseConfig = {
     apiKey: 'AIzaSyBjfXxAlh8GbtSdPb9C0blSWP70mp0EM3g',
-    authDomain: 'https://kaisen-os.herokuapp.com',
+    authDomain: 'kaisen-os.firebaseapp.com',
     projectId: 'kaisen-os',
     storageBucket: 'kaisen-os.appspot.com',
     messagingSenderId: '794113547364',

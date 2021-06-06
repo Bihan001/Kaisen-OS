@@ -19,7 +19,7 @@ const Tooltip = ({ isDesktopIcon, showTooltip, tooltipPosition, tooltipData }) =
           <br />
           Created by: {tooltipData.createdBy}
           <br />
-          Date Modified: {tooltipData.dateModified}
+          Date Modified: {new Date(tooltipData.dateModified).toDateString()}
         </div>
       )}
     </>

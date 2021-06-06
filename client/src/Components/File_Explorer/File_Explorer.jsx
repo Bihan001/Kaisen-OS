@@ -630,43 +630,48 @@ const File_Explorer = ({
         }
       }
       var reg = /[$&+,:;=?@#|'<>.^*()%!-]/;
+      var urlMatcher = /[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)?/gi;
       if (!isPresent && !name.includes('.') && !reg.test(name)) {
-        var newEditableBy = '';
-        if (Folder.editableBy.id === user.id) newEditableBy = user.id;
-        else if (Folder.path == 'root#public') newEditableBy = user.id;
-        else if (user.isAdmin) newEditableBy = Folder.editableBy.id;
-        axios({
-          method: 'POST',
-          data: {
-            parentPath: Folder.path,
-            fileName: name,
-            fileType: 'webapp',
-            fileSize: 1,
-            fileContent: content,
-            fileCreator: newEditableBy,
-          },
-          url: `${backendUrl}/api/files/createFile`,
-        })
-          .then((res) => {
-            console.log('Now  data is : ', res);
-            obj = clone(dirPaths);
-            var newFile = res.data.data.newFile;
-            obj[Folder.path].children = [...obj[Folder.path].children, newFile.name + '.' + newFile.type];
-            var newFile_ClassObj;
-            newFile_ClassObj = new ClassFile(
-              newFile.name,
-              newFile.dateCreated,
-              newFile.dateModified,
-              newFile.editableBy,
-              newFile.path,
-              newFile.type,
-              newFile.content
-            );
-            obj[newFile_ClassObj.path] = newFile_ClassObj;
-            UpdatedirPaths(obj);
-            addNotification('success', 'Success', 'WebApp Created !');
+        if (content.match(urlMatcher)) {
+          var newEditableBy = '';
+          if (Folder.editableBy.id === user.id) newEditableBy = user.id;
+          else if (Folder.path == 'root#public') newEditableBy = user.id;
+          else if (user.isAdmin) newEditableBy = Folder.editableBy.id;
+          axios({
+            method: 'POST',
+            data: {
+              parentPath: Folder.path,
+              fileName: name,
+              fileType: 'webapp',
+              fileSize: 1,
+              fileContent: content,
+              fileCreator: newEditableBy,
+            },
+            url: `${backendUrl}/api/files/createFile`,
           })
-          .catch((err) => console.log(err));
+            .then((res) => {
+              console.log('Now  data is : ', res);
+              obj = clone(dirPaths);
+              var newFile = res.data.data.newFile;
+              obj[Folder.path].children = [...obj[Folder.path].children, newFile.name + '.' + newFile.type];
+              var newFile_ClassObj;
+              newFile_ClassObj = new ClassFile(
+                newFile.name,
+                newFile.dateCreated,
+                newFile.dateModified,
+                newFile.editableBy,
+                newFile.path,
+                newFile.type,
+                newFile.content
+              );
+              obj[newFile_ClassObj.path] = newFile_ClassObj;
+              UpdatedirPaths(obj);
+              addNotification('success', 'Success', 'WebApp Created !');
+            })
+            .catch((err) => console.log(err));
+        } else {
+          addNotification('warning', 'Warning', 'Enter a Url !');
+        }
       } else {
         addNotification('warning', 'Warning', 'Enter a Valid Name !');
       }
@@ -1047,13 +1052,6 @@ const File_Explorer = ({
                           setShowTooltip(false);
                           clearTimeout(tooltipTimerId);
                         }}
-                        onClick={() => {
-                          if (screenState.mobileView) {
-                            setShowTooltip(false);
-                            clearTimeout(tooltipTimerId);
-                            if (!disableReload) handlecontentclicked(content);
-                          }
-                        }}
                         onDoubleClick={() => {
                           if (!screenState.mobileView) {
                             setShowTooltip(false);
@@ -1071,13 +1069,29 @@ const File_Explorer = ({
                           />
                           <label htmlFor={id + content.path}></label>
                         </div>
-                        <div className="file-folder-name">
+                        <div
+                          className="file-folder-name"
+                          onClick={() => {
+                            if (screenState.mobileView) {
+                              setShowTooltip(false);
+                              clearTimeout(tooltipTimerId);
+                              if (!disableReload) handlecontentclicked(content);
+                            }
+                          }}>
                           <img src={handleIcon(content)} />
                           <div>{content.name}</div>
                         </div>
-                        <div className="content-data">
+                        <div
+                          className="content-data"
+                          onClick={() => {
+                            if (screenState.mobileView) {
+                              setShowTooltip(false);
+                              clearTimeout(tooltipTimerId);
+                              if (!disableReload) handlecontentclicked(content);
+                            }
+                          }}>
                           {/* <div>{content.dateModified.toISOString().substring(0, 10)}</div>    */}
-                          {!screenState.mobileView && <div>{content.dateModified}</div>}
+                          {!screenState.mobileView && <div>{new Date(content.dateModified).toDateString()}</div>}
                           <div>{content.type}</div>
                         </div>
                       </div>

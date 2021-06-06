@@ -265,13 +265,6 @@ const ReactTerminal = ({
 
   //Commands
   const commands = {
-    'open-google': () => {
-      const newWindow = window.open('https://www.google.com', '_blank', 'noopener,noreferrer');
-      if (newWindow) newWindow.opener = null;
-    },
-
-    popup: () => alert('Oni Chaan!!'),
-
     cd: (args, print, runcommand) => {
       const data = args.slice(1).join('');
       if (data == '..') {
@@ -321,7 +314,7 @@ const ReactTerminal = ({
     cd: 'Enters the Directory',
     mkdir: 'Creates a Folder',
     pwd: 'Shows current Directory',
-    ls: '.Shows files and folders in this directory',
+    ls: 'Shows files and folders in this directory',
     rm: 'Remove a file or directory',
     open: 'Opens a File or Folder',
   };

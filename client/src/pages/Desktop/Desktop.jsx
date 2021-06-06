@@ -22,8 +22,6 @@ import { Folder, File, ClassFolder, ClassFile } from '../../Classes/Classes';
 
 import { handleIcon, fadeinTop, textTruncate } from '../../Utility/functions';
 
-import Notification from '../../Components/notification';
-import { NotificationContext } from '../../Contexts/NotificationContext';
 import StartMenu from './start-menu';
 import { WallpaperContext } from '../../Contexts/WallpaperContext';
 
@@ -32,7 +30,6 @@ const Desktop = (props) => {
   const { theme, ChangeTheme } = useContext(ThemeContext);
   const { changeWallpaper } = useContext(WallpaperContext);
   const { dirPaths, UpdatedirPaths } = useContext(DirectoryContext);
-  const { notifications, removeNotification } = useContext(NotificationContext);
 
   const [openedfiles, setopenedfiles] = useState({});
   const [openedfolders, setopenedfolders] = useState({});
@@ -211,19 +208,6 @@ const Desktop = (props) => {
         ))}
       </div>
       {/* FOR WALLPAPERS LOADING TIME OPTIMIZATION -> END */}
-
-      <div style={{ position: 'absolute', right: 5, bottom: 60, zIndex: maxValue }}>
-        {Object.keys(notifications).map((key) => (
-          <Notification
-            key={key}
-            id={key}
-            type={notifications[key].type}
-            heading={notifications[key].heading}
-            description={notifications[key].description}
-            removeNotification={removeNotification}
-          />
-        ))}
-      </div>
 
       <Tooltip isDesktopIcon showTooltip={showTooltip} tooltipPosition={tooltipPosition} tooltipData={tooltipData} />
 

@@ -9,9 +9,11 @@ import FacebookIcon from '../../assets/icons/045-facebook.svg';
 import GithubIcon from '../../assets/icons/039-github.svg';
 import LinkedinIcon from '../../assets/icons/031-linkedin.svg';
 import { backendUrl } from '../../backendUrl';
+import { NotificationContext } from '../../Contexts/NotificationContext';
 
 const Login = (props) => {
   const { setUser } = useContext(AuthContext);
+  const { addNotification } = useContext(NotificationContext);
 
   const [inView, setInView] = useState(false);
 
@@ -25,6 +27,7 @@ const Login = (props) => {
       props.history.push('/');
     } catch (err) {
       console.log(err);
+      addNotification('error', 'Error', err.message);
     }
   };
 

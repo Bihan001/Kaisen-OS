@@ -7,11 +7,15 @@ import { AuthContext } from './Contexts/AuthContext';
 import Login from './pages/Login/Login';
 import Desktop from './pages/Desktop/Desktop';
 import { backendUrl } from './backendUrl';
+import Notification from './Components/notification';
+import { NotificationContext } from './Contexts/NotificationContext';
 
 import './App.css';
 
 const App = () => {
   const { user, setUser } = useContext(AuthContext);
+  const { notifications, removeNotification } = useContext(NotificationContext);
+
   useEffect(() => {
     axios
       .get(`${backendUrl}/api/auth/profile`)
@@ -32,6 +36,18 @@ const App = () => {
   };
   return (
     <div className="App no-select">
+      <div style={{ position: 'absolute', right: 5, bottom: 60, zIndex: 999 }}>
+        {Object.keys(notifications).map((key) => (
+          <Notification
+            key={key}
+            id={key}
+            type={notifications[key].type}
+            heading={notifications[key].heading}
+            description={notifications[key].description}
+            removeNotification={removeNotification}
+          />
+        ))}
+      </div>
       <Switch>
         {/* <Route exact path='/login' render={(routeProps) => <Login {...routeProps} />} /> */}
         <Route

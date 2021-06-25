@@ -86,14 +86,9 @@ const Login = (props) => {
               <button onClick={loginWithGoogle}>
                 <img src={GoogleIcon} />
               </button>
-              <button onClick={loginWithFacebook}>
-                <img src={FacebookIcon} />
-              </button>
+
               <button onClick={loginWithGithub}>
                 <img src={GithubIcon} />
-              </button>
-              <button onClick={loginWithLinkedin}>
-                <img src={LinkedinIcon} />
               </button>
             </div>
           </motion.div>
